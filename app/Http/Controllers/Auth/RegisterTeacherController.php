@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\Teacher;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -70,6 +71,7 @@ class RegisterTeacherController extends Controller
         return Teacher::create([
             'name' => $data['name'],
             'password' => Hash::make($data['password']),
+            'api_token' => Str::random(60),
             'email' => $data['email'],
         ]);
     }

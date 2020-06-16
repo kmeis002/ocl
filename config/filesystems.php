@@ -65,6 +65,16 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
+        'sftp' => [
+            'driver' => 'sftp',
+            'host' => 'localhost',
+            'port' => 22,
+            'username' => 'sftpuser',
+            'password' => 'poop',
+            'root' => 'writable/',
+            'timeout' => '10',
+        ]
+
     ],
 
     /*

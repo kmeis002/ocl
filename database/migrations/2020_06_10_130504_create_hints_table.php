@@ -4,22 +4,22 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MakeHintsUsedTable extends Migration
+class CreateHintsTable extends Migration
 {
     /**
      * Run the migrations.
      *
-     * Relation table linking students to hints they've used.
+     * Table for machine hints.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('hints_used', function (Blueprint $table) {
-            $table->string('student');
-            $table->integer('hint_id')->unsigned();
-            $table->foreign('student')->references('name')->on('students');
-            $table->foreign('hint_id')->references('id')->on('hints');
+        Schema::create('hints', function (Blueprint $table) {
+            $table->increments('id')->unique();
+            $table->string('vm_name');
+            $table->foreign('vm_name')->references('name')->on('vms');
+            $table->text('hint');
             $table->timestamps();
         });
     }

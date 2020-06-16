@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MakeVmsTable extends Migration
+class CreateVmsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,9 +15,11 @@ class MakeVmsTable extends Migration
     {
         Schema::create('vms', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->integer('points')->unsigned();
+            $table->string('file');
             $table->string('ip');
+            $table->unique(array('name','ip', 'file'));
             $table->string('os');
             $table->string('icon');
             $table->text('description')->nullable();

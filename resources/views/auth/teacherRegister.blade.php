@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-<!-Fucking goddamn registration tests-!>
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 |
 | Class for VMs which make up the Boot2Root and Lab classes. 
 | 
-| 
 |
 */
 
@@ -20,12 +19,19 @@ class VM extends Model
 
 	//Setup table information
 	protected $table = 'vms';
-	protected $primary_key = 'name';
+	protected $primaryKey = 'name';
 	protected $keyType = 'string';
 
 	//Mass fillable arrays
 	protected $fillable = [
-		'name', 'points', 'os', 'icon', 'description', 'ip'];
+		'name', 'points', 'os', 'file', 'icon', 'description', 'ip'
+	];
 
 
+
+	//getter functions for VM
+	public function getAttr(){
+		return $this->fillable;
+	}
 }
+

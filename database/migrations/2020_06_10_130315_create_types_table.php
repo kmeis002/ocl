@@ -4,23 +4,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MakeTeachersTable extends Migration
+class CreateTypesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * Create the teachers table for "admin" like users.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('teachers', function (Blueprint $table) {
+        Schema::create('types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->string('password');
-            $table->string('email')->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -32,6 +27,6 @@ class MakeTeachersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('teachers');
+        Schema::dropIfExists('types');
     }
 }

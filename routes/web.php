@@ -69,12 +69,36 @@ Route::group(['prefix'=>'/teacher'], function(){
   ]);
   Route::get('/vm', [
       'as' => 'teacher.vm',
+      'uses' => 'VMController@index'
+  ]);
+  Route::get('/vm/create', [
+      'as' => 'teacher.vm.create',
+      'uses' => 'VMController@create'
+  ]);
+  Route::post('/vm/store', [
+      'as' => 'teacher.vm.store',
+      'uses' => 'VMController@store'
+  ]);
+  Route::get('/vm/show/{name}', [
+      'as' => 'teacher.vm.show.{name}',
       'uses' => 'VMController@show'
   ]);
-  Route::post('/vm/upload', [
-      'as' => 'teacher.vm.upload',
-      'uses' => 'VMController@upload'
+  Route::post('/vm/update/{name}', [
+    'as' => 'teacher.vm.update',
+    'uses' => 'VMController@update'
   ]);
+  Route::post('/vm/destroy/{name}', [
+    'as' => 'teacher.vm.destroy',
+    'uses' => 'VMController@destroy'
+  ]);
+  Route::get('/vm/upload', [
+    'as' => 'teacher.vm.upload',
+    'uses' => 'VMController@upload'
+  ]);
+
+  Route::get('/vm/{name}/edit', 'VMController@edit');
+
+
 });
 
 
@@ -88,3 +112,6 @@ Route::post('/logout', [
 
 
 
+Route::get('/phpinfo', function(){
+  return phpinfo();
+});

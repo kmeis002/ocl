@@ -4,20 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserFlagsTable extends Migration
+class CreateCoursesTable extends Migration
 {
     /**
      * Run the migrations.
+     *
+     *  Table for class types to be enrolled in.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('user_flags', function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->string('b2r_name');
-            $table->foreign('b2r_name')->references('name')->on('vms');
-            $table->string('flag');
+         Schema::create('courses', function (Blueprint $table) {
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateUserFlagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_flags');
+        Schema::dropIfExists('courses');
     }
 }

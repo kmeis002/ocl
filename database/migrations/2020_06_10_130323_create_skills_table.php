@@ -4,22 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MakeHintsTable extends Migration
+class CreateSkillsTable extends Migration
 {
     /**
      * Run the migrations.
      *
-     * Table for machine hints.
+     * Table storing descriptive skills/categories for labs,ctfs,b2r,etc.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('hints', function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->string('vm_name');
-            $table->foreign('vm_name')->references('name')->on('vms');
-            $table->text('hint');
+        Schema::create('skills', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class MakeHintsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hints');
+        Schema::dropIfExists('skills');
     }
 }

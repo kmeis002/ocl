@@ -1,5 +1,10 @@
 const mix = require('laravel-mix');
 
+mix.webpackConfig({
+    externals: {
+        "ChunkUpload": "ChunkUpload"
+    }
+});
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management

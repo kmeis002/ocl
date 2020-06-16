@@ -4,22 +4,22 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MakeVmTypeTable extends Migration
+class CreateVmSkillTable extends Migration
 {
     /**
      * Run the migrations.
      *
-     * Relational table for linking vms to their requisite types.
+     * Relational table linking vm's to skills (need to make Skill_List_Items for many-to-many relations)
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('vm_type', function (Blueprint $table) {
+        Schema::create('vm_skill', function (Blueprint $table) {
             $table->string('vm_name');
-            $table->string('type_name');
+            $table->string('skill');
             $table->foreign('vm_name')->references('name')->on('vms');
-            $table->foreign('type_name')->references('name')->on('types');
+            $table->foreign('skill')->references('name')->on('skills');
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class MakeVmTypeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vm_type');
+        Schema::dropIfExists('vm_skill');
     }
 }

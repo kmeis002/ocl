@@ -17,3 +17,14 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::middleware('auth:api')->get('/chunk_upload', 'ChunkUploadController@chunkTest');
+
+Route::middleware('auth:api')->post('/chunk_upload', 'ChunkUploadController@chunkStore');
+
+Route::post('/load_vm', 'VMVisorController@loadVM');
+
+Route::post('/poll_vm', 'VMVisorController@poll');
+
+Route::post('/mqtt/publish', 'VMVisorController@MqttTest');
+

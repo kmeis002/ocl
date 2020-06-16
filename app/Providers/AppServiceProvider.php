@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Storage;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Sftp\SftpAdapter;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +26,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Storage::extend('sftp', function ($app, $config) {
+        return new Filesystem(new SftpAdapter($config));
+        });
+
+        ini_set("memory_limit", "5G");
+        ini_set('post_max_size', '5G');
+        ini_set('upload_max_filesize', '5G');
     }
 }
