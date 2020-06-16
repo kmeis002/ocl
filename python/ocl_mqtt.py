@@ -1,10 +1,7 @@
 import paho.mqtt.client as mqttc
-from datetime import datetime
-import time
 import logging
-import os
 import vmvisor
-
+import re
 '''
 |--------------------------------------------------------------------------
 | ocl_mqtt
@@ -16,9 +13,9 @@ import vmvisor
 |
 | To Do:
 |
-| -vboxmanage class to run process
 | -responses to api to confirm actions
-| -add simple sanitiziation for possible cmd injection for subprocess. [Whitelist only a-z A-Z 0-9 -_ ]
+| -add tls support since this will be used to transmit rotating flags to vms
+| -unit tests for listeners
 |
 '''
 def setup_listener(user, passwd, host):
@@ -35,55 +32,81 @@ def setup_listener(user, passwd, host):
 	return client
 
 def on_message(client, userdata, msg):
-	name = str(msg.payload).strip('b\'')
+	payload = sanitize(str(msg.payload).strip('b\''))
+
+	print("message received on " + msg.topic + " says " + payload)
 	try:
 		vms = vmvisor.vmvisor()
 	except Exception as log_msg:
 		logging.error(log_msg)
 
 	if(msg.topic == 'vm/import'):
-		logging.info('Attempting to import ' + name + '.')
+		logging.info('Attempting to import ' + payload + '.')
 		try:
-			vms.importVM(name)
-			logging.info("VM " + name + " imported.")	
+			vms.importVM(payload)
+			logging.info("VM " + payload + " imported.")	
 		except Exception as log_msg:
 			logging.error(log_msg)
 
-
 	if(msg.topic == 'vm/unregister'):
-		logging.info('Attempting to unregister ' + name + '.')
+		logging.info('Attempting to unregister ' + payload + '.')
 		try:
-			vms.unregisterVM(name)
-			logging.info('VM ' + name + ' unregistered.')
+			vms.unregisterVM(payload)
+			logging.info('VM ' + payload + ' unregistered.')
 		except Exception as log_msg:
 			logging.error(log_msg)
 
 	if(msg.topic == 'vm/start'):
-		logging.info('Attempting to start ' + name + '.')
+		logging.info('Attempting to start ' + payload + '.')
 		try:
-			vms.startVM(name)
+			vms.startVM(payload)
+			logging.info(payload + ' started.')
 		except Exception as log_msg:
 			logging.error(log_msg)
 
 	if(msg.topic == 'vm/stop'):
-		logging.info('Attempting to stop ' + name + '.')
+		logging.info('Attempting to stop ' + payload + '.')
 		try:
-			vms.stopVM(name)
+			vms.stopVM(payload)
+			logging.info(payload + ' stopped.')
 		except Exception as log_msg:
 			logging.error(log_msg)
 
 	if(msg.topic == 'vm/reset'):
-		logging.info('Attempting to start ' + name + '.')
+		logging.info('Attempting to start ' + payload + '.')
 		try:
-			vms.resetVM(name)
+			vms.resetVM(payload)
+			logging.info(payload + ' has been reset.')
 		except Exception as log_msg:
 			logging.error(log_msg)
 
+	#msg format name,mode
+	if(msg.topic == 'vm/modifyNIC'):
+		if(len(payload.split(',')) == 2):
+			name = payload.split(',')[0]
+			mode = payload.split(',')[1]
+			logging.info('Attempting to change NIC of ' + name + '.')
+			try:
+				vms.modifyNIC(name, mode)
+				logging.info('NIC 1 of ' + name + ' has been changed to ' + mode + '.')
+			except Exception as log_msg:
+				logging.error(log_msg)
+		else:
+			logging.error('vm/modifyNIC message must be of the form <machine name>,<NIC mode>.')
 
-	del vms
-
-	
-
+	#msg format name,dev
+	if(msg.topic == 'vm/modifyBridged'):
+		if(len(payload.split(',')) == 2):
+			name = payload.split(',')[0]
+			dev = payload.split(',')[1]
+			logging.info('Attempting to change Bridge Network Adapter of ' + name + '.')
+			try:
+				vms.modifyBridgeAdapter(name, dev)
+				logging.info('Network Adapter of ' + name + ' has been changed to ' + dev + '.')
+			except Exception as log_msg:
+				logging.error(log_msg)
+		else:
+			logging.error('vm/modifyBridged message must be of the form <machine name>,<device name>.')
 
 def on_connect(client, userdata, flags, rc):
 	if rc==0:
@@ -97,6 +120,15 @@ def on_disconnect(client, userdata, rc):
 	    logging.info(make_log("OCL_MQTT Listener disconnected: code = "+str(rc)))
 	    client.connected_flag=False
 	    client.disconnect_flag=True
+
+#Removes all characters but a-z A-z 0-9 , - _ ? ! $ 
+def sanitize(usr_input):
+	if(not type(usr_input) == str):
+		print('only sanitizes a string')
+		return
+	return re.sub(r'[^\w,$~!-]', '', usr_input)
+
+
 
 
 
