@@ -38,8 +38,6 @@ Route::group(['prefix'=>'/student'], function() {
     'uses' => 'Auth\RegisterStudentController@register'
   ]);
   Route::get('/','StudentController@show');
-
-
 });
 
 
@@ -97,10 +95,7 @@ Route::group(['prefix'=>'/teacher'], function(){
   ]);
 
   Route::get('/vm/{name}/edit', 'VMController@edit');
-
-
 });
-
 
 
 //logout

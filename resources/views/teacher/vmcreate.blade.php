@@ -35,6 +35,10 @@
                         {{Form::select('os', ['Linux' => 'Linux', 'Windows' => 'Windows', 'FreeBSD' => 'FreeBSD'])}}<br>
                         {{Form::label('IP Address')}}<br>
                         {{Form::text('ip')}}<br>
+                        {{Form::label('Machine Type')}}<br>
+                        {{Form::select('type', ['Boot2Root' => 'Boot2Root', 'Lab' => 'Lab'])}}<br>
+                        {{Form::label('Levels')}}<br>
+                        {{Form::number('levels')}}<br>
                         {{Form::label('Icon')}}<br>
                         {{Form::text('icon')}} <br>
                         {{Form::label('Description')}}<br>

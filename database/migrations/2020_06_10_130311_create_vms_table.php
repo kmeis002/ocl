@@ -23,6 +23,7 @@ class CreateVmsTable extends Migration
             $table->string('os');
             $table->string('icon');
             $table->text('description')->nullable();
+            $table->boolean('status');
             $table->timestamps();
         });
     }

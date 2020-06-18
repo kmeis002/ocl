@@ -4,6 +4,7 @@ import subprocess
 import logging
 import os
 import re
+import time
 '''
 |--------------------------------------------------------------------------
 | flag_mqtt.py
@@ -22,6 +23,14 @@ import re
 |   | sets up systemctl modules and enables )
 | 
 '''
+root_path = '/home/argot/root/root.txt'
+#user_path = '/home/sftpuser/writeable/user.txt'
+#auto_find userflag in home folder. You can add the direct path if you want to speed things up
+user_path = str(subprocess.run(['find','/home/', '-name', 'user.txt'], capture_output=True).stdout).strip('b\'\\n')
+level_path = '/home/levels_test/{}/flag.txt'
+machine = os.uname()[1]
+machine = 'LabTest'
+
 def setup_listener(user, passwd, host):
 	client = mqttc.Client("flag_listener")
 	client.username_pw_set(user,passwd)
@@ -31,18 +40,17 @@ def setup_listener(user, passwd, host):
 	client.on_disconnect=on_disconnect
 	client.on_message=on_message
 
-	client.subscribe(os.uname()[1]+'/#') #Subscribe to local machine topics for root, user, level flags
+	#client.subscribe(os.uname()[1]+'/#') #Subscribe to local machine topics for root, user, level flags
+	client.subscribe(machine+'/#');
 	return client
 
 def on_message(client, userdata, msg):
 	#Change these to fit your machine.
-	root_path = '/root/root.txt'
-	user_path = '/home/{}/user.txt'
-	level_path = '/home/levels_test/{}/flag.txt'
+
 
 	#sanitize input
 	payload = sanitize(str(msg.payload).strip('b\''))
-	machine = os.uname()[1]
+	
 	print("message received on " + msg.topic + " says " + payload)
 
 	#write root flag
@@ -56,8 +64,6 @@ def on_message(client, userdata, msg):
 	#write user flag
 	if('user' in msg.topic):
 		logging.info('Writing user flag.')
-		#auto_find userflag in home folder. You can add the direct path if you want to speed things up
-		user_path = str(subprocess.run(['find','/home/', '-name', 'user.txt'], capture_output=True).stdout).strip('b\'\\n')
 		try:
 			write_flag(user_path, payload)
 		except Exception as log_msg:
@@ -118,12 +124,14 @@ def write_flag(path, flag):
 			f.write(flag + '\n')
 			f.truncate()
 
+
 def main(log_level):
 	if(len(sys.argv) < 2):
 		print('Please enter an mqtt host to connect to. [python3 flag_mqtt.py <host ip>')
 	else:
 		logging.basicConfig(filename="/var/log/flagrotate.log", format='%(asctime)s %(levelname)-8s %(message)s', level=log_level, datefmt='%Y-%m-%d %H:%M:%S')
 		logging.info('MQTT Listener Started')
+		print(user_path)
 		client = setup_listener('ocl','testing',sys.argv[1])
 		client.loop_forever()
 

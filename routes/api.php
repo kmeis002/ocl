@@ -28,3 +28,6 @@ Route::post('/poll_vm', 'VMVisorController@poll');
 
 Route::post('/mqtt/publish', 'VMVisorController@MqttTest');
 
+Route::post('/flag/rotate', 'FlagController@rotateFlag');
+
+Route::get('/mqttsub', 'FlagController@mqttSubTest');

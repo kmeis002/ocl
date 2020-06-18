@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
+        "bluerhinos/phpmqtt": "^1.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
@@ -17,7 +18,6 @@
         "laravel/ui": "^2.0",
         "laravelcollective/html": "^6.1",
         "league/flysystem-sftp": "^1.0",
-        "salmanzafar/laravel-mqtt": "^1.0",
         "symfony/process": "^5.1"
     },
     "require-dev": {

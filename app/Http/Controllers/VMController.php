@@ -42,19 +42,11 @@ class VMController extends Controller
 
         $data = $this->validator($request);
 
-        Storage::move($data['file'], 'testabcd');
-        //Storage::put('files', fopen($data['file'], 'r+'));
-        return var_dump(fopen($data['file'], 'r+'));
-
-        VM::create([
-            'name' => $data['name'],
-            'points' => $data['points'],
-            'os' => $data['os'],
-            'ip' =>  $data['ip'],
-            'file' =>'Placeholder',
-            'icon' => $data['icon'],
-            'description' => $data['description'],            
-        ]);
+        if($request->input('type') == 'Boot2Root'){
+            VM::createB2R($data);
+        }else if($request->input('type') == 'Lab'){
+            VM::createLab($data);
+        }
  
         
         
@@ -86,8 +78,9 @@ class VMController extends Controller
             'ip' => ['required','unique:vms,ip','ip'],
             'points' => ['required','numeric','max:100','min:0'],
             'os' => ['required'],
+            'levels' => ['required', 'numeric'],
+            'type' => ['required'],
             'icon' => ['required'],
-            'file' => ['present'],
             'description' => ['required','string'],
         ]);
     }

@@ -19,8 +19,8 @@ use Mqtt;
 | is using VirtualBox (vboxmanage)
 |
 | To-Do:
+| - MQTT Server for VM Control
 | - Implement other hypervisors
-| - LoadVM is REAL janky, fix with a more secure/resilient solution
 */
 
 

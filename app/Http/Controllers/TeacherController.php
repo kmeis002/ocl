@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Mqtt;
+
 class TeacherController extends Controller
 {
 
@@ -19,5 +21,6 @@ class TeacherController extends Controller
     	return view('teacher.home');
 
     }
+3
 
 }

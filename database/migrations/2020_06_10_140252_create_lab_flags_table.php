@@ -15,8 +15,8 @@ class CreateLabFlagsTable extends Migration
     {
         Schema::create('lab_flags', function (Blueprint $table) {
             $table->increments('id')->unique();
-            $table->string('lab_vm');
-            $table->foreign('lab_vm')->references('name')->on('vms');
+            $table->string('lab_name');
+            $table->foreign('lab_name')->references('name')->on('vms');
             $table->integer('level');
             $table->string('flag');
             $table->timestamps();
