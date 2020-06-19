@@ -102,8 +102,8 @@ class VMController extends Controller
 
     public function destroy($name){
         $vm = VM::find($name);
-        Storage::disk('sftp')->delete('vm/'.$vm->name);
-        $vm->delete();
+        //$vm->delete();
+        $vm->destroy();
         return redirect(route('teacher.vm'));
     }
 

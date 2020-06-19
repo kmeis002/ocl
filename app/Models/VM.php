@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 use App\Models\B2RFlags;
 use App\Models\LabFlags;
+use App\Models\Mqtt;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,7 @@ use App\Models\LabFlags;
 | are called to populate tables.
 | 
 | To Do:
-| - Fix static and organize B2R\Lab models to more accurately reflect models. 
+| - getAllFlag()
 |
 */
 
@@ -82,39 +83,83 @@ class VM extends Model
 	    }
 	}
 
+
+	public static function deleteFlags(){
+		if($this->isB2R()){
+			$flags = B2RFlags::find($this->name);
+			$flags->delete();
+			Storage::delete('vm/'.$this->name.'.ova');
+			$this->delete();
+		}
+
+		if($this->isLab()){
+			$flags = LabFlags::where([
+				'lab_name' => $this->name]) -> get();
+
+			foreach (flags as $flag){
+				$flag->delete();
+			}
+			Storage::delete('vm/'.$this->name.'.ova');
+			$this->delete();
+		}
+	}
+
+
+	//$flag is either root_flag, boot_flag, or level 1-n
+	public function changeFlag($flag_id){
+		$mqtt = new Mqtt();
+		if($this->isB2R()){
+			$flags = B2RFlags::find($this->name);
+    		$newflag = md5(Str::random(config('flag.random')));
+    		$flags->$flag_id = $newflag;
+    		$flags->save();
+    		return $mqtt->publish($this->name.'/'.$flag_id, $newflag);
+		}
+
+		if($this->isLab()){
+			if($flag_id <= $this->countLevels()){
+				$lvl = LabFlags::where([
+					'lab_name' => $this->name,
+					'level'    => $flag_id])->get()[0];
+				$newflag = md5(Str::random(config('flag.random')));
+				$lvl->flag = $newflag;
+				$lvl->save();
+				return $mqtt->publish($this->name.'/level'.$flag_id, $newflag);
+			}
+
+			return 'Lab Level does not exist';
+		}
+	}
+
+	//Returns a specific flag_id, must be root_flag, user_flag, user lvl 
+	public function getFlag($flag_id){
+		if($this->isB2R()){
+			return B2RFlags::find($this->name)->$flag_id;
+		}
+
+		if($this->isLab()){
+			return LabFlags::where([
+				'lab_name' => $this->name,
+				'level' => $flag_id])->get()[0]->flag;
+		}
+
+	}
+
+	public function checkFlag($flag_id, $submitted){
+		return ($this->getFlag($flag_id) == $submitted);
+	}
+
+	public function countLevels(){
+		return LabFlags::where('lab_name', $this->name)->count();
+	}
+
+
 	public function isB2R(){
 		return B2RFlags::where('b2r_name', $this->name)->exists();
 	}
 
 	public function isLab(){
 		return LabFlags::where('lab_name', $this->name)->exists();
-	}
-
-	//$flag is either root_flag, boot_flag, or level 1-n
-	public function changeFlag($flag){
-		if($this->isB2R()){
-			$flags = B2RFlags::find($this->name);
-    		$newflag = md5(Str::random(config('flag.random')));
-    		$flags->$flag = $newflag;
-    		$flags->save(); 
-    		return $newflag;
-		}
-
-		if($this->isLab()){
-			if($flag <= $this->countLevels()){
-				$lvl = LabFlags::where([
-					'lab_name' => $this->name,
-					'level'    => $flag])->get()[0];
-				$newflag = md5(Str::random(config('flag.random')));
-				$lvl->flag = $newflag;
-				$lvl->save();
-				return $newflag;
-			}
-		}
-	}
-
-	public function countLevels(){
-		return LabFlags::where('lab_name', $this->name)->count();
 	}
 }
 

@@ -25,7 +25,8 @@ use App\Models\Mqtt;
 | must have the listener service installed for flag rotation. 
 |
 | To-Do:
-| - Add some callback to confirm flag rotation (MQTT Subscribe doesn't seem like a great option)
+| - getter Methods??
+| - Create timed rotation if set.
 |
 |
 */
@@ -41,9 +42,6 @@ class FlagController extends Controller
     		{
     			return response()->json(['message'=>'Flag rotation requires fields \'name\', and \'flag\''], 400);
      		}
-     		//make mqtt object
-     		$mqtt = new Mqtt();
-
     		$name = $request->input('name');
     		$flag = $request->input('flag');
     		$vm = VM::find($name);
@@ -54,21 +52,12 @@ class FlagController extends Controller
 
 			//Rotate B2R
     		if($vm->isB2R()){
-    			$newflag = $vm->changeFlag($flag);	
-
-    			//Send MQTT message to machine			
-    			if($mqtt->publish($name.'/'.$flag, $newflag)){
-    				return response()->json(['message'=>'flag changed'], 200);
-    			}
+    			return response()->json(['flag changed' => $vm->changeFlag($flag)],200);
     		}
 
     		//Rotate Lab Flag
     		if($vm->isLab()){
-    			$newflag = $vm->changeFlag($flag);
-
-    			if($mqtt->publish($name.'/level'.$flag, $newflag)){
-    				return response()->json(['message'=>'flag changed'], 200);
-    			}
+    			return response()->json(['flag changed' => $vm->changeFlag($flag) ],200);
     		}
 
     		return response()->json(['message'=>'Some Error', 'name' => $name, 'type' => $type], 500);
@@ -76,8 +65,26 @@ class FlagController extends Controller
     	return response()->json(['message'=>'Flag rotation is not enabled!'], 500);
     }
 
-    public function checkFlag(Request $request){
+    //Checks flag and rotates if config is set to do so (otherwise, rotate manually or timed task)
+    public function submitFlag(Request $request){
+    	    if(empty($request->input('name')) || empty($request->input('flag')) || empty($request->input('submission')))
+    		{
+    			return response()->json(['message'=>'Flag rotation requires fields \'name\', \'flag\', and \'submission\''], 400);
+     		}
+     		$name = $request->input('name');
+    		$flag = $request->input('flag');
+    		$sub = $request->input('submission');
+    		$vm = VM::find($name);
 
+    		if($vm->checkFlag($flag, $sub)){
+    			//Add student code here to update their profile
+    			if(config('flag.on_submit')){
+    				$this->rotateFlag($request);
+    			}
+    			return response()->json(['flag valid', true], 200);
+    		}
+
+    		return response()->json(['flag valid', false], 200);
     }
 
     #Returns true of machine exists and is on

@@ -29,7 +29,7 @@ root_path = '/home/argot/root/root.txt'
 user_path = str(subprocess.run(['find','/home/', '-name', 'user.txt'], capture_output=True).stdout).strip('b\'\\n')
 level_path = '/home/levels_test/{}/flag.txt'
 machine = os.uname()[1]
-machine = 'LabTest'
+machine = 'B2RTest'
 
 def setup_listener(user, passwd, host):
 	client = mqttc.Client("flag_listener")
