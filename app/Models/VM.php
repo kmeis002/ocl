@@ -12,6 +12,8 @@ use App\Models\B2RFlags;
 use App\Models\LabFlags;
 use App\Models\Mqtt;
 
+use Vbox;
+
 /*
 |--------------------------------------------------------------------------
 | VM Model
@@ -22,7 +24,7 @@ use App\Models\Mqtt;
 | are called to populate tables.
 | 
 | To Do:
-| - getAllFlag()
+|	- Verification will be handled with AJAX. User can reissue commands if they do not work.
 |
 */
 
@@ -86,7 +88,7 @@ class VM extends Model
 	}
 
 
-	public static function destroyVM(){
+	public function destroyVM(){
 		if($this->isB2R()){
 			$flags = B2RFlags::find($this->name);
 			$flags->delete();
@@ -101,7 +103,7 @@ class VM extends Model
 			foreach (flags as $flag){
 				$flag->delete();
 			}
-			Storage::delete('vm/'.$this->name.'.ova');
+			//Storage::delete('vm/'.$this->name.'.ova');
 			$this->delete();
 		}
 	}
@@ -149,6 +151,15 @@ class VM extends Model
 		}
 	}
 
+	public function changeStatus(){
+		if(Vbox::isRunning($this->ip)){
+			$this->status=true;
+			$this->save();
+		}else{
+			$this->status=false;
+			$this->save();
+		}
+	}
 	//Returns a specific flag_id, must be root_flag, user_flag, user lvl 
 	public function getFlag($flag_id){
 		if($this->isB2R()){
@@ -185,18 +196,6 @@ class VM extends Model
 		return LabFlags::where('lab_name', $this->name)->count();
 	}
 
-	public function turnOn(){
-		$mqtt = new Mqtt();
-		$mqtt
-	}
-
-	public function reset(){
-
-	}
-
-	public function turnOff(){
-
-	}
 
 	public function isB2R(){
 		return B2RFlags::where('b2r_name', $this->name)->exists();
@@ -209,7 +208,99 @@ class VM extends Model
 
 	//Loads the vm .ova (must be uploaded up)
 	public function loadVM(){
+    	if(!Storage::exists('/vm/'.$this->name.'.ova')){
+    		throw new GenericVMException($this->name.'.ova was not found.');
+    	}
 
+    	//Verify its not already registered
+    	if(Vbox::isRegistered($this->name)){
+    		throw new GenericVMException($this->name.' is already registered.');
+    	}
+    	
+    	$mqtt = new Mqtt();
+    	$mqtt->publish('vm/import', $this->name);
+
+	}
+
+	public function unregisterVM(){
+		//Verify machine is registered
+    	if(!Vbox::isRegistered($this->name)){
+    		throw new GenericVMException($this->name.' is not registered.');
+    	}
+
+    	//Verify its not already registered
+    	if(Vbox::isRegistered($this->name)){
+    		throw new GenericVMException($this->name.' is already registered.');
+    	}
+
+    	$mqtt = new Mqtt();
+    	$mqtt->publish('vm/unregister', $this->name);
+
+	}
+
+	public function turnOn(){
+		if(Vbox::isRunning($this->ip)){
+			throw new GenericVMException($this->name.' is already active.');
+		}
+
+    	if(!Vbox::isRegistered($this->name)){
+    		throw new GenericVMException($this->name.' is not yet registered.');
+    	}
+
+		$mqtt = new Mqtt();
+		$mqtt->publish('vm/start', $this->name);
+
+		//Change this to a better method for status verification.
+		sleep(40);
+
+		$this->changeStatus();
+	}
+
+	public function reset(){
+		if(!Vbox::isRunning($this->ip)){
+			throw new GenericVMException($this->name.' is powered off.');
+		}
+
+    	if(!Vbox::isRegistered($this->name)){
+    		throw new GenericVMException($this->name.' is not yet registered.');
+    	}
+
+		$mqtt = new Mqtt();
+		$mqtt->publish('vm/reset', $this->name);
+
+		//Change this to a better method for status verification.
+		sleep(40);
+
+		$this->changeStatus();
+
+	}
+
+	public function turnOff(){
+		if(!Vbox::isRunning($this->ip)){
+			throw new GenericVMException($this->name.' is already powered off.');
+		}
+
+    	if(!Vbox::isRegistered($this->name)){
+    		throw new GenericVMException($this->name.' is not yet registered.');
+    	}
+
+		$mqtt = new Mqtt();
+		$mqtt->publish('vm/stop', $this->name);
+
+		sleep(3);
+
+		$this->changeStatus();
+	}
+
+	//only NAT, Bridged supported (to support intnet soon)
+	public function modifyNetworkType($type){
+    	if(!Vbox::isRegistered($this->name)){
+    		throw new GenericVMException($this->name.' is not yet registered.');
+    	}
+
+		if(Vbox::isRunning($this->ip)){
+			throw new GenericVMException($this->name.' must be powered off to change networking type.');
+		}
 	}
 
 }

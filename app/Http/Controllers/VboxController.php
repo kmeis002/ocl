@@ -30,7 +30,9 @@ class VboxController extends Controller
     }
 
     public function test(Request $request){
-    	return Vbox::getHostInterfaces();
+    	$vm = VM::find('ubuntu-server');
+
+    	$vm->reset();
     }
 
   	public function poll(Request $request){

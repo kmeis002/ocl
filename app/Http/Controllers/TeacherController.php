@@ -21,6 +21,5 @@ class TeacherController extends Controller
     	return view('teacher.home');
 
     }
-3
 
 }
