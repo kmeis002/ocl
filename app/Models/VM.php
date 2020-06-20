@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
+use App\Exceptions\GenericVMException;
+
 use App\Models\B2RFlags;
 use App\Models\LabFlags;
 use App\Models\Mqtt;
@@ -84,7 +86,7 @@ class VM extends Model
 	}
 
 
-	public static function deleteFlags(){
+	public static function destroyVM(){
 		if($this->isB2R()){
 			$flags = B2RFlags::find($this->name);
 			$flags->delete();
@@ -107,27 +109,43 @@ class VM extends Model
 
 	//$flag is either root_flag, boot_flag, or level 1-n
 	public function changeFlag($flag_id){
-		$mqtt = new Mqtt();
+		if($this->status){
+			$mqtt = new Mqtt();
+			if($this->isB2R()){
+				$flags = B2RFlags::find($this->name);
+	    		$newflag = md5(Str::random(config('flag.random')));
+	    		$flags->$flag_id = $newflag;
+	    		$flags->save();
+	    		return $mqtt->publish($this->name.'/'.$flag_id, $newflag);
+			}
+
+			if($this->isLab()){
+				if($flag_id <= $this->countLevels()){
+					$lvl = LabFlags::where([
+						'lab_name' => $this->name,
+						'level'    => $flag_id])->get()[0];
+					$newflag = md5(Str::random(config('flag.random')));
+					$lvl->flag = $newflag;
+					$lvl->save();
+					return $mqtt->publish($this->name.'/level'.$flag_id, $newflag);
+				}
+
+				throw new GenericVMException('Lab Level exceeds maximum level of '. $this->name);
+			}
+		}
+		throw new GenericVMException('VM '. $this->name .' must be powered on');
+	}
+
+	public function changeAllFlags(){
 		if($this->isB2R()){
-			$flags = B2RFlags::find($this->name);
-    		$newflag = md5(Str::random(config('flag.random')));
-    		$flags->$flag_id = $newflag;
-    		$flags->save();
-    		return $mqtt->publish($this->name.'/'.$flag_id, $newflag);
+			$this->changeFlag('user_flag');
+			$this->changeFlag('root_flag');
 		}
 
 		if($this->isLab()){
-			if($flag_id <= $this->countLevels()){
-				$lvl = LabFlags::where([
-					'lab_name' => $this->name,
-					'level'    => $flag_id])->get()[0];
-				$newflag = md5(Str::random(config('flag.random')));
-				$lvl->flag = $newflag;
-				$lvl->save();
-				return $mqtt->publish($this->name.'/level'.$flag_id, $newflag);
+			for($i=1; $i<=$this->countLevels(); $i++){
+				$this->changeFlag($i);
 			}
-
-			return 'Lab Level does not exist';
 		}
 	}
 
@@ -143,6 +161,17 @@ class VM extends Model
 				'level' => $flag_id])->get()[0]->flag;
 		}
 
+		throw new GenericVMException('Flag '.$flag_id.' not found.');
+	}
+
+	//Returns all flags associated with $vm object
+	public function getAllFlags(){
+		if($this->isB2R()){
+			return B2RFlags::find($this->name);
+		}
+		if($this->isLab()){
+			return LabFlags::where('lab_name', $this->name)->get();
+		}
 	}
 
 	public function checkFlag($flag_id, $submitted){
@@ -150,9 +179,24 @@ class VM extends Model
 	}
 
 	public function countLevels(){
+		if(!$this->isLab()){
+			throw new GenericVMException($this->name.' is not a Lab.');
+		}
 		return LabFlags::where('lab_name', $this->name)->count();
 	}
 
+	public function turnOn(){
+		$mqtt = new Mqtt();
+		$mqtt
+	}
+
+	public function reset(){
+
+	}
+
+	public function turnOff(){
+
+	}
 
 	public function isB2R(){
 		return B2RFlags::where('b2r_name', $this->name)->exists();
@@ -161,5 +205,12 @@ class VM extends Model
 	public function isLab(){
 		return LabFlags::where('lab_name', $this->name)->exists();
 	}
+
+
+	//Loads the vm .ova (must be uploaded up)
+	public function loadVM(){
+
+	}
+
 }
 

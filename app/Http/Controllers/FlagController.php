@@ -46,21 +46,8 @@ class FlagController extends Controller
     		$flag = $request->input('flag');
     		$vm = VM::find($name);
 
-    		if(!$this->machineCheck($name)){
-    			return response()->json(['message'=>'You must select an activated machine'], 400);
-    		}
-
-			//Rotate B2R
-    		if($vm->isB2R()){
-    			return response()->json(['flag changed' => $vm->changeFlag($flag)],200);
-    		}
-
-    		//Rotate Lab Flag
-    		if($vm->isLab()){
-    			return response()->json(['flag changed' => $vm->changeFlag($flag) ],200);
-    		}
-
-    		return response()->json(['message'=>'Some Error', 'name' => $name, 'type' => $type], 500);
+    		$out = $vm->changeFlag($flag);
+    		return response()->json(['flag changed' => $out ],200);
     	}
     	return response()->json(['message'=>'Flag rotation is not enabled!'], 500);
     }
@@ -86,20 +73,4 @@ class FlagController extends Controller
 
     		return response()->json(['flag valid', false], 200);
     }
-
-    #Returns true of machine exists and is on
-    private function machineCheck($name){
-    	$vm = VM::find($name);
-    	return ($vm != null && !$vm['status']);
-    }
-
-    public function mqttSubTest(){
-    	$mqtt = new Mqtt();
-    	$out = $mqtt->waitForResponse('B2RTest/response');
-    	return response()->json(['out', $out], 200);
-    }
-
-
-
-
 }

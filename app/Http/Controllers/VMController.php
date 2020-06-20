@@ -103,7 +103,7 @@ class VMController extends Controller
     public function destroy($name){
         $vm = VM::find($name);
         //$vm->delete();
-        $vm->destroy();
+        $vm->destroyVM();
         return redirect(route('teacher.vm'));
     }
 

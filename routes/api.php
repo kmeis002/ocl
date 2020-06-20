@@ -22,9 +22,9 @@ Route::middleware('auth:api')->get('/chunk_upload', 'ChunkUploadController@chunk
 
 Route::middleware('auth:api')->post('/chunk_upload', 'ChunkUploadController@chunkStore');
 
-Route::post('/load_vm', 'VMVisorController@loadVM');
+Route::get('/vbox/all', 'VboxController@showAllVMs');
 
-Route::post('/poll_vm', 'VMVisorController@poll');
+Route::get('/vbox/test', 'VboxController@test');
 
 Route::post('/mqtt/publish', 'VMVisorController@MqttTest');
 
