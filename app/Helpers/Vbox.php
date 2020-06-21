@@ -54,7 +54,7 @@ class Vbox{
   	}
 
     //returns VM network interface
-    public function getInterface($name, $nic){
+    public function getNetworkInterface($name, $nic){
       $info = $this->vmInfo($name);
 
       $info = explode(PHP_EOL, $info);
@@ -80,7 +80,7 @@ class Vbox{
          array_push($out, trim(explode(':', $net_list[$i])[1], ' '));
       }
 
-      return var_dump($out);
+      return $out;
 
 
     }

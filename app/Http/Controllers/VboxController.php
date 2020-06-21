@@ -31,8 +31,8 @@ class VboxController extends Controller
 
     public function test(Request $request){
     	$vm = VM::find('ubuntu-server');
-
-    	$vm->reset();
+    	//$vm->turnOff();
+    	$vm->unregisterVM();
     }
 
   	public function poll(Request $request){

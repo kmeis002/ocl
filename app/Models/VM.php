@@ -24,7 +24,9 @@ use Vbox;
 | are called to populate tables.
 | 
 | To Do:
-|	- Verification will be handled with AJAX. User can reissue commands if they do not work.
+|	- Full Unit Testing
+| 	- Consider new ways of testing verification of vbox controls
+|   - Deletion of flags/hints/ova files.
 |
 */
 
@@ -229,12 +231,16 @@ class VM extends Model
     	}
 
     	//Verify its not already registered
-    	if(Vbox::isRegistered($this->name)){
-    		throw new GenericVMException($this->name.' is already registered.');
+    	if(Vbox::isRunning($this->ip)){
+    		throw new GenericVMException($this->name.' must be powered off.');
     	}
 
     	$mqtt = new Mqtt();
     	$mqtt->publish('vm/unregister', $this->name);
+
+    	if(Vbox::isRegistered($this->name)){
+    		throw new GenericVMException($this->name.' is still registered.');
+    	}
 
 	}
 
@@ -301,6 +307,39 @@ class VM extends Model
 		if(Vbox::isRunning($this->ip)){
 			throw new GenericVMException($this->name.' must be powered off to change networking type.');
 		}
+
+		$mqtt = new Mqtt();
+    	$mqtt->publish('vm/modifyNIC', $this->name.','.$type);
+
+    	sleep(3);
+
+    	if(!strpos(strtolower(Vbox::getNetworkInterface($this->name, 'NIC 1')), strtolower($type))){
+    		throw new GenericVMException('Network type did not change');
+    	}
+	}
+
+	//Changes bridged adapter.
+	public function modifyBridgeAdapter($adapter){
+    	if(!Vbox::isRegistered($this->name)){
+    		throw new GenericVMException($this->name.' is not yet registered.');
+    	}
+
+		if(Vbox::isRunning($this->ip)){
+			throw new GenericVMException($this->name.' must be powered off to change networking type.');
+		}
+
+		if(!in_array($adapter, Vbox::getHostInterfaces())){
+			throw new GenericVMException($adapter.' is not a valid host interface.');
+		}
+
+		$mqtt = new Mqtt();
+    	$mqtt->publish('vm/modifyBridged', $this->name.','.$adapter);
+
+    	sleep(3);
+
+    	if(!strpos(strtolower(Vbox::getNetworkInterface($this->name, 'NIC 1')), strtolower($adapter))){
+    		throw new GenericVMException('Adapter did not change.');
+    	}
 	}
 
 }
