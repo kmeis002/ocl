@@ -43,9 +43,9 @@ class VMController extends Controller
         $data = $this->validator($request);
 
         if($request->input('type') == 'Boot2Root'){
-            VM::createB2R($data);
+            $this->createB2R($data);
         }else if($request->input('type') == 'Lab'){
-            VM::createLab($data);
+            $this->createLab($data);
         }
  
         
@@ -110,6 +110,48 @@ class VMController extends Controller
 
     protected function create(){
         return view('teacher.vmcreate');
+    }
+
+    private function createB2R($data){
+        VM::create([
+            'name' => $data['name'],
+            'points' => $data['points'],
+            'os' => $data['os'],
+            'ip' =>  $data['ip'],
+            'file' =>'Placeholder',
+            'status' => False,
+            'icon' => $data['icon'],
+            'description' => $data['description'],            
+        ]);
+
+        #create b2rflags with linked vm name
+        B2RFlags::create([
+            'b2r_name' => $data['name'],
+            'user_flag' => md5(Str::random(config('flag.random'))),         
+            'root_flag' => md5(Str::random(config('flag.random'))),
+        ]);
+    }
+
+    private function createLab($data){
+        VM::create([
+            'name' => $data['name'],
+            'points' => $data['points'],
+            'os' => $data['os'],
+            'ip' =>  $data['ip'],
+            'file' =>'Placeholder',
+            'status' => False,
+            'icon' => $data['icon'],
+            'description' => $data['description'],            
+        ]);
+
+        #Seed level flags
+        for($i = 1; $i <= $data['levels']; $i++){
+            LabFlags::create([
+                'lab_name' => $data['name'],
+                'level' => $i,
+                'flag' => md5(Str::random(config('flag_random'))),
+            ]);
+        }
     }
 
 

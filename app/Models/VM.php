@@ -10,6 +10,7 @@ use App\Exceptions\GenericVMException;
 
 use App\Models\B2RFlags;
 use App\Models\LabFlags;
+use App\Models\Hints;
 use App\Models\Mqtt;
 
 use Vbox;
@@ -44,52 +45,6 @@ class VM extends Model
 	];
 
 
-
-	//Create Boot2Root machine (Creates flags in B2R_Flags as well)
-	public static function createB2R($data){
-		VM::create([
-            'name' => $data['name'],
-            'points' => $data['points'],
-            'os' => $data['os'],
-            'ip' =>  $data['ip'],
-            'file' =>'Placeholder',
-            'status' => False,
-            'icon' => $data['icon'],
-            'description' => $data['description'],            
-        ]);
-
-        #create b2rflags with linked vm name
-        B2RFlags::create([
-        	'b2r_name' => $data['name'],
-        	'user_flag' => md5(Str::random(config('flag.random'))),        	
-        	'root_flag' => md5(Str::random(config('flag.random'))),
-        ]);
-	}
-
-	//Create Lab machine (Creates flags in Lab_Flags as well)
-	public static function createLab($data){
-		VM::create([
-            'name' => $data['name'],
-            'points' => $data['points'],
-            'os' => $data['os'],
-            'ip' =>  $data['ip'],
-            'file' =>'Placeholder',
-            'status' => False,
-            'icon' => $data['icon'],
-            'description' => $data['description'],            
-        ]);
-
-		#Seed level flags
-		for($i = 1; $i <= $data['levels']; $i++){
-	        LabFlags::create([
-	        	'lab_name' => $data['name'],
-	        	'level' => $i,
-	        	'flag' => md5(Str::random(config('flag_random'))),
-	        ]);
-	    }
-	}
-
-
 	public function destroyVM(){
 		if($this->isB2R()){
 			$flags = B2RFlags::find($this->name);
@@ -107,6 +62,12 @@ class VM extends Model
 			}
 			//Storage::delete('vm/'.$this->name.'.ova');
 			$this->delete();
+		}
+
+		$hints = Hints::where(['vm_name' => $this->name]);
+		
+		foreach (hints as $hint){
+			$hint->delete();
 		}
 	}
 

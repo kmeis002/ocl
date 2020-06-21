@@ -30,4 +30,3 @@ Route::post('/mqtt/publish', 'VMVisorController@MqttTest');
 
 Route::post('/flag/rotate', 'FlagController@rotateFlag');
 
-Route::post('/flag/submit', 'FlagController@submitFlag');

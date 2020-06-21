@@ -21,7 +21,7 @@ class CreateStudentsTable extends Migration
             $table->string('first');
             $table->string('last');
             $table->string('password');
-            $table->integer('score');
+            $table->integer('total_score');
             $table->rememberToken();
             $table->timestamps();
         });

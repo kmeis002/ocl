@@ -25,8 +25,8 @@ use App\Models\Mqtt;
 | must have the listener service installed for flag rotation. 
 |
 | To-Do:
-| - getter Methods??
-| - Create timed rotation if set.
+| - Score update fn
+| - Machines solved update fn
 |
 |
 */
