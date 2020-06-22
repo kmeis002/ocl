@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVmsCompletedTable extends Migration
+class CreateB2rFlagsCompletedTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateVmsCompletedTable extends Migration
      */
     public function up()
     {
-        Schema::create('vms_completed', function (Blueprint $table) {
+        Schema::create('b2r_flags_completed', function (Blueprint $table) {
             $table->string('student');
-            $table->string('vm_name');
+            $table->string('b2r_name');
+            $table->string('flag');   //
             $table->foreign('student')->references('name')->on('students');
-            $table->foreign('vm_name')->references('name')->on('vms');
+            $table->foreign('b2r_name')->references('name')->on('vms');
         });
     }
 
@@ -28,6 +29,6 @@ class CreateVmsCompletedTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vms_completed');
+        Schema::dropIfExists('b2r_flags_completed');
     }
 }
