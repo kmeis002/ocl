@@ -15,11 +15,9 @@ class CreateCtfsTable extends Migration
     {
         Schema::create('ctfs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->integer('points')->unsigned();
-            $table->string('file');
-            $table->unique(array('name', 'file'));
-            $table->text('Description')->nullable();
+            $table->text('description')->nullable();
             $table->string('flag');
             $table->timestamps();
         });

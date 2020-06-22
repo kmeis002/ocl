@@ -14,13 +14,8 @@ use Mqtt;
 | VMVisor Controller
 |--------------------------------------------------------------------------
 |
-| API Methods for VM Models. Includes loading into system, activating,
-| controlling/modifying VM Settings, resets and more. Assumes backend server
-| is using VirtualBox (vboxmanage)
+| OLD REMOVE!
 |
-| To-Do:
-| - MQTT Server for VM Control
-| - Implement other hypervisors
 */
 
 

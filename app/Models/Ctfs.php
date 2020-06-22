@@ -3,30 +3,28 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
-| VM Model
+| Hints Model
 |--------------------------------------------------------------------------
 |
-| Class for VMs which make up the Boot2Root and Lab classes. 
-| 
+| Model for text hints.
+|
 |
 */
 
-class LabFlags extends Model
-{
 
+class Ctfs extends Model
+{
+    
 	//Setup table information
-	protected $table = 'lab_flags';
-	protected $primaryKey = 'id';
+	protected $table = 'ctfs';
+	protected $primaryKey = 'name';
 
 	//Mass fillable arrays
 	protected $fillable = [
-		'lab_name', 'level', 'flag'
+		'name', 'points', 'file', 'description', 'flag',
 	];
 
-
 }
-

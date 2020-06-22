@@ -19,10 +19,7 @@ use App\Models\VM;
 |
 | To-Do:
 |
-| - File uploads (.ova) + Verification
 | - Input sanitization (?)
-| - Start/Stop/Reset Controls
-| - ModifyVM Controls (Should be automatic by script, but, possibly want to modify on the fly from this controller)
 |
 */
 
