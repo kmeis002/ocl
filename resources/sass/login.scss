@@ -1,0 +1,37 @@
+@import 'config';
+
+*{
+	background:$bg;
+	font-family: "Press Start 2P";
+	font-size: 10px;
+}
+
+.txt{
+	margin: -2px;
+}
+
+.ascii{
+	color: $asciitxt;
+	font-size: 10px;
+	display: inline-block; 
+	letter-spacing: -0.2em;
+ 	line-height: 0.8em;
+ 	white-space: pre;
+ 	font-family: monospace;
+ 	padding: 0px;
+}
+
+.welcome{
+	@extend .txt;
+	color: $altone;
+}
+
+.date{
+	@extend .txt;
+	color: lighten($altone, 15);
+}
+
+.kernel{
+	@extend .txt;
+	color: #fff;
+}

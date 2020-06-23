@@ -1,0 +1,36 @@
+* {
+  background: #000;
+  font-family: "Press Start 2P";
+  font-size: 10px;
+}
+
+.txt,
+.kernel,
+.date,
+.welcome {
+  margin: -2px;
+}
+
+.ascii {
+  color: #27ff24;
+  font-size: 10px;
+  display: inline-block;
+  letter-spacing: -0.2em;
+  line-height: 0.8em;
+  white-space: pre;
+  font-family: monospace;
+  padding: 0px;
+}
+
+.welcome {
+  color: #db610f;
+}
+
+.date {
+  color: #f28a44;
+}
+
+.kernel {
+  color: #fff;
+}
+
