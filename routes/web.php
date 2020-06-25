@@ -106,7 +106,6 @@ Route::post('/logout', [
 
 
 
-
-Route::get('/phpinfo', function(){
-  return phpinfo();
+Route::get('/test', function(){
+  return view('student.home');
 });
