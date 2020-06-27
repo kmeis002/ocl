@@ -11,20 +11,20 @@ use Illuminate\Database\Eloquent\Model;
 |
 | Model for text hints.
 |
-|
+|s
 */
 
 
-class Hints extends Model
+class B2RHints extends Model
 {
     
 	//Setup table information
-	protected $table = 'hints';
+	protected $table = 'b2r_hints';
 	protected $primaryKey = 'id';
 
 	//Mass fillable arrays
 	protected $fillable = [
-		'vm_name', 'hint',
+		'b2r_name', 'hint', 'is_root',
 	];
 
 }

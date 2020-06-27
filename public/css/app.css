@@ -30,6 +30,7 @@
   --light: #f8f9fa;
   --dark: #343a40;
   --primary-trans: rgba(30, 207, 17, 0.25);
+  --secondary-trans: rgba(108, 118, 125, 0.25);
   --breakpoint-xs: 0;
   --breakpoint-sm: 576px;
   --breakpoint-md: 768px;
@@ -651,7 +652,11 @@ pre code {
   }
 }
 
-.row {
+.row,
+.lab-layout .student-info .student-progress,
+.lab-layout .student-info .status,
+.lab-layout .vm-info .skills,
+.lab-layout .vm-info .vm-prop {
   display: flex;
   flex-wrap: wrap;
   margin-right: -15px;
@@ -690,6 +695,7 @@ pre code {
 .col-lg-10,
 .col-lg-9,
 .col-lg-8,
+.lab-layout .vm-info,
 .col-lg-7,
 .col-lg-6,
 .col-lg-5,
@@ -723,8 +729,10 @@ pre code {
 .col-sm-5,
 .col-sm-4,
 .col-sm-3,
+.lab-layout .student-info,
 .col-sm-2,
 .col-sm-1,
+.lab-layout .vm-info .icon,
 .col,
 .col-auto,
 .col-12,
@@ -996,7 +1004,8 @@ pre code {
     max-width: 100%;
   }
 
-  .col-sm-1 {
+  .col-sm-1,
+  .lab-layout .vm-info .icon {
     flex: 0 0 8.3333333333%;
     max-width: 8.3333333333%;
   }
@@ -1006,7 +1015,8 @@ pre code {
     max-width: 16.6666666667%;
   }
 
-  .col-sm-3 {
+  .col-sm-3,
+  .lab-layout .student-info {
     flex: 0 0 25%;
     max-width: 25%;
   }
@@ -1457,7 +1467,8 @@ pre code {
     max-width: 58.3333333333%;
   }
 
-  .col-lg-8 {
+  .col-lg-8,
+  .lab-layout .vm-info {
     flex: 0 0 66.6666666667%;
     max-width: 66.6666666667%;
   }
@@ -2057,6 +2068,28 @@ pre code {
 .table-hover .table-primary-trans:hover > td,
 .table-hover .table-primary-trans:hover > th {
   background-color: rgba(224, 247, 221, 0.79);
+}
+
+.table-secondary-trans,
+.table-secondary-trans > th,
+.table-secondary-trans > td {
+  background-color: rgba(247, 248, 248, 0.79);
+}
+
+.table-secondary-trans th,
+.table-secondary-trans td,
+.table-secondary-trans thead th,
+.table-secondary-trans tbody + tbody {
+  border-color: rgba(235, 237, 238, 0.61);
+}
+
+.table-hover .table-secondary-trans:hover {
+  background-color: rgba(233, 236, 236, 0.79);
+}
+
+.table-hover .table-secondary-trans:hover > td,
+.table-hover .table-secondary-trans:hover > th {
+  background-color: rgba(233, 236, 236, 0.79);
 }
 
 .table-active,
@@ -3096,6 +3129,47 @@ fieldset:disabled a.btn {
   box-shadow: 0 0 0 0.2rem rgba(154, 234, 149, 0.5);
 }
 
+.btn-secondary-trans {
+  color: #fff;
+  background-color: rgba(108, 118, 125, 0.25);
+  border-color: rgba(108, 118, 125, 0.25);
+}
+
+.btn-secondary-trans:hover {
+  color: #fff;
+  background-color: rgba(90, 99, 104, 0.25);
+  border-color: rgba(84, 92, 98, 0.25);
+}
+
+.btn-secondary-trans:focus,
+.btn-secondary-trans.focus {
+  color: #fff;
+  background-color: rgba(90, 99, 104, 0.25);
+  border-color: rgba(84, 92, 98, 0.25);
+  box-shadow: 0 0 0 0.2rem rgba(189, 194, 197, 0.5);
+}
+
+.btn-secondary-trans.disabled,
+.btn-secondary-trans:disabled {
+  color: #fff;
+  background-color: rgba(108, 118, 125, 0.25);
+  border-color: rgba(108, 118, 125, 0.25);
+}
+
+.btn-secondary-trans:not(:disabled):not(.disabled):active,
+.btn-secondary-trans:not(:disabled):not(.disabled).active,
+.show > .btn-secondary-trans.dropdown-toggle {
+  color: #fff;
+  background-color: rgba(84, 92, 98, 0.25);
+  border-color: rgba(78, 86, 91, 0.25);
+}
+
+.btn-secondary-trans:not(:disabled):not(.disabled):active:focus,
+.btn-secondary-trans:not(:disabled):not(.disabled).active:focus,
+.show > .btn-secondary-trans.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(189, 194, 197, 0.5);
+}
+
 .btn-outline-primary {
   color: #1ecf11;
   border-color: #1ecf11;
@@ -3418,6 +3492,42 @@ fieldset:disabled a.btn {
 .btn-outline-primary-trans:not(:disabled):not(.disabled).active:focus,
 .show > .btn-outline-primary-trans.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(30, 207, 17, 0.5);
+}
+
+.btn-outline-secondary-trans {
+  color: rgba(108, 118, 125, 0.25);
+  border-color: rgba(108, 118, 125, 0.25);
+}
+
+.btn-outline-secondary-trans:hover {
+  color: #fff;
+  background-color: rgba(108, 118, 125, 0.25);
+  border-color: rgba(108, 118, 125, 0.25);
+}
+
+.btn-outline-secondary-trans:focus,
+.btn-outline-secondary-trans.focus {
+  box-shadow: 0 0 0 0.2rem rgba(108, 118, 125, 0.5);
+}
+
+.btn-outline-secondary-trans.disabled,
+.btn-outline-secondary-trans:disabled {
+  color: rgba(108, 118, 125, 0.25);
+  background-color: transparent;
+}
+
+.btn-outline-secondary-trans:not(:disabled):not(.disabled):active,
+.btn-outline-secondary-trans:not(:disabled):not(.disabled).active,
+.show > .btn-outline-secondary-trans.dropdown-toggle {
+  color: #fff;
+  background-color: rgba(108, 118, 125, 0.25);
+  border-color: rgba(108, 118, 125, 0.25);
+}
+
+.btn-outline-secondary-trans:not(:disabled):not(.disabled):active:focus,
+.btn-outline-secondary-trans:not(:disabled):not(.disabled).active:focus,
+.show > .btn-outline-secondary-trans.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(108, 118, 125, 0.5);
 }
 
 .btn-link {
@@ -5622,6 +5732,23 @@ a.badge-primary-trans.focus {
   box-shadow: 0 0 0 0.2rem rgba(30, 207, 17, 0.5);
 }
 
+.badge-secondary-trans {
+  color: #fff;
+  background-color: rgba(108, 118, 125, 0.25);
+}
+
+a.badge-secondary-trans:hover,
+a.badge-secondary-trans:focus {
+  color: #fff;
+  background-color: rgba(84, 92, 98, 0.25);
+}
+
+a.badge-secondary-trans:focus,
+a.badge-secondary-trans.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(108, 118, 125, 0.5);
+}
+
 .jumbotron {
   padding: 2rem 1rem;
   margin-bottom: 2rem;
@@ -5792,6 +5919,20 @@ a.badge-primary-trans.focus {
 }
 
 .alert-primary-trans .alert-link {
+  color: rgba(0, 0, 0, 0.61);
+}
+
+.alert-secondary-trans {
+  color: rgba(14, 16, 17, 0.61);
+  background-color: rgba(250, 250, 251, 0.85);
+  border-color: rgba(247, 248, 248, 0.79);
+}
+
+.alert-secondary-trans hr {
+  border-top-color: rgba(233, 236, 236, 0.79);
+}
+
+.alert-secondary-trans .alert-link {
   color: rgba(0, 0, 0, 0.61);
 }
 
@@ -6248,6 +6389,23 @@ a.badge-primary-trans.focus {
   color: #fff;
   background-color: rgba(4, 28, 2, 0.61);
   border-color: rgba(4, 28, 2, 0.61);
+}
+
+.list-group-item-secondary-trans {
+  color: rgba(14, 16, 17, 0.61);
+  background-color: rgba(247, 248, 248, 0.79);
+}
+
+.list-group-item-secondary-trans.list-group-item-action:hover,
+.list-group-item-secondary-trans.list-group-item-action:focus {
+  color: rgba(14, 16, 17, 0.61);
+  background-color: rgba(233, 236, 236, 0.79);
+}
+
+.list-group-item-secondary-trans.list-group-item-action.active {
+  color: #fff;
+  background-color: rgba(14, 16, 17, 0.61);
+  border-color: rgba(14, 16, 17, 0.61);
 }
 
 .close {
@@ -7227,6 +7385,17 @@ button.bg-primary-trans:focus {
   background-color: rgba(23, 160, 13, 0.25) !important;
 }
 
+.bg-secondary-trans {
+  background-color: rgba(108, 118, 125, 0.25) !important;
+}
+
+a.bg-secondary-trans:hover,
+a.bg-secondary-trans:focus,
+button.bg-secondary-trans:hover,
+button.bg-secondary-trans:focus {
+  background-color: rgba(84, 92, 98, 0.25) !important;
+}
+
 .bg-white {
   background-color: #fff !important;
 }
@@ -7309,6 +7478,10 @@ button.bg-primary-trans:focus {
 
 .border-primary-trans {
   border-color: rgba(30, 207, 17, 0.25) !important;
+}
+
+.border-secondary-trans {
+  border-color: rgba(108, 118, 125, 0.25) !important;
 }
 
 .border-white {
@@ -8596,22 +8769,30 @@ button.bg-primary-trans:focus {
 }
 
 .mt-1,
-.my-1 {
+.my-1,
+.lab-layout .vm-info .vm-prop {
   margin-top: 0.25rem !important;
 }
 
 .mr-1,
-.mx-1 {
+.mx-1,
+.lab-layout .student-info .student-progress,
+.lab-layout .student-info .status,
+.lab-layout .vm-info .skills {
   margin-right: 0.25rem !important;
 }
 
 .mb-1,
-.my-1 {
+.my-1,
+.lab-layout .vm-info .vm-prop {
   margin-bottom: 0.25rem !important;
 }
 
 .ml-1,
-.mx-1 {
+.mx-1,
+.lab-layout .student-info .student-progress,
+.lab-layout .student-info .status,
+.lab-layout .vm-info .skills {
   margin-left: 0.25rem !important;
 }
 
@@ -8620,7 +8801,9 @@ button.bg-primary-trans:focus {
 }
 
 .mt-2,
-.my-2 {
+.my-2,
+.lab-layout .student-info,
+.lab-layout .vm-info {
   margin-top: 0.5rem !important;
 }
 
@@ -8630,7 +8813,9 @@ button.bg-primary-trans:focus {
 }
 
 .mb-2,
-.my-2 {
+.my-2,
+.lab-layout .student-info,
+.lab-layout .vm-info {
   margin-bottom: 0.5rem !important;
 }
 
@@ -8649,7 +8834,8 @@ button.bg-primary-trans:focus {
 }
 
 .mr-3,
-.mx-3 {
+.mx-3,
+.lab-layout .vm-info .icon {
   margin-right: 1rem !important;
 }
 
@@ -8659,7 +8845,8 @@ button.bg-primary-trans:focus {
 }
 
 .ml-3,
-.mx-3 {
+.mx-3,
+.lab-layout .vm-info .icon {
   margin-left: 1rem !important;
 }
 
@@ -8692,7 +8879,8 @@ button.bg-primary-trans:focus {
 }
 
 .mt-5,
-.my-5 {
+.my-5,
+.lab-layout {
   margin-top: 3rem !important;
 }
 
@@ -8702,7 +8890,8 @@ button.bg-primary-trans:focus {
 }
 
 .mb-5,
-.my-5 {
+.my-5,
+.lab-layout {
   margin-bottom: 3rem !important;
 }
 
@@ -10956,6 +11145,15 @@ a.text-dark:focus {
 a.text-primary-trans:hover,
 a.text-primary-trans:focus {
   color: rgba(20, 136, 11, 0.25) !important;
+}
+
+.text-secondary-trans {
+  color: rgba(108, 118, 125, 0.25) !important;
+}
+
+a.text-secondary-trans:hover,
+a.text-secondary-trans:focus {
+  color: rgba(73, 79, 84, 0.25) !important;
 }
 
 .text-body {
@@ -17172,11 +17370,15 @@ readers do not read off random characters that represent icons */
 }
 
 .navbar {
-  border-bottom: 1px solid #1ecf11 !important;
+  border-bottom: 1px solid #fff !important;
 }
 
 .navbar .dropdown-menu {
   left: -320% !important;
+}
+
+.navbar .dropdown-item:hover {
+  background: rgba(30, 207, 17, 0.1) !important;
 }
 
 .ascii {
@@ -17189,14 +17391,72 @@ readers do not read off random characters that represent icons */
 
 .selector-grid .card {
   background: rgba(30, 207, 17, 0.1) !important;
+  border: 1px solid #fff !important;
 }
 
 .selector-grid .card:hover {
   background: rgba(30, 207, 17, 0.4) !important;
+  border: 1px solid #1ecf11 !important;
+}
+
+.vanta-canvas {
+  height: 120% !important;
+}
+
+.lab-layout {
   border: 1px solid #fff !important;
 }
 
-.main {
-  height: 100% !important;
+.lab-layout .vm-info {
+  min-width: 50% !important;
+  max-width: 50% !important;
+}
+
+.lab-layout .vm-info .icon {
+  width: 200px !important;
+  max-width: 200px !important;
+}
+
+.lab-layout .vm-info .vm-prop {
+  width: 100%;
+}
+
+.lab-layout .student-info {
+  min-width: 50% !important;
+  max-width: 50% !important;
+}
+
+.lab-layout .student-info .status {
+  height: 50% !important;
+}
+
+.lab-layout .student-info .student-progress {
+  height: 50% !important;
+}
+
+.lab-layout .lab-description {
+  border: 1px dashed #fff !important;
+  word-break: break-word;
+  width: 100% !important;
+}
+
+.modal-content {
+  border: 1px solid #fff !important;
+  border-radius: 3px !important;
+  background-color: #343a40;
+}
+
+.modal-content .form-control {
+  background: #2d3238 !important;
+  color: #fff !important;
+}
+
+.modal-header {
+  background-color: #292d32;
+  padding: 0.5rem 0.5rem !important;
+}
+
+.modal-footer {
+  border: none !important;
 }
 

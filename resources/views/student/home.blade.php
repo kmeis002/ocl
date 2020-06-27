@@ -23,7 +23,7 @@
 </div>
 
 
-<div class="container py-5 selector-grid" id='vantajs'>
+<div class="container py-5 selector-grid" id="vantajs">
     <div class="row w-100">
         <div class="col my-3">
             <div class="card bg-primary-trans overlay">
@@ -59,8 +59,8 @@
         </div>
         <div class="col my-3">
             <div class="card bg-primary-trans">
-                <i class="fas fa-pause fa-7x card-img-top text-center my-5"></i>
-                <div class="card-body"><p class="text-center">Placeholder</p></div>
+                <i class="fas fa-book fa-7x card-img-top text-center my-5"></i>
+                <div class="card-body"><p class="text-center">Guides / Lessons</p></div>
             </div>
         </div>
     </div>

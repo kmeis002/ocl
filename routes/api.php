@@ -30,3 +30,11 @@ Route::post('/mqtt/publish', 'VMVisorController@MqttTest');
 
 Route::post('/flag/rotate', 'FlagController@rotateFlag');
 
+
+
+
+
+//AJAX Student Routes
+Route::post('/hints/lab', 'LabHintController@reveal');
+
+Route::post('/vms/status', 'VboxController@status');

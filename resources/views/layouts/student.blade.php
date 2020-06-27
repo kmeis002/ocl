@@ -15,20 +15,24 @@
 	    <link rel="dns-prefetch" href="//fonts.gstatic.com">
 	    <link href="https://fonts.googleapis.com/css?family=PT Mono" rel="stylesheet">
 
+
 	    <!-- Styles -->
 	    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 	    <script src={{ asset('js/three.min.js') }}></script>
 		<script src={{ asset('js/vanta.waves.min.js') }}></script>
 
+		@yield('modal-scripts')
+
 	</head>
-	<body>
-		
+
+
+	<body id='vantajs'>
 			@yield('nav')
-		
-		<div class='main' id='vantajs'>
+		<div class='main'>
 			@yield('content')
 		</div>
 	</body>
 
-	@include('vanta.background');
+	@yield('modals')
+	@include('vanta.background')
 </html>

@@ -4,21 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHintsTable extends Migration
+class CreateB2RHintsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * Table for machine hints.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('hints', function (Blueprint $table) {
+        Schema::create('b2r_hints', function (Blueprint $table) {
             $table->increments('id')->unique();
-            $table->string('vm_name');
-            $table->foreign('vm_name')->references('name')->on('vms');
+            $table->string('b2r_name');
+            $table->foreign('b2r_name')->references('name')->on('vms');
+            $table->boolean('is_root');
             $table->text('hint');
             $table->timestamps();
         });
@@ -31,6 +30,6 @@ class CreateHintsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hints');
+        Schema::dropIfExists('b2r_hints');
     }
 }

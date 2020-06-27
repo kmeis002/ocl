@@ -1,9 +1,11 @@
 // Body
 $body-bg: #000;
 $body-color: #fff;
+$primary-trans: rgba(30, 207, 17, 0.25);
 $theme-colors:(
 	"primary": #1ecf11,
 	"primary-trans": rgba(30, 207, 17, 0.25),
+	"secondary-trans": rgba(108, 118, 125, 0.25),
 );
 
 // Typography
@@ -23,7 +25,9 @@ $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
 
-
+//modal
+$bg-modal: #343a40;
+$bg-modal-header: #343a40;
 
 //font awesome
 $fa-font-path: '../webfonts';

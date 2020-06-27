@@ -18,8 +18,10 @@ class CreateHintsUsedTable extends Migration
         Schema::create('hints_used', function (Blueprint $table) {
             $table->string('student');
             $table->integer('hint_id')->unsigned();
+            $table->string('machine_name');
+            $table->foreign('machine_name')->references('name')->on('vms');
             $table->foreign('student')->references('name')->on('students');
-            $table->foreign('hint_id')->references('id')->on('hints');
+            $table->foreign('hint_id')->references('id')->on('lab_hints');
             $table->timestamps();
         });
     }

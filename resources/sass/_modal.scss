@@ -1,0 +1,19 @@
+.modal-content{
+	border: 1px solid #fff !important;
+	border-radius: 3px !important;
+	background-color: $bg-modal;
+
+	.form-control{
+		background: darken($bg-modal, 3) !important;
+		color: $body-color !important;
+	}
+}
+
+.modal-header{
+	background-color: darken($bg-modal, 5);
+	padding: 0.5rem 0.5rem !important;
+}
+
+.modal-footer{
+	border: none !important;
+}

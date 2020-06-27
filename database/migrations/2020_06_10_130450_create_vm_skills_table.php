@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVmSkillTable extends Migration
+class CreateVmSkillsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,7 @@ class CreateVmSkillTable extends Migration
      */
     public function up()
     {
-        Schema::create('vm_skill', function (Blueprint $table) {
+        Schema::create('vm_skills', function (Blueprint $table) {
             $table->string('vm_name');
             $table->string('skill');
             $table->foreign('vm_name')->references('name')->on('vms');
@@ -31,6 +31,6 @@ class CreateVmSkillTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vm_skill');
+        Schema::dropIfExists('vm_skills');
     }
 }

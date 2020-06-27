@@ -109,3 +109,10 @@ Route::post('/logout', [
 Route::get('/test', function(){
   return view('student.home');
 });
+
+
+Route::get('/test/lab', function(){
+  return view('student.lab');
+});
+
+Route::get('/presenter/lab/{name}', 'PageTest@test');

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Hints;
+use App\Models\LabHints;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +19,7 @@ use App\Models\Hints;
 */
 
 
-class HintController extends Controller
+class LabHintController extends Controller
 {
 
 	public function create(Request $request){
@@ -39,7 +39,8 @@ class HintController extends Controller
 
     public function update(Request $request, $id){
     	$request->validate([
-    		'hint' = > 'required'])
+    		'hint' => 'required'
+        ]);
 
     	$hint = Hints::find($id);
 
@@ -50,6 +51,21 @@ class HintController extends Controller
     public function destroy($id){
     	$hint = Hints::find($id);
     	$hint->delete();
+    }
+
+    //api method for revealing hints via ajax (still need to add updating functionality for student tracking)
+    public function reveal(Request $request){
+        $request->validate([
+            'lab_name' => 'required',
+            'hint_num' => 'required|numeric'
+        ]); 
+
+        $lab = $request->input('lab_name');
+        $hint = $request->input('hint_num');
+
+        $hint = LabHints::where(['lab_name' => $lab])->get()[$hint]['hint'];
+
+        return response()->json(['hint' => $hint]);
     }
 
 }

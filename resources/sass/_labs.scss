@@ -1,0 +1,47 @@
+.lab-layout{
+	@extend .my-5;
+	border: 1px solid #fff !important;
+
+	.vm-info{
+		@extend .col-lg-8, .my-2;
+		min-width: 50% !important;
+		max-width: 50% !important;
+
+		.icon{
+			@extend .col-sm-1, .mx-3;
+			width: 200px !important;
+			max-width: 200px !important;
+		}
+
+		.vm-prop{
+			@extend .row, .my-1;
+			width: 100%;
+		}
+
+		.skills{
+			@extend .row, .mx-1;
+		}
+	}
+
+	.student-info{
+		@extend .col-sm-3, .my-2;
+		min-width: 50% !important;
+		max-width: 50% !important;
+
+		.status{
+			@extend .row, .mx-1;
+			height: 50% !important;
+		}
+
+		.student-progress{
+			@extend .row, .mx-1;
+			height: 50% !important;
+		}
+	}
+
+	.lab-description{		
+		border: 1px dashed #fff !important;
+		word-break: break-word;
+		width: 100% !important;
+	}
+}
