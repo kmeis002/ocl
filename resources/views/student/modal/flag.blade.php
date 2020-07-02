@@ -13,7 +13,8 @@
           <div class="form-group">
             <label for="recipient-name" class="col-form-label">Flag:</label>
             <input type="text" class="form-control" id="flag">
-        </div>
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary-trans" data-dismiss="modal">Close</button>

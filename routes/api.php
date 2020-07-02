@@ -36,5 +36,6 @@ Route::post('/flag/rotate', 'FlagController@rotateFlag');
 
 //AJAX Student Routes
 Route::post('/hints/lab', 'LabHintController@reveal');
+Route::post('/hints/b2r', 'B2RHintController@reveal');
 
 Route::post('/vms/status', 'VboxController@status');

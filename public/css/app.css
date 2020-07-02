@@ -17392,11 +17392,19 @@ readers do not read off random characters that represent icons */
 .selector-grid .card {
   background: rgba(30, 207, 17, 0.1) !important;
   border: 1px solid #fff !important;
+  color: #fff !important;
 }
 
 .selector-grid .card:hover {
   background: rgba(30, 207, 17, 0.4) !important;
   border: 1px solid #1ecf11 !important;
+}
+
+.search {
+  background: #2d3238 !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+  width: 75% !important;
 }
 
 .vanta-canvas {
@@ -17428,6 +17436,7 @@ readers do not read off random characters that represent icons */
 
 .lab-layout .student-info .status {
   height: 50% !important;
+  width: 100% !important;
 }
 
 .lab-layout .student-info .student-progress {
@@ -17438,6 +17447,19 @@ readers do not read off random characters that represent icons */
   border: 1px dashed #fff !important;
   word-break: break-word;
   width: 100% !important;
+}
+
+.lab-layout .user-flag {
+  width: 90% !important;
+}
+
+.lab-layout .root-flag {
+  width: 90% !important;
+}
+
+.lab-layout .hints {
+  max-width: 50% !important;
+  flex: 1 0 25% !important;
 }
 
 .modal-content {
@@ -17458,5 +17480,45 @@ readers do not read off random characters that represent icons */
 
 .modal-footer {
   border: none !important;
+}
+
+.machine-list thead {
+  border-bottom: 1px solid #fff !important;
+}
+
+.machine-list table {
+  border: 1px solid #fff;
+  background: rgba(30, 207, 17, 0.25);
+  table-layout: fixed;
+}
+
+.machine-list .icon {
+  width: 1.5em;
+}
+
+.ctf-list thead {
+  border-bottom: 1px solid #fff !important;
+}
+
+.ctf-list table {
+  border: 1px solid #fff;
+  background: rgba(30, 207, 17, 0.25);
+  table-layout: fixed;
+}
+
+.ctf-list .icon {
+  width: 1.5em;
+}
+
+.ctf-list .btn-primary {
+  width: 3rem;
+  height: 2.6rem;
+  border: 1px solid #fff;
+}
+
+.ctf-list .btn-secondary {
+  width: 3rem;
+  height: 2.6rem;
+  border: 1px solid #fff;
 }
 

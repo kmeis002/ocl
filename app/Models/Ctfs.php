@@ -21,10 +21,10 @@ class Ctfs extends Model
 	//Setup table information
 	protected $table = 'ctfs';
 	protected $primaryKey = 'name';
+	protected $keyType = 'string';
 
 	//Mass fillable arrays
 	protected $fillable = [
-		'name', 'points', 'file', 'description', 'flag',
+		'name', 'points', 'file', 'description', 'category', 'icon', 'flag',
 	];
-
 }

@@ -115,4 +115,9 @@ Route::get('/test/lab', function(){
   return view('student.lab');
 });
 
-Route::get('/presenter/lab/{name}', 'PageTest@test');
+Route::get('/presenter/lab/{name}', 'PageTest@labtest');
+Route::get('/presenter/b2r/{name}', 'PageTest@b2rtest');
+Route::get('/presenter/listmachines', 'PageTest@machineList');
+Route::get('/presenter/list/{type}', 'PageTest@list');
+Route::get('/presenter/shuffletest', 'PageTest@shuffletest');
+Route::get('/presenter/home', 'PageTest@home');

@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 use App\Exceptions\GenericVMException;
 
@@ -123,41 +125,47 @@ class VM extends Model
 			$this->save();
 		}
 	}
-	//Returns a specific flag_id, must be root_flag, user_flag, user lvl 
-	public function getFlag($flag_id){
-		if($this->isB2R()){
-			return B2RFlags::find($this->name)->$flag_id;
-		}
 
-		if($this->isLab()){
-			return LabFlags::where([
-				'lab_name' => $this->name,
-				'level' => $flag_id])->get()[0]->flag;
-		}
-
-		throw new GenericVMException('Flag '.$flag_id.' not found.');
+	public static function allLabs(){
+		return DB::table('vms')->select('*')->whereIn('name', function($query){
+			$query->select('lab_name')->from('lab_flags');
+		})->get();
 	}
 
-	//Returns all flags associated with $vm object
-	public function getAllFlags(){
+	public static function allB2R(){
+		return DB::table('vms')->select('*')->whereIn('name', function($query){
+			$query->select('b2r_name')->from('b2r_flags');
+		})->get();
+	}
+
+	public function hints(){
 		if($this->isB2R()){
-			return B2RFlags::find($this->name);
+			return $this->hasMany('App\Models\B2RHints', 'b2r_name', 'name');
 		}
 		if($this->isLab()){
-			return LabFlags::where('lab_name', $this->name)->get();
+			return $this->hasMany('App\Models\LabHints', 'lab_name', 'name');
 		}
 	}
 
+	public function flags(){
+		if($this->isB2R()){
+			return $this->hasOne('App\Models\B2RFlags', 'b2r_name', 'name');
+		}
+
+		if($this->isLab()){
+			return $this->hasMany('App\Models\LabFlags', 'lab_name', 'name');
+		}
+	}
+
+	public function skills(){
+		return $this->hasMany('App\Models\VMSkills', 'vm_name', 'name');
+	}
+
+	//Need to FIX THIS WITH ELOQUENT CHANGES!!!
 	public function checkFlag($flag_id, $submitted){
 		return ($this->getFlag($flag_id) == $submitted);
 	}
 
-	public function countLevels(){
-		if(!$this->isLab()){
-			throw new GenericVMException($this->name.' is not a Lab.');
-		}
-		return LabFlags::where('lab_name', $this->name)->count();
-	}
 
 
 	public function isB2R(){

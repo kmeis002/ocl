@@ -1,5 +1,8 @@
 		<nav class="navbar navbar-dark bg-dark justify-content-between sticky-top">
-			<button type="button" class="btn btn-primary-trans"><i class="fas fa-chevron-left"></i></button>
+			<div>
+				<a href="{{url()->previous() }}""><button type="button" class="btn btn-primary-trans"><i class="fas fa-chevron-left"></i></button></a>
+				<a href="/presenter/home"><button type="button" class="btn btn-primary-trans"><i class="fas fa-home"></i></button></a>
+			</div>
 			<div> argot@ocl:~/labs$ </div>
 			<div class="dropdown">
 				<button type="button" class="btn btn-primary-trans"

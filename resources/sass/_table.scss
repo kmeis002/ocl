@@ -1,0 +1,48 @@
+.machine-list{
+  thead{
+    border-bottom: 1px solid #fff !important;
+  }
+  tbody{
+  
+  }
+  table{
+    border:1px solid #fff;
+    background:$primary-trans;
+    table-layout: fixed;
+  }
+
+  .icon{
+    width: 1.5em;
+  }
+
+}
+
+.ctf-list{
+    thead{
+    border-bottom: 1px solid #fff !important;
+  }
+  tbody{
+  
+  }
+  table{
+    border:1px solid #fff;
+    background:$primary-trans;
+    table-layout: fixed;
+  }
+
+  .icon{
+    width: 1.5em;
+  }
+
+
+  .btn-primary{
+    width: 3rem;
+    height: 2.6rem;
+    border: 1px solid #fff;
+  }
+  .btn-secondary{
+    width: 3rem;
+    height: 2.6rem;
+    border: 1px solid #fff;
+  }
+}

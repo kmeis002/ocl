@@ -31,6 +31,7 @@
 		.status{
 			@extend .row, .mx-1;
 			height: 50% !important;
+			width: 100% !important;
 		}
 
 		.student-progress{
@@ -43,5 +44,17 @@
 		border: 1px dashed #fff !important;
 		word-break: break-word;
 		width: 100% !important;
+	}
+
+	.user-flag{
+		width: 90% !important;
+	}
+	.root-flag{
+		width: 90% !important;
+	}
+
+	.hints{
+		max-width: 50% !important;
+		flex: 1 0 25% !important;
 	}
 }

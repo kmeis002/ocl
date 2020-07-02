@@ -11,6 +11,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UserSeeder::class);
+        $this->call(SkillSeeder::class);
+
+        for($i=0; $i<=30; $i++){
+        	$this->call(LabSeeder::class);
+        	$this->call(B2RSeeder::class);
+
+        }
+
+        for($i=0; $i<=50; $i++){
+            $this->call(CTFSeeder::class);
+        }
     }
 }

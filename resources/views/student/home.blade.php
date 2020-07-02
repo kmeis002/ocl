@@ -26,22 +26,28 @@
 <div class="container py-5 selector-grid" id="vantajs">
     <div class="row w-100">
         <div class="col my-3">
-            <div class="card bg-primary-trans overlay">
-                <i class="fas fa-flask fa-7x card-img-top text-center my-5"></i>
-                <div class="card-body"><p class="text-center">Lab Machines</p></div>
-            </div>
+            <a href="/presenter/list/lab">
+                <div class="card bg-primary-trans overlay">
+                    <i class="fas fa-flask fa-7x card-img-top text-center my-5"></i>
+                    <div class="card-body"><p class="text-center">Lab Machines</p></div>
+                </div>
+            </a>
         </div>
         <div class="col my-3">
-            <div class="card bg-primary-trans">
-                <i class="fas fa-hashtag fa-7x card-img-top text-center my-5"></i>
-                <div class="card-body"><p class="text-center">Boot2Root Machines</p></div>
-            </div>
+            <a href="/presenter/list/b2r">
+                <div class="card bg-primary-trans">
+                    <i class="fas fa-hashtag fa-7x card-img-top text-center my-5"></i>
+                    <div class="card-body"><p class="text-center">Boot2Root Machines</p></div>
+                </div>
+            </a>
         </div>
         <div class="col my-3">
-            <div class="card bg-primary-trans">
-                <i class="fas fa-flag fa-7x card-img-top text-center my-5"></i>
-                <div class="card-body"><p class="text-center">Capture the Flags</p></div>
-            </div>
+            <a href="/presenter/list/ctf">
+                <div class="card bg-primary-trans">
+                    <i class="fas fa-flag fa-7x card-img-top text-center my-5"></i>
+                    <div class="card-body"><p class="text-center">Capture the Flags</p></div>
+                </div>
+            </a>
         </div>
     </div>
     <div class="row w-100">

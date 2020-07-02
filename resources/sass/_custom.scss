@@ -28,12 +28,20 @@
 .selector-grid{
 	.card {
 		background:rgba(30, 207, 17, 0.1) !important;
-		border: 1px solid #fff !important
+		border: 1px solid #fff !important;
+		color: #fff !important;
 	}
 	.card:hover {
 		background:rgba(30, 207, 17, 0.4) !important;
 		border: 1px solid #1ecf11 !important;
 	}
+}
+
+.search{
+		background: darken($bg-modal, 3) !important;
+		color: $body-color !important;
+		border: 1px solid #fff !important;
+		width: 75% !important;
 }
 
 .vanta-canvas{

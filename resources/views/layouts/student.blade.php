@@ -22,6 +22,7 @@
 		<script src={{ asset('js/vanta.waves.min.js') }}></script>
 
 		@yield('modal-scripts')
+		@yield('scripts')
 
 	</head>
 
@@ -34,5 +35,5 @@
 	</body>
 
 	@yield('modals')
-	@include('vanta.background')
+	 <!-- @include('vanta.background') -->
 </html>
