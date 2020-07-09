@@ -18,9 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->get('/chunk_upload', 'ChunkUploadController@chunkTest');
 
-Route::middleware('auth:api')->post('/chunk_upload', 'ChunkUploadController@chunkStore');
 
 Route::get('/vbox/all', 'VboxController@showAllVMs');
 
@@ -39,3 +37,37 @@ Route::post('/hints/lab', 'LabHintController@reveal');
 Route::post('/hints/b2r', 'B2RHintController@reveal');
 
 Route::post('/vms/status', 'VboxController@status');
+
+
+//AJAX Teacher Testing Route (no auth!)
+
+
+Route::get('/teacher/get/vbox/vminfo/{name}', 'VboxController@apiGetInfo');
+Route::get('/teacher/get/vbox/interfaces', 'VboxController@apiGetHostInterfaces');
+Route::get('/teacher/get/vbox/adapter/{name}', 'VboxController@apiGetBridgeAdapter');
+Route::post('/teacher/set/vbox/network/{name}', 'VboxController@apiSetNetworkInterface');
+Route::post('/teacher/set/vbox/bridged/{name}', 'VboxController@apiSetBridgedAdapter');
+Route::post('/teacher/set/vbox/reset/{name}', 'VboxController@apiReset');
+Route::post('/teacher/set/vbox/power/{name}', 'VboxController@apiPower');
+
+Route::get('/teacher/get/skills', 'SkillController@apiGet');
+Route::get('/teacher/get/b2r/{name}', 'B2RController@apiGetEditInfo');
+Route::get('/teacher/get/lab/{name}', 'LabController@apiGetEditInfo');
+Route::get('/teacher/get/b2r/hints/{name}', 'B2RController@apiGetHints');
+Route::get('/teacher/get/lab/hints/{name}', 'LabController@apiGetHints');
+Route::post('/teacher/delete/b2r/hints/{id}', 'B2RHintController@apiDestroy');
+Route::post('/teacher/delete/lab/hints/{id}', 'LabHintController@apiDestroy');
+Route::post('/teacher/delete/lab/{name}/level/{id}', 'FlagController@apiLevelDestroy');
+Route::post('/teacher/delete/vmskill/{name}', 'VMSkillController@apiDestroy');
+Route::post('/teacher/create/b2r/{name}/hints', 'B2RHintController@apiCreate');
+Route::post('/teacher/create/lab/{name}/hints', 'LabHintController@apiCreate');
+Route::post('/teacher/create/lab/{name}/level', 'FlagController@apiLevelCreate');
+Route::post('/teacher/create/vmskill/{name}', 'VMSkillController@apiCreate');
+Route::post('/teacher/update/b2r/{name}/hints', 'B2RHintController@apiUpdate');
+Route::post('/teacher/update/lab/{name}/hints', 'LabHintController@apiUpdate');
+//Route::middleware('auth:api')->post('/chunk_upload', 'ChunkUploadController@chunkStore');
+Route::post('/teacher/upload/chunkupload', 'ChunkUploadController@chunkStore');
+Route::post('/teacher/create/b2r', 'B2RController@apiCreate');
+
+
+Route::get('/test/{name}', 'ChunkUploadController@test');

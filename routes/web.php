@@ -45,56 +45,13 @@ Route::group(['prefix'=>'/student'], function() {
 
 //Teacher Routes
 Route::group(['prefix'=>'/teacher'], function(){
-  Route::get('/register', [
-      'as' => 'teacher.register',
-      'uses' => 'Auth\RegisterTeacherController@showRegistrationForm'
-  ]);
-  Route::post('/register', [
-      'as' => '',
-      'uses' => 'Auth\RegisterTeacherController@register'
-  ]);
-  Route::get('/login', [
-      'as' => 'teacher.login',
-      'uses' => 'Auth\TeacherLoginController@showLoginForm'
-  ]);
-  Route::post('/login', [
-      'as' => '',
-      'uses' => 'Auth\TeacherLoginController@login'
-  ]);
-  Route::get('/', [
-      'as' => 'teacher',
-      'uses' => 'TeacherController@show'
-  ]);
-  Route::get('/vm', [
-      'as' => 'teacher.vm',
-      'uses' => 'VMController@index'
-  ]);
-  Route::get('/vm/create', [
-      'as' => 'teacher.vm.create',
-      'uses' => 'VMController@create'
-  ]);
-  Route::post('/vm/store', [
-      'as' => 'teacher.vm.store',
-      'uses' => 'VMController@store'
-  ]);
-  Route::get('/vm/show/{name}', [
-      'as' => 'teacher.vm.show.{name}',
-      'uses' => 'VMController@show'
-  ]);
-  Route::post('/vm/update/{name}', [
-    'as' => 'teacher.vm.update',
-    'uses' => 'VMController@update'
-  ]);
-  Route::post('/vm/destroy/{name}', [
-    'as' => 'teacher.vm.destroy',
-    'uses' => 'VMController@destroy'
-  ]);
-  Route::get('/vm/upload', [
-    'as' => 'teacher.vm.upload',
-    'uses' => 'VMController@upload'
-  ]);
-
-  Route::get('/vm/{name}/edit', 'VMController@edit');
+  Route::get('/home', 'PageTest@teacherHome');
+  Route::get('/list/{type}', 'PageTest@teacherList');
+  Route::post('/edit/b2r/{name}', 'B2RController@update');
+  Route::post('/edit/b2r/hints/{name}', 'B2RHintController@test');
+  Route::post('/create/b2r', 'B2RController@create');
+  Route::post('/create/lab', 'LabController@create');
+  Route::post('/edit/lab/{name}', 'LabController@update');
 });
 
 

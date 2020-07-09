@@ -1,11 +1,13 @@
 // Body
 $body-bg: #000;
+$nav-bg: #343a40;
 $body-color: #fff;
 $primary-trans: rgba(30, 207, 17, 0.25);
 $theme-colors:(
 	"primary": #1ecf11,
 	"primary-trans": rgba(30, 207, 17, 0.25),
 	"secondary-trans": rgba(108, 118, 125, 0.25),
+	"danger-trans": rgb(180, 0, 0, 0.25),
 );
 
 // Typography

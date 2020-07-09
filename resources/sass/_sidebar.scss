@@ -1,0 +1,175 @@
+// ~~~ vars ~~~
+// burger button
+$burger-h: 22px;
+$burger-w: 26px;
+// burger button stripes
+$menu-stripe-w: 26px;
+$menu-stripe-h: 3px;
+$menu-stripe-color: #3498db;
+$menu-stripe-color-h: white;
+// header
+$header-h: 40px;
+$header-background: #2c3e50;
+// side menu
+$side-menu-w: 300px;
+
+
+@mixin transition($args...) {
+	-webkit-transition: $args;
+	-moz-transition: $args;
+	-ms-transition: $args;
+	-o-transition: $args;
+	transition: $args;
+}
+
+@mixin transform($args...) {
+	-webkit-transform: $args;
+	-moz-transform: $args;
+	-ms-transform: $args;
+	-o-transform: $args;
+	transform: $args;
+}
+
+.menu-stripe {
+	display: inline-block;
+	width: $menu-stripe-w;
+	height: $menu-stripe-h;
+	background: $menu-stripe-color;
+	position: relative;
+	@include transition(all .1s linear);
+	
+	&:before, &:after {
+		content: "";
+		display: inline-block;
+		width: $menu-stripe-w;
+		height: $menu-stripe-h;
+		background: $menu-stripe-color;
+		position: absolute;
+		left: 0;
+		@include transition(all .1s linear);
+	}
+	
+	&:before {
+		top: -8px;
+	}
+	
+	&:after {
+		top: 8px;
+	}
+}
+
+
+#menu-trigger {
+	@include transform(translateY(-50%));
+	
+	// when you click the hamburger button
+	&.menu-clicked {
+		.menu-stripe {		
+			background-color: transparent;
+			
+			&:before {
+				background-color: white;
+				top: 50%;
+				@include transform(translateY(-50%) rotate(45deg));
+			}
+			
+			&:after {
+				background-color: white;
+				top: 50%;
+				@include transform(translateY(-50%) rotate(-45deg));
+			}
+		}
+		
+		// hovering the hamburger button when its clicked
+		&:hover {
+			.menu-stripe {
+				background-color: transparent;
+				
+				&:before {
+					top: 50%;
+					@include transform(translateY(-50%) rotate(45deg));
+				}
+				
+				&:after {
+					top: 50%;
+					@include transform(translateY(-50%) rotate(-45deg)); 
+				}
+			}			
+		}
+	}
+	
+	// hover the hamburger button
+	&:hover {
+		.menu-stripe {
+			
+			&:before, &:after {
+			}
+			
+			&:before {
+				top: -10px;
+			}
+			
+			&:after {
+				top: 10px;
+			}
+		}	
+	}
+}
+
+.side-menu-container {
+	// force hardware acceleration in Chrome
+	-webkit-transform: translateZ(0);
+	-webkit-backface-visibility: hidden;
+	
+	width: $side-menu-w;
+	height: 100%;
+	background-color: $nav-bg;
+	color: white;
+	position: fixed;
+	top: $header-h;
+	left: 0;
+	z-index: 1;
+	visibility: hidden;
+	padding: 20px;
+	
+	@include transition(transform .4s 0s, visibility 0s .4s);
+	@include transform(translateX(-80px));
+	
+	&.slide-in {
+		visibility: visible;
+		@include transform(translateX(0));		
+		@include transition(transform .4s 0s, visibility 0s 0s);
+	}
+
+	.list-group-item{
+		background: transparent;
+		border: 0px;
+
+		a{
+			color: #fff;
+		}
+	}
+
+	.list-group-item:hover{
+		background: $primary-trans;
+	}
+}
+
+.page-content {
+	// force hardware acceleration in Chrome
+	-webkit-transform: translateZ(0);
+	-webkit-backface-visibility: hidden;
+	
+	height: 100%;
+	transition-property: transform;
+	transition-duration: .4s;
+	position: relative;
+	z-index: 2;
+	background: #3498db;
+	color: white;
+	padding: 20px;
+	
+	&.slide-content {
+		@include transform(translateX($side-menu-w));
+	}
+}

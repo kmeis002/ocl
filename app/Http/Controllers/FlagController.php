@@ -73,4 +73,24 @@ class FlagController extends Controller
 
     		return response()->json(['flag valid', false], 200);
     }
+
+    public function apiLevelCreate(Request $request, $name){
+        $levelCount = LabFlags::where(['lab_name'=>$name])->count();
+
+        LabFlags::create([
+            'lab_name' => $name,
+            'level' => $levelCount+1,
+            'flag' => md5(Str::random(config('flag_random'))),
+        ]);
+    }
+
+    public function apiLevelDestroy($name, $id){
+        $level = LabFlags::find($id)['level'];
+        if($level === LabFlags::where(['lab_name'=>$name])->count()){
+            $flag = LabFlags::find($id);
+            $flag->delete();
+        }else{
+            return response()->json(['message'=>'You can only delete the last known level for a lab. Please modify existing flags.']);
+        }
+    }
 }

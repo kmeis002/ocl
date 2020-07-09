@@ -4,6 +4,8 @@ namespace app\Helpers;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Process;
 
+use App\Models\Mqtt;
+
 /*
 |--------------------------------------------------------------------------
 | Vbox Helper
@@ -77,13 +79,14 @@ class Vbox{
       $out = array();
 
       for($i = 0; $i < sizeof($net_list)-2; $i=$i+2){
-         array_push($out, trim(explode(':', $net_list[$i])[1], ' '));
+         array_push($out, trim(explode(':', $net_list[$i])[1]));
       }
 
       return $out;
 
 
     }
+
 
     //vbox process runs under different user, cannot see runningvms. ping to verify host is up...but will implement a better way (maybe)
   	public function isRunning($ip){
@@ -98,8 +101,7 @@ class Vbox{
   		return Storage::exists('/vm/'.$name.'.ova');
   	}
 
-  	//sanitize input !!!
-  	public function vmInfo($name){
+  	private function vmInfo($name){
 		$process = new Process(['vboxmanage', 'showvminfo', $name]);
 
   		$process->run();
@@ -108,5 +110,37 @@ class Vbox{
   	}
 
 
+    //Mqtt call methods
+    public function importVM($name){
+      $mqtt = new Mqtt();
+      $mqtt->publish('vm/import', $name);
+    }
+
+
+    public function setNICMode($name, $mode){
+      $mqtt = new Mqtt();
+      $mqtt->publish('vm/modifyNIC', $name.','.$mode);
+    }
+
+
+    public function setBridgedAdapter($name, $adapter){
+      $mqtt = new Mqtt();
+      $mqtt->publish('vm/modifyBridged', $name.','.$adapter);
+    }
+
+    public function reset($name){
+      $mqtt = new Mqtt();
+      $mqtt->publish('vm/reset', $name);
+    }
+
+    public function powerOn($name){
+      $mqtt = new Mqtt();
+      $mqtt->publish('vm/start', $name);
+    }
+
+    public function powerOff($name){
+      $mqtt = new Mqtt();
+      $mqtt->publish('vm/stop', $name);
+    }
 
 }

@@ -11,15 +11,16 @@ class B2RSeeder extends Seeder
      */
     public function run()
     {
-           	$name = Str::random(12);
+        $name = Str::random(12);
     	$os = array('Linux','Windows','FreeBSD');
     	$icons = array("fas fa-heart-broken", "fas fa-headphones", "fas fa-gas-pump", "fas fa-truck-monster", "fas fa-blender", 'fas fa-hiking');
+        $file = array($name.'.ova', null);
 
     	//Create VM Model
         DB::table('vms')->insert([
         	'name' => $name,
         	'points' => rand(10,100),
-        	'file' => $name.'.ova',
+        	'file' => $file[array_rand($file)],
         	'ip' => rand(1,255).'.'.rand(1,255).'.'.rand(1,255).'.'.rand(1,255),
         	'os' => $os[array_rand($os)],
         	'description' => Str::random(500),

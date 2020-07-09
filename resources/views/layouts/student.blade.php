@@ -27,13 +27,16 @@
 	</head>
 
 
-	<body id='vantajs'>
+	<body class='main-bg'>
 			@yield('nav')
 		<div class='main'>
 			@yield('content')
 		</div>
+		<div class="container footer">
+			<p>p</p>
+		</div>
 	</body>
 
 	@yield('modals')
-	 <!-- @include('vanta.background') -->
+	@include('vanta.background')
 </html>

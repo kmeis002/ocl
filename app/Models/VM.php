@@ -126,36 +126,6 @@ class VM extends Model
 		}
 	}
 
-	public static function allLabs(){
-		return DB::table('vms')->select('*')->whereIn('name', function($query){
-			$query->select('lab_name')->from('lab_flags');
-		})->get();
-	}
-
-	public static function allB2R(){
-		return DB::table('vms')->select('*')->whereIn('name', function($query){
-			$query->select('b2r_name')->from('b2r_flags');
-		})->get();
-	}
-
-	public function hints(){
-		if($this->isB2R()){
-			return $this->hasMany('App\Models\B2RHints', 'b2r_name', 'name');
-		}
-		if($this->isLab()){
-			return $this->hasMany('App\Models\LabHints', 'lab_name', 'name');
-		}
-	}
-
-	public function flags(){
-		if($this->isB2R()){
-			return $this->hasOne('App\Models\B2RFlags', 'b2r_name', 'name');
-		}
-
-		if($this->isLab()){
-			return $this->hasMany('App\Models\LabFlags', 'lab_name', 'name');
-		}
-	}
 
 	public function skills(){
 		return $this->hasMany('App\Models\VMSkills', 'vm_name', 'name');

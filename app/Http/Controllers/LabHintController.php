@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
 use App\Models\LabHints;
+use App\Models\LabFlags;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,34 +25,50 @@ use App\Models\LabHints;
 class LabHintController extends Controller
 {
 
-	public function create(Request $request){
+    public function apiCreate(Request $request, $name){
+        $levels = LabFlags::where(['lab_name' => $name])->get()->count();
 
-	}
-    
-    public function store(Request $request){
-    	$request->validate([
-    		'vm_name' => 'required',
-    		'hint' => 'required']);
+        $v = Validator::make($request->all(), [
+                'hint' => 'required',
+                'level' => [ 'required', 'numeric', 'min:1', 'max:'.$levels ],
+            ]);
 
-    	Hints::create([
-    		'vm_name' => $request->input('vm_name'),
-    		'hint'	=> $request->input('hint'),
-    	]);
-    }
 
-    public function update(Request $request, $id){
-    	$request->validate([
-    		'hint' => 'required'
+        if($v->fails()){
+            return response()->json(['msg' => 'Validation failed'], 500);
+        }
+
+        LabHints::create([
+            'lab_name' => $name,
+            'hint' => $request->input('hint'),
+            'level' => $request->input('level'),
         ]);
 
-    	$hint = Hints::find($id);
-
-    	$hint->hint = $request->input('hint');
-    	$hint->save();
     }
 
-    public function destroy($id){
-    	$hint = Hints::find($id);
+    public function apiUpdate(Request $request, $id){
+        foreach ($request->all() as $hint) {
+            
+            $v = Validator::make($hint, [
+                'id' => ['required'],
+                'hint' => ['required'],
+                'level' => ['required', 'numeric'],
+            ]);
+
+            if($v->fails()){
+                return response()->json(['msg' => 'Validation failed'], 401);
+            }
+
+
+            $h = LabHints::find($hint['id']);
+            $h->hint = $hint['hint'];
+            $h->level = $hint['level'];
+            $h->save();
+        }
+    }
+
+    public function apiDestroy($id){
+    	$hint = LabHints::find($id);
     	$hint->delete();
     }
 

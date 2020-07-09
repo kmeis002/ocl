@@ -8,7 +8,6 @@ class VMSkills extends Model
 {
     //Setup table information
 	protected $table = 'vm_skills';
-	protected $primaryKey = 'id';
 
 	//Mass fillable arrays
 	protected $fillable = [

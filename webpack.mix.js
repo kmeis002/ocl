@@ -16,5 +16,6 @@ mix.webpackConfig({
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+mix.js('resources/js/app.js', 'public/js').js('resources/js/teacher.js', 'public/js/')
+.js('resources/js/teacherb2r.js', 'public/js/').js('resources/js/teacherlab.js', 'public/js/')
     .sass('resources/sass/app.scss', 'public/css');

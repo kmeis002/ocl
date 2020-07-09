@@ -17,7 +17,7 @@ class CreateVmsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('points')->unsigned();
-            $table->string('file');
+            $table->string('file')->nullable();
             $table->string('ip');
             $table->unique(array('name','ip', 'file'));
             $table->string('os');

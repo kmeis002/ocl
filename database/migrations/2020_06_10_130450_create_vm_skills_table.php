@@ -16,6 +16,7 @@ class CreateVmSkillsTable extends Migration
     public function up()
     {
         Schema::create('vm_skills', function (Blueprint $table) {
+            $table->increments('id')->unique();
             $table->string('vm_name');
             $table->string('skill');
             $table->foreign('vm_name')->references('name')->on('vms');

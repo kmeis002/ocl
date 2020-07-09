@@ -2,7 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\EloApp\quent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
+use App\Models\VM;
+use App\Models\LabFlags;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,4 +32,6 @@ class Ctfs extends Model
 	protected $fillable = [
 		'name', 'points', 'file', 'description', 'category', 'icon', 'flag',
 	];
+
+
 }

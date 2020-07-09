@@ -1,11 +1,14 @@
 .dropdown-menu {
-				 background-color: #343a40 !important; 
+				 background-color: $nav-bg !important; 
 				 }
 
 .dropdown-item {
 				color: #fff !important;
 				}
 
+hr {
+	border-top: 1px solid rgba(255, 255, 255, .5);
+}
 .navbar { 
 	border-bottom: 1px solid #fff !important;
 
@@ -25,7 +28,13 @@
 	color: rgba(30, 207, 17) !important;
 }
 
+.main-bg{
+	background-color: $body-bg;
+	background-image: url("./../../public/img/patterns/noise-pattern-with-subtle-cross-lines.png");
+	max-width:100%;
+}
 .selector-grid{
+
 	.card {
 		background:rgba(30, 207, 17, 0.1) !important;
 		border: 1px solid #fff !important;
@@ -46,4 +55,117 @@
 
 .vanta-canvas{
 	height: 120% !important;
+}
+
+.top-border{
+	background-color: $nav-bg !important;
+	max-width: 100% !important;
+}
+
+.footer{
+	background-color: $nav-bg !important;
+	max-width: 100% !important;
+	height: 50px !important;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+}
+
+
+.list-view-container{
+	
+	.custom-select{
+		background: $nav-bg;
+		color: #fff;
+	}
+	#pts{
+		width:25%;
+	}
+	#ip{
+		width: 50%;
+	}
+
+	.form-control{
+		background: $nav-bg;
+		color: #fff !important;
+	}
+
+	.machine-list{
+		max-width: 400px;
+	}
+
+	.table td{
+		padding: 0.5rem;
+	}
+
+	margin-bottom: 10%;
+	max-width:1500px;
+	.machine-list{
+		margin: 10% 5%;
+	}
+
+	.info-window{
+		width: 1000px;
+		max-width:1000px;
+
+	}
+}
+
+.icon-picker-list {
+	display: flex;
+	flex-flow: row wrap;
+	list-style: none;
+	padding-left: 0;
+}
+
+.icon-picker-list li {
+	display: flex;
+	flex: 0 0 20%;
+	float: left;
+	width: 20%;
+}
+
+.icon-picker-list a {
+	background-color: $nav-bg;
+	border: 1px solid #fff;
+	color: #fff;
+	display: block;
+	flex: 1 1 auto;
+	font-size: 12px;
+	line-height: 1.4;
+	min-height: 100px;
+	padding: 10px;
+	text-align: center;
+	user-select: none;
+}
+
+.icon-picker-list a:hover,
+.icon-picker-list a.active{
+	background-color: $primary-trans;
+	color: #fff;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.icon-picker-list .fa {
+	font-size: 24px;
+	margin-bottom: 10px;
+	margin-top: 5px;
+}
+
+.icon-picker-list .name-class {
+	display: block;
+	text-align: center;
+	word-wrap: break-word;
+}
+
+.alert-danger-trans{
+	color:#fff;
+	border: 1px solid #f00;
+	background-color: rgb(180, 0, 0, 0.25);
+}
+
+.pagination .page-link{
+	background-color: $primary-trans;
+	color: #fff;
 }

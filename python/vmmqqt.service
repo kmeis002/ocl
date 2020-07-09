@@ -1,0 +1,13 @@
+[Unit]
+Description=VirtualBox MQTT Listener for Open Cyber Labs
+After=mosquitto.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=argot
+ExecStart=/var/www/html/devel/ocl/python/vm_mqtt.py
+
+[Install]
+WantedBy=multi-user.target

@@ -4,8 +4,8 @@ window.chunkUpload = class {
 	constructor(url, chunk_size){
 		this.request_limit = 1000;
 		this.url = url;
-		this.api_token = document.querySelector( '.api_token' ).value;
-		this.file = document.querySelector( '.ova' ).files[0];
+		//this.api_token = document.querySelector( '.api_token' ).value;
+		this.file = document.querySelector( '#ova-file' ).files[0];
 		this.reader = new FileReader();
 
 		if(this.getTotalChunks(chunk_size*1024) > this.request_limit){
@@ -33,6 +33,7 @@ window.chunkUpload = class {
    		var next_slice = start + obj.chunk_size + 1;
     	var blob = obj.file.slice( start, next_slice );
     	var final = false;
+        var first = false;
     	
     	this.reader.onloadend = function( event ) {
     	if ( event.target.readyState !== FileReader.DONE ) {
@@ -41,8 +42,9 @@ window.chunkUpload = class {
     	
     	if(obj.curr_chunk == obj.total_chunks-1 ){
     		final = true;
-    		document.getElementById('submit').disabled = false;
-    	}
+    	}else if(obj.curr_chunk == 0){
+            first = true;
+        }
 
 		$.ajax( {
           	 	url: obj.url,
@@ -50,22 +52,23 @@ window.chunkUpload = class {
             	dataType: 'text',
             	cache: false,
             	data: {
-                api_token: obj.api_token,
+                //api_token: obj.api_token,
                 file_data: event.target.result,
                 file: obj.file.name,
                 file_type: obj.file.type,
+                first_chunk: first,
                 final_chunk: final,
             },
             error: function( jqXHR, textStatus, errorThrown ) {
                 console.log( jqXHR, textStatus, errorThrown );
             },
             success: function( data ) {
+
             	obj.curr_chunk++;
             	var percentage = Math.floor((obj.curr_chunk/obj.total_chunks)*100);
-            	var updateString = 'Percentage done: ',percentage;
-                document.getElementById('percent').innerHTML = 'Percentage uploaded: '+percentage+'%';
-                if(!final){
-               	 	document.getElementById('submit').disabled=true;
+                $('[id*="-progress"]').css('width', percentage+'%');
+                if(final){
+                   location.reload();
                	}
                 if ( next_slice < obj.file.size ) {
                 	obj.upload_file( next_slice, obj);	
@@ -79,7 +82,13 @@ window.chunkUpload = class {
 
 }
 
-window.selectorScript = function(url){
-	const p = new window.chunkUpload(url, 10000);
-	p.upload_file(0, p);
+window.selectorScript = function(url, name){
+    var filePath = $('#ova-file').val().split('\\');
+    var fileName = filePath[filePath.length-1];
+    if(fileName == name+'.ova'){
+    	const p = new window.chunkUpload(url, 10000);
+    	p.upload_file(0, p);
+    }else{
+        alert('OVA File must be labeled the same name as the Machine. Please select a file with the name: '+name+'.ova');
+    }
 }

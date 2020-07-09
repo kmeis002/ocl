@@ -41,7 +41,7 @@ def on_message(client, userdata, msg):
 		logging.error(log_msg)
 
 	if(msg.topic == 'vm/import'):
-		logging.info('Attempting to import ' + payload + '.')
+		logging.info('Attempting to import ' + payload + '.ova')
 		try:
 			vms.importVM(payload)
 			logging.info("VM " + payload + " imported.")	
