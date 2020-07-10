@@ -13,14 +13,22 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(SkillSeeder::class);
 
-        for($i=0; $i<=30; $i++){
+        for($i=0; $i<=10; $i++){
         	$this->call(LabSeeder::class);
         	$this->call(B2RSeeder::class);
 
         }
 
-        for($i=0; $i<=50; $i++){
+        for($i=0; $i<=10; $i++){
             $this->call(CTFSeeder::class);
         }
+
+        $this->call(TeacherSeeder::class);
+        $this->call(StudentSeeder::class);
+
+        $this->call(CourseSeeder::class);
+        $this->call(ClassSeeder::class);
+        $this->call(EnrolledSeeder::class);
+
     }
 }

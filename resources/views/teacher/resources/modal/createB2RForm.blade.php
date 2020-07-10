@@ -10,7 +10,7 @@
       </div>
       <div class="modal-body">
         <div>
-          @include('teacher.forms.newMachine')
+          @include('teacher.resources.forms.newMachine')
         </div>
       </div>
       <div class="modal-footer">

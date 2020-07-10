@@ -22,32 +22,23 @@ use App\Models\Courses;
 class CourseController extends Controller
 {
 
-	public function create(Request $request){
+	public function apiCreate(Request $request){
+        $request->validate([
+            'name' => 'required'
+        ]);
 
+        Courses::create([
+            'name' => $request->input('name'),
+        ]);
 	}
     
-    public function store(Request $request){
-    	$request->validate([
-    		'name' => 'required']);
-
-    	Courses::create([
-    		'name' => $request->input('name'),
-    	]);
+    public function apiDestroy($name){
+        $course = Courses::find($name);
+        $course->delete();
     }
 
-    public function update(Request $request){
-    	$request->validate([
-    		'name' = > 'required']);
-
-    	$course = Courses::find($request->input('name'));
-
-    	$course->name = $request->input('name');
-    	$course->save();
-    }
-
-    public function destroy($name){
-    	$course = Courses::find($name);
-    	$course->delete();
+    public  function apiGet(){
+        return Courses::all();
     }
 
 }

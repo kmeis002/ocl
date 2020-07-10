@@ -1,7 +1,9 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/js/teacher.js": "/js/teacher.js",
     "/js/teacherb2r.js": "/js/teacherb2r.js",
-    "/js/teacherlab.js": "/js/teacherlab.js"
+    "/js/teacherclasses.js": "/js/teacherclasses.js",
+    "/js/teacherenroll.js": "/js/teacherenroll.js",
+    "/js/teacherlab.js": "/js/teacherlab.js",
+    "/js/teacherresource.js": "/js/teacherresource.js"
 }

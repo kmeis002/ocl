@@ -143,4 +143,10 @@ class Vbox{
       $mqtt->publish('vm/stop', $name);
     }
 
+    public function unregister($name){
+      $mqtt = new Mqtt();
+      $mqtt->publish('vm/unregister', $name);
+    }
+
+
 }

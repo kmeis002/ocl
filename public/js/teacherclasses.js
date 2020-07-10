@@ -81,88 +81,106 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/teacherlab.js":
-/*!************************************!*\
-  !*** ./resources/js/teacherlab.js ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-$(document).ready(function () {
-  $('.edit-lab').click(function () {
-    window.getModelInfo($('#type-header').data('model-type'), $(this).data('name'));
-  }); //collapse level flags
-
-  $('#collapse-flags').click(function () {
-    if ($('#collapse-flags-icon').attr('class').includes('compress')) {
-      $('#level-flags').hide();
-      $('#collapse-flags-icon').attr('class', 'fas fa-expand-arrows-alt');
-    } else {
-      $('#level-flags').show();
-      $('#collapse-flags-icon').attr('class', 'fas fa-compress-arrows-alt');
-    }
-  }); //collapse skills
-  //add new level, api creates random flag to be updated by user
-
-  $('#new-lab-level').click(function () {
-    name = $('#edit-vm-name').text();
-
-    if (name == '') {
-      alert('Please select a machine before adding a level');
-    } else {
-      $.post('/api/teacher/create/lab/' + name + '/level', function () {
-        window.getModelInfo($('#type-header').data('model-type'), name);
-      });
-    }
-  }); //manual flags for creating VM Modal
-
-  $('#manual-flags').change(function () {
-    if ($(this).val() == "Manual") {
-      $('#flags').show();
-    } else {
-      $('#flags').hide();
-    }
-  });
-  $('#level-count').keyup(function (event) {
-    makeLevelFlagItem($(this).val());
-  }); //Remove lab levels
-
-  $(document).on('click', '.delete-level', function (event) {
-    id = $(this).data('id');
-    name = $('#edit-vm-name').text();
-    $.post('/api/teacher/delete/lab/' + name + '/level/' + id, function () {
-      window.getModelInfo($('#type-header').data('model-type'), name);
-    });
-  });
-
-  function makeLevelFlagItem(levels) {
-    $('#flags').empty();
-
-    for (i = 1; i <= levels; i++) {
-      var tmpId = 'level-flag-' + i;
-      var line = '<label for="' + tmpId + '">Level #' + i + ' Flag</label>\n';
-      line = line + '<input type="text" id="' + tmpId + '" name="' + tmpId + '" class="form-control">\n';
-      $('#flags').append(line);
-    }
-  } //collapse flags for labs 
-
-});
-
-/***/ }),
-
-/***/ 4:
-/*!******************************************!*\
-  !*** multi ./resources/js/teacherlab.js ***!
-  \******************************************/
+/***/ "./resources/js/teacherclasses.js":
+/*!****************************************!*\
+  !*** ./resources/js/teacherclasses.js ***!
+  \****************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacherlab.js */"./resources/js/teacherlab.js");
+__webpack_require__(/*! ./teachercourses */ "./resources/js/teachercourses.js");
+
+/***/ }),
+
+/***/ "./resources/js/teachercourses.js":
+/*!****************************************!*\
+  !*** ./resources/js/teachercourses.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+//------------------COURSE JQUERY---------------------//
+$(document).on('click', '#add-new-course', function () {
+  var courseName = $('#new-course-name').val();
+  $.post('/api/teacher/create/course', {
+    name: courseName
+  }, function (data) {
+    location.reload();
+  });
+});
+$(document).on('click', '.delete-course', function () {
+  var id = $(this).data('id');
+  var courseName = $('#course-' + id).text();
+  $.post('/api/teacher/delete/course/' + courseName, {
+    name: courseName
+  }, function (data) {
+    location.reload();
+  });
+}); //------------------CLASS JQUERY---------------------//
+
+$(document).on('click', '#add-new-class', function () {
+  var courseName = $('#new-class-course').val();
+  var teacherName = $('#new-class-teacher').val();
+  var bell = $('#new-class-bell').val();
+  $.post('/api/teacher/create/class', {
+    course: courseName,
+    teacher: teacherName,
+    bell: bell
+  }, function (data) {
+    location.reload();
+  });
+});
+$(document).on('click', '.delete-class', function () {
+  var id = $(this).data('id');
+  $.post('/api/teacher/delete/class/' + id, function (data) {
+    location.reload();
+  });
+}); //------------------SELECT JQUERY---------------------//
+
+$(document).ready(function () {
+  $.get('/api/teacher/get/courses', function (data) {
+    makeCourseList(data);
+  });
+});
+$(document).ready(function () {
+  $.get('/api/teacher/get/teachers', function (data) {
+    makeTeacherList(data);
+  });
+});
+
+function makeCourseList(courses) {
+  $('#new-class-course').empty();
+
+  for (i = 0; i < courses.length; i++) {
+    html = '<option value = "' + courses[i]['name'] + '">' + courses[i]['name'] + '</option>\n';
+    $('#new-class-course').append(html);
+  }
+}
+
+function makeTeacherList(teachers) {
+  $('#new-class-teacher').empty();
+
+  for (i = 0; i < teachers.length; i++) {
+    html = '<option value = "' + teachers[i] + '">' + teachers[i] + '</option>\n';
+    $('#new-class-teacher').append(html);
+  }
+}
+
+/***/ }),
+
+/***/ 2:
+/*!**********************************************!*\
+  !*** multi ./resources/js/teacherclasses.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacherclasses.js */"./resources/js/teacherclasses.js");
 
 
 /***/ })

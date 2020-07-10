@@ -68,7 +68,7 @@ class LabController extends Controller
         }
 
 
-        return redirect('/teacher/list/lab')->with(['updated' => $name]);
+        return redirect('/teacher/resources/list/lab')->with(['updated' => $name]);
     }
 
 
@@ -87,6 +87,10 @@ class LabController extends Controller
         return redirect('/teacher/list/lab');
     }
 
+    public function apiDestroy($name){
+        $Lab = Labs::find($name);
+        $Lab->delete();
+    }
 
     
 }

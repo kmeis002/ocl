@@ -24,4 +24,4 @@
 	</div>
 </form>
 
-@include('teacher.modal.newHint')
+@include('teacher.resources.modal.newHint')

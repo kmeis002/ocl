@@ -169,3 +169,12 @@ hr {
 	background-color: $primary-trans;
 	color: #fff;
 }
+
+.form-control{
+	background: $nav-bg;
+	color: #fff !important;
+}
+.form-control:focus {
+	background: $nav-bg;
+	color: #fff !important;
+}

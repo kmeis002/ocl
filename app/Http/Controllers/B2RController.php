@@ -58,7 +58,7 @@ class B2RController extends Controller
         }
 
 
-        return redirect('/teacher/list/b2r')->with(['updated' => $name]);
+        return redirect('/teacher/resources/list/b2r')->with(['updated' => $name]);
     }
 
     public function apiGetHints($name){
@@ -85,6 +85,10 @@ class B2RController extends Controller
         return redirect('/teacher/list/b2r');
     }
 
+    public function apiDestroy($name){
+        $B2R = B2R::find($name);
+        $B2R->delete();
+    }
 
 
 }

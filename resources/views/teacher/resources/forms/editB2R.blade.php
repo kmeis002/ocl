@@ -8,7 +8,7 @@
                     <label for="ip" class="my-1 mx-2">IP</label>
                     <input type="text"  class="form-control" id="edit-ip" name='edit-ip' placeholder="(XXX.XXX.XXX.XXX)">
                   </div>
-                    <p>OVA File: <span id="edit-file-name">OVA File goes here</span>
+                    <p>OVA File: <span id="edit-file-name"></span><button type="button" class="btn btn-primary mx-4" id="delete-ova"><i class="fas fa-trash-alt"></i></button></p>
 
                     <div class="container my-3 d-flex justify-content-start" style="padding: 0px;">
                       <label for="os-select" class="mx-2">OS</label>
@@ -47,4 +47,4 @@
                 </div>
               </form>
 
-              @include('teacher.modal.icon')
+              @include('teacher.resources.modal.icon')

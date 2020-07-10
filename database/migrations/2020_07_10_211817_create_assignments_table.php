@@ -4,23 +4,23 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEnrolledTable extends Migration
+class CreateAssignmentsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * Relational table to keep track of enrolled classes for student users.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('enrolled', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('assignments', function (Blueprint $table) {
+            $table->increments('id')->unique();
             $table->string('student');
-            $table->integer('class_id')->unsigned();
             $table->foreign('student')->references('name')->on('students');
-            $table->foreign('class_id')->references('id')->on('classes');
+            $table->string('prefix');
+            $table->string('model_id');
+            $table->string('start_date');
+            $table->string('end_date');
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateEnrolledTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('enrolled');
+        Schema::dropIfExists('assignments');
     }
 }

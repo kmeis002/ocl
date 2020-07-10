@@ -17709,6 +17709,16 @@ hr {
   color: #fff;
 }
 
+.form-control {
+  background: #343a40;
+  color: #fff !important;
+}
+
+.form-control:focus {
+  background: #343a40;
+  color: #fff !important;
+}
+
 .lab-layout {
   border: 1px solid #fff !important;
 }
@@ -17830,6 +17840,32 @@ hr {
 
 .table .option-cluster {
   width: 20em;
+}
+
+.main-list thead {
+  border-bottom: 1px solid #fff !important;
+}
+
+.main-list table {
+  border: 1px solid #fff;
+  background: rgba(30, 207, 17, 0.25);
+  table-layout: fixed;
+}
+
+.main-list .id {
+  width: 1.5em;
+}
+
+.main-list .add-del {
+  width: 6em;
+}
+
+.main-list .bell {
+  width: 5em;
+}
+
+.double {
+  max-width: 2000px !important;
 }
 
 .menu-stripe {

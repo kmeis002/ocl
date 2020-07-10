@@ -27,4 +27,19 @@ class Classes extends Model
 		'course', 'bell', 'teacher', 
 	];
 
+
+
+	public static function boot() {
+        parent::boot();
+
+        //Delete event to delete entries in other tables/files
+        static::deleting(function($class) { 
+        	$class->enrolled()->delete();
+        });
+    }
+
+    public function enrolled(){
+    	return $this->hasMany('App\Models\Enrolled', 'class_id', 'id');
+    }
+
 }

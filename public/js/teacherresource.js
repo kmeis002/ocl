@@ -217,23 +217,6 @@ $(document).ready(function () {});
 
 /***/ }),
 
-/***/ "./resources/js/teacher.js":
-/*!*********************************!*\
-  !*** ./resources/js/teacher.js ***!
-  \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(/*! ./chunkupload */ "./resources/js/chunkupload.js");
-
-__webpack_require__(/*! ./teacherresourcefunctions */ "./resources/js/teacherresourcefunctions.js");
-
-__webpack_require__(/*! ./createvm */ "./resources/js/createvm.js");
-
-__webpack_require__(/*! ./teacheredithints */ "./resources/js/teacheredithints.js");
-
-/***/ }),
-
 /***/ "./resources/js/teacheredithints.js":
 /*!******************************************!*\
   !*** ./resources/js/teacheredithints.js ***!
@@ -424,6 +407,23 @@ window.makePagination = function (pages) {
 
   $('#hint-pagination').append(p);
 };
+
+/***/ }),
+
+/***/ "./resources/js/teacherresource.js":
+/*!*****************************************!*\
+  !*** ./resources/js/teacherresource.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(/*! ./chunkupload */ "./resources/js/chunkupload.js");
+
+__webpack_require__(/*! ./teacherresourcefunctions */ "./resources/js/teacherresourcefunctions.js");
+
+__webpack_require__(/*! ./createvm */ "./resources/js/createvm.js");
+
+__webpack_require__(/*! ./teacheredithints */ "./resources/js/teacheredithints.js");
 
 /***/ }),
 
@@ -779,13 +779,13 @@ function makeStatus(status) {
 /***/ }),
 
 /***/ 1:
-/*!***************************************!*\
-  !*** multi ./resources/js/teacher.js ***!
-  \***************************************/
+/*!***********************************************!*\
+  !*** multi ./resources/js/teacherresource.js ***!
+  \***********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacher.js */"./resources/js/teacher.js");
+module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacherresource.js */"./resources/js/teacherresource.js");
 
 
 /***/ })

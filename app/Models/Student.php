@@ -18,7 +18,7 @@ class Student extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'password', 'first', 'last', 'score',
+        'name', 'password', 'first', 'last', 'total_score',
     ];
 
     /**
@@ -27,7 +27,7 @@ class Student extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'first', 'last', 'remember_token',
+        'password', 'remember_token',
     ];
 
     /**
@@ -39,7 +39,10 @@ class Student extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
+    public function getFullNameAttribute(){
+        return $this->first. ' ' . $this->last;
+    }
+    
     
 
 

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Courses;
+use Illuminate\Support\Facades\DB;
+
+use App\Models\Classes;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,45 +23,32 @@ use App\Models\Courses;
 */
 
 
-class CourseController extends Controller
+class ClassController extends Controller
 {
 
-	public function create(Request $request){
-
-	}
-    
-    public function store(Request $request){
-    	$request->validate([
-    		'course' => 'required',
-            'bell' => 'required|numeric',
-            'teacher' => 'required',
-        ]);
-
-    	Classes::create([
-    		'course' => $request->input('vm_name'),
-    		'bell'	=> $request->input('hint'),
-            'teacher' => $request->input('teacher')
-    	]);
-    }
-
-    public function update(Request $request, $id){
+	public function apiCreate(Request $request){
         $request->validate([
             'course' => 'required',
-            'bell' => 'required|numeric',
             'teacher' => 'required',
+            'bell' => ['required', 'numeric', 'min:0'],
         ]);
 
-    	$class = Courses::find($id);
+        Classes::create([
+            'course' => $request->input('course'),
+            'teacher' => $request->input('teacher'),
+            'bell' => $request->input('bell'),
+        ]);
+	}
+    
 
-    	$class->course = $request->input('course');
-        $class->bell = $request->input('bell');
-        $class->teacher = $request->input('teacher');
-    	$class->save();
+
+    public function apiDestroy($id){
+    	$class = Classes::find($id);
+    	$class->delete();
     }
 
-    public function destroy($id){
-    	$class = Courses::find($id);
-    	$hint->delete();
+    public function apiGetClasses(){
+        return DB::table('classes')->select('id', 'course', 'bell')->get();
     }
 
 }

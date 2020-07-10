@@ -80,23 +80,27 @@ class VBoxController extends Controller
     }
 
     public function apiReset($name){
-        $ip = VM::find($name)['ip'];
+        $vm = VM::find($name);
+        $ip = $vm['ip'];
         if(Vbox::isRunning($ip)){
             Vbox::reset($name);
 
-            sleep(30);
-            if(!Vbox::isRunning($ip)){
+            sleep(60);
+
+            if(Vbox::isRunning($ip)){
                 $vm->status = True;
                 $vm->save();
-                return response()->json_decode(['message' => 'Machine successfully reset'], 200);
+                return response()->json(['message' => 'Machine successfully reset', 'status' => $vm->status], 200);
             }else{
                 $vm->status = False;
                 $vm->save();
-                return response()->json_decode(['message' => 'Machine is did not reset'], 500);
+                return response()->json(['message' => 'Machine is did not reset', 'status' => $vm->status], 500);
             }
 
         }else{
-            return response()->json(['message' => 'Cannot reset, Machine is not powered on'], 500);
+            $vm->status = False;
+            $vm->save();
+            return response()->json(['message' => 'Cannot reset, Machine is not powered on', 'status' => $vm->status], 500);
         }
         
     }
@@ -107,28 +111,54 @@ class VBoxController extends Controller
 
         if(Vbox::isRunning($ip)){
             Vbox::powerOff($name);
-            sleep(5);
+            sleep(30);
             if(Vbox::isRunning($ip)){
-                $vm->status = False;
-                $vm->save();
-                return response()->json_decode(['message' => 'Machine successfully powered off'], 200);
-            }else{
                 $vm->status = True;
                 $vm->save();
-                return response()->json_decode(['message' => 'Machine is not off'], 500);
+                return response()->json(['message' => 'Machine is not off', 'status' => $vm->status], 500);
+                
+            }else{
+                $vm->status = False;
+                $vm->save();
+                return response()->json(['message' => 'Machine successfully powered off', 'status' => $vm->status], 200);
             }
         }else{
             Vbox::powerOn($name);
-            sleep(30);
+            sleep(45);
             if(!Vbox::isRunning($ip)){
-                $vm->status = True;
-                $vm->save();
-                return response()->json_decode(['message' => 'Machine successfully powered on'], 200);
-            }else{
                 $vm->status = False;
                 $vm->save();
-                return response()->json_decode(['message' => 'Machine is not powered on'], 500);
+                return response()->json(['message' => 'Machine is not powered on', 'status' => $vm->status], 500);
+            }else{
+                $vm->status = True;
+                $vm->save();
+                return response()->json(['message' => 'Machine successfully powered on', 'status' => $vm->status], 200);
+                
             }
+        }
+    }
+
+    public function apiUnregister($name){
+        if(Vbox::isRegistered($name)){
+             Vbox::unregister($name);
+             sleep(5);
+
+             if(!Vbox::isRegistered($name)){
+                return response()->json(['message' => 'Machine is unregistered'], 200);
+             }else{
+                return response()>json(['message' => 'Machine '.$name.' is still registered'], 500);
+             }
+
+        }else{
+            return response()>json(['message' => 'Machine '.$name.' is not registered'], 500);
+        }
+    }
+
+    public function apiRegister($name){
+        if(!Vbox::isRegistered($name)){
+            Vbox::importVM($name);
+        }else{
+            return response()>json(['message' => 'Machine '.$name.' is already registered'], 500);
         }
     }
 }

@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\EloApp\quent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 use App\Models\VM;
 use App\Models\LabFlags;
+
+use Vbox;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,4 +88,40 @@ class Labs extends VM
 	public function skills(){
 		return $this->hasMany('App\Models\VMSkills', 'vm_name', 'name');
 	}
+
+
+	//Events
+	public static function boot() {
+        parent::boot();
+
+        //Delete event to delete entries in other tables/files
+        static::deleting(function($Labs) { 
+        	//Delete hasMany relations
+             $Labs->flags()->delete();
+             $Labs->hints()->delete();
+             $Labs->skills()->delete();
+
+            //Delete associated files
+
+            $path = storage_path('app').'/vm/';
+			$vmName = explode('.',$Labs->file)[0];
+
+            if($Labs->file !== null && File::exists($path.$Labs->file)){
+             	File::delete($path.$Labs->file);
+
+             }
+
+
+            //Unregister VM if it exists
+            if($vmName !== ""){
+	            if(Vbox::isRegistered($vmName)){
+	            	if(Vbox::isRunning($vmName)){
+	            		Vbox::powerOff($vmName);
+	            	}
+	            	sleep(1);
+	            	Vbox::unregister($vmName);
+	            }
+        	}
+        });
+    }
 }

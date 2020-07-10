@@ -1,3 +1,17 @@
+
+//--------------------------Delete Model JQUERY--------------------------------//
+$(document).on('click', '.delete-model', function(){
+	var name = $(this).data('name');
+	var type = $(this).data('type');
+
+	$.post('/api/teacher/delete/'+type+'/'+name, function(data){
+		location.reload();
+	});
+
+});
+
+
+//--------------------------Skills JQUERY--------------------------------//
 //collapse skills
 $(document).on('click', '#collapse-skills', function(){
 	if($('#collapse-skills-icon').attr('class').includes('compress')){
@@ -31,6 +45,8 @@ $(document).on('click', '.delete-skill', function(){
 });
 
 
+
+//--------------------------OVA JQUERY--------------------------------//
 //OVA Upload
 $(document).on('show.bs.modal', '#uploadOvaModal', function(event){
 	var button = $(event.relatedTarget);
@@ -38,7 +54,19 @@ $(document).on('show.bs.modal', '#uploadOvaModal', function(event){
 	$('#ova-file').attr('onchange', 'window.selectorScript(\'http://www.ocl.dev/api/teacher/upload/chunkupload\',\''+name+'\')');
 });
 
+//OVA Delete
+$(document).on('click', '#delete-ova', function(){
+	var name = window.convertName($('#edit-vm-name').text());
+	$.post('/api/teacher/delete/vm/file/' + name, function(data){
+		console.log(data);
+		$('#edit-file-name').text('');
+	}).fail(function(data){
+		console.log(data);
+	});
+});
 
+
+//--------------------------VM Management JQUERY----------------------//
 //manage vm Modal
 $(document).on('click', '.vmmanage-modal', function(event){
 	var button = $(this);
@@ -54,7 +82,12 @@ $(document).on('click', '.vmmanage-modal', function(event){
 		}
 	});
 	updateVMManage(name);
-})
+});
+
+//Reload page for status changes on management close.
+$(document).on('hide.bs.modal', '#vmManageModal', function(){
+	location.reload();
+});
 
 //Change VM Network Mode
 $(document).on('click', '#modify-network-mode', function(){
@@ -76,7 +109,60 @@ $(document).on('click', '#modify-bridged-adapter', function(){
 	});
 });
 
+//Toggle Power Button
+$(document).on('click', '#vm-power-toggle', function(){
+	var name = $('#vmManageModal').data('name');
+	//set status to indicate awaiting repsonse
+	makeSpinner('vm-status');
+	$.post('/api/teacher/set/vbox/power/' + window.convertName(name), function(data){
+		makeStatus(data['status']);
+	}).fail(function(data){
+		json = data['responseJSON'];
+		makeStatus(json['status']);
+	});
+});
 
+//Reset Button
+$(document).on('click', '#vm-reset', function(){
+	var name = $('#vmManageModal').data('name');
+	//set status to indicate awaiting repsonse
+	makeSpinner('vm-status');
+	$.post('/api/teacher/set/vbox/reset/' + window.convertName(name), function(data){
+		console.log(data);
+		makeStatus(data['status']);
+	}).fail(function(data){
+		json = data['responseJSON'];
+		makeStatus(json['status']);
+	});
+});
+
+//Unregister Button
+$(document).on('click', '#unregister-vm', function(){
+	var name = $('#vmManageModal').data('name');
+	$.post('/api/teacher/set/vbox/unregister/'+window.convertName(name), function(data){
+		alert(data['message']);
+		location.reload();
+	}).fail(function(data){
+		json = data['responseJSON'];
+		alert(json['message']);
+		location.reload();
+	});
+});
+
+//Register Button
+$(document).on('click', '#register-vm', function(){
+	var name = $('#vmManageModal').data('name');
+	$.post('/api/teacher/set/vbox/register/'+window.convertName(name), function(data){
+		location.reload();
+	}).fail(function(data){
+		console.log(data);
+	});
+});
+
+
+
+
+//--------------------------Functions-------------------------------//
 function updateVMManage(name){
 	$.get('/api/teacher/get/vbox/vminfo/'+window.convertName(name), function(data){
 		makeStatus(data['status']);
@@ -206,10 +292,6 @@ window.makeLevelLineItem = function (level, id, lastElement=false){
 	$('#level-flags-body').append(html);
 }
 
-window.updateSkillLineItem = function(){
-
-}
-
 window.makeSkillLineItems= function(data){
 	$('#skills-body').empty();
 	skillSelect = makeSkillsList();
@@ -255,10 +337,10 @@ function makeSkillsList(){
 
 }
 
-function makeSpinner(divId){
-	$('#'+divId).empty();
+function makeSpinner(id){
+	$('#'+id).empty();
 	spinner='<div class="spinner-border text-primary" role="status"><span class="sr-only"></span></div>';
-	$('#'+divId).append(spinner);
+	$('#'+id).append(spinner);
 }1
 
 function makeStatus(status){

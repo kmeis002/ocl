@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Symfony\Component\Process\Process;
 
 class B2RSeeder extends Seeder
 {
@@ -15,12 +16,15 @@ class B2RSeeder extends Seeder
     	$os = array('Linux','Windows','FreeBSD');
     	$icons = array("fas fa-heart-broken", "fas fa-headphones", "fas fa-gas-pump", "fas fa-truck-monster", "fas fa-blender", 'fas fa-hiking');
         $file = array($name.'.ova', null);
-
+        $fileName = $file[array_rand($file)];
+        if($fileName !== null){
+            $fileName = strtolower($fileName);
+        }
     	//Create VM Model
         DB::table('vms')->insert([
         	'name' => $name,
         	'points' => rand(10,100),
-        	'file' => $file[array_rand($file)],
+        	'file' => $fileName,
         	'ip' => rand(1,255).'.'.rand(1,255).'.'.rand(1,255).'.'.rand(1,255),
         	'os' => $os[array_rand($os)],
         	'description' => Str::random(500),
@@ -29,6 +33,15 @@ class B2RSeeder extends Seeder
         	'created_at' => \Carbon\Carbon::now(),
         	'updated_at' => \Carbon\Carbon::now(),
         ]);
+
+
+        //Make fake ova file
+        if($fileName !== NULL){
+            $app_path = storage_path('app');
+            $process = new Process(['touch', $app_path.'/vm/'.$fileName]);
+
+            $process->run();
+        }
 
         //Populate User/Root Flags
 

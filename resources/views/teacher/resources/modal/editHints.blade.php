@@ -10,7 +10,7 @@
       </div>
       <div class="modal-body">
         <div>
-          @include('teacher.forms.editHints')
+          @include('teacher.resources.forms.editHints')
         </div>
       </div>
       <div class="modal-footer">

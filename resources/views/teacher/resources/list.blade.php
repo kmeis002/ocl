@@ -1,7 +1,7 @@
 @extends('layouts.teacher')
 
 @section('scripts')
-
+  <script src="{{ asset('js/teacherresource.js') }}"></script>
 @if($type === 'b2r')
   <script src="{{ asset('js/teacherb2r.js') }}"></script>
 @elseif($type === 'lab')
@@ -114,7 +114,7 @@
                 @else
                 <button type="button" class="upload-ova btn btn-primary" data-name="{{$item->name}}" data-toggle="modal" data-target="#uploadOvaModal" data-toggle="tooltip" data-placement="top" title="Upload Virtual Machine"><i class="fas fa-upload"></i></button>
                 @endif
-                <button type="button" class="delete btn btn-primary" data-name="{{$item->name}}" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                <button type="button" class="delete-model btn btn-primary"  data-type="{{$type}}" data-name="{{$item->name}}" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash-alt"></i></button>
             </div>
           </td>
         </tr></a>
@@ -126,9 +126,9 @@
    <div class="col container info-window">
           <div class='container-fluid lab-layout bg-primary-trans my-3 py-2'>
             @if($type === 'b2r')
-              @include('teacher.forms.editB2R')
+              @include('teacher.resources.forms.editB2R')
             @elseif($type === 'lab')
-              @include('teacher.forms.editLab')
+              @include('teacher.resources.forms.editLab')
             @endif
             </div>
           </div>
@@ -142,13 +142,13 @@
 
 @section('modals')
 @if($type === 'b2r')
-@include('teacher.modal.createB2RForm')
+@include('teacher.resources.modal.createB2RForm')
 @endif
 @if($type === 'lab')
-@include('teacher.modal.createLabForm')
+@include('teacher.resources.modal.createLabForm')
 @endif
-@include('teacher.modal.editHints')
-@include('teacher.modal.uploadOva')
-@include('teacher.modal.vmManage')
+@include('teacher.resources.modal.editHints')
+@include('teacher.resources.modal.uploadOva')
+@include('teacher.resources.modal.vmManage')
 @endsection
 

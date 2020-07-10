@@ -52,3 +52,33 @@
     width: 20em;
   }
 }
+
+.main-list{
+  thead{
+    border-bottom: 1px solid #fff !important;
+  }
+  tbody{
+  
+  }
+  table{
+    border:1px solid #fff;
+    background:$primary-trans;
+    table-layout: fixed;
+  }
+
+  .id{
+    width: 1.5em;
+  }
+
+  .add-del{
+   width: 6em;
+  }
+
+  .bell{
+    width: 5em;
+  }
+}
+
+.double{
+  max-width: 2000px !important;
+}
