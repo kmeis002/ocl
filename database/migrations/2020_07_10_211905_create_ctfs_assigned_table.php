@@ -15,9 +15,7 @@ class CreateCtfsAssignedTable extends Migration
     {
         Schema::create('ctfs_assigned', function (Blueprint $table) {
             $table->increments('id')->unique();
-            $table->integer('assignment_id')->unsigned();
-            $table->foreign('assignment_id')->references('id')->on('assignments');
-            $table->string('ctf_name');
+            $table->string('ctf_name')->nullable()->default(null);
             $table->foreign('ctf_name')->references('name')->on('ctfs');
             $table->timestamps();
         });

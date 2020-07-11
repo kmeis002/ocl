@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Ctfs;
+
 /*
 |--------------------------------------------------------------------------
 | CTF Controller
@@ -62,5 +64,9 @@ class CtfController extends Controller
     public function destroy($id){
     	$ctf = Ctfs::find($id);
     	$ctf->delete();
+    }
+
+    public function apiGetAll(){
+        return Ctfs::all()->pluck('name');
     }
 }

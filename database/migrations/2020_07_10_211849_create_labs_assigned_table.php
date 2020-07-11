@@ -15,12 +15,10 @@ class CreateLabsAssignedTable extends Migration
     {
         Schema::create('labs_assigned', function (Blueprint $table) {
             $table->increments('id')->unique();
-            $table->integer('assignment_id')->unsigned();
-            $table->foreign('assignment_id')->references('id')->on('assignments');
-            $table->string('lab_name');
+            $table->string('lab_name')->nullable()->default(null);
             $table->foreign('lab_name')->references('name')->on('vms');
-            $table->integer('start_level');
-            $table->integer('end_level');
+            $table->integer('start_level')->default(0);
+            $table->integer('end_level')->default(0);
             $table->timestamps();
         });
     }

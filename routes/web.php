@@ -48,10 +48,12 @@ Route::group(['prefix'=>'/teacher'], function(){
   Route::get('/home', 'PageTest@teacherHome');
   Route::get('/resources/list/{type}', 'TeacherController@resourcesList');
   Route::get('/classes/list/{type}', 'TeacherController@classesList');
+  Route::get('/classwork/assignments', 'TeacherController@assignmentsList');
   Route::post('/edit/b2r/{name}', 'B2RController@update');
   Route::post('/edit/b2r/hints/{name}', 'B2RHintController@test');
   Route::post('/create/b2r', 'B2RController@create');
   Route::post('/create/lab', 'LabController@create');
+  Route::post('/create/assignment', 'AssignmentController@create');
   Route::post('/edit/lab/{name}', 'LabController@update');
 
 });

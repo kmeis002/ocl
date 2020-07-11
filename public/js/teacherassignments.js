@@ -81,103 +81,100 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/teacherenroll.js":
-/*!***************************************!*\
-  !*** ./resources/js/teacherenroll.js ***!
-  \***************************************/
+/***/ "./resources/js/teacherassignments.js":
+/*!********************************************!*\
+  !*** ./resources/js/teacherassignments.js ***!
+  \********************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-$(document).ready(function () {
-  $.get('/api/teacher/get/students', function (data) {
-    populateStudentList(data);
-  });
-  $.get('/api/teacher/get/classes', function (data) {
-    populateClassList(data);
-    var classSelect = $('#class-select');
-    var id = classSelect.val();
-    var bell = classSelect.find('[value="' + id + '"').data('bell');
-    var course = classSelect.find('[value="' + id + '"').data('course');
-    changeClass(id, bell, course);
-    populateEnrolledList(id);
+$(document).on('click', '.edit-assignment', function () {
+  var id = $(this).data('id');
+  var type = $(this).data('prefix').toLowerCase();
+  makeForm(type, id);
+  $.get('/api/teacher/get/all/' + type, function (data) {
+    populateForm(data, type, id);
   });
 });
-$(document).on('change', '#class-select', function (event) {
-  var id = $(this).val();
-  var bell = $(this).find('[value="' + id + '"').data('bell');
-  var course = $(this).find('[value="' + id + '"').data('course');
-  changeClass(id, bell, course);
-  populateEnrolledList(id);
-});
-$(document).on('click', '#enroll-student', function () {
-  var student = $('#enroll-student-select').val();
-  var classId = $('#class-row').attr('data-id');
-  $.post('/api/teacher/enroll/' + classId, {
-    student: student
-  }, function (data) {
-    console.log(data);
-    populateEnrolledList(classId);
-  });
-});
-$(document).on('click', '.unenroll', function (event) {
-  var student = $(this).data('name');
-  var classId = $('#class-row').attr('data-id');
-  $.post('/api/teacher/unenroll/' + classId, {
-    studentName: student
-  }, function (data) {
-    populateEnrolledList(classId);
-  });
-});
+$(document).on('click', '#edit-assignment', function () {
+  var id = $(this).data('id');
+  var inputs = $('#edit-container').find(':input');
+  var postData = {};
 
-function populateStudentList(students) {
-  $('#enroll-student-select').empty();
-
-  for (i = 0; i < students.length; i++) {
-    html = '<option value="' + students[i]['name'] + '">' + students[i]['last'] + ', ' + students[i]['first'] + '</option>\n';
-    $('#enroll-student-select').append(html);
+  for (i = 0; i < inputs.length - 2; i++) {
+    var tmpField = $(inputs[i]).attr('id');
+    var tmpVal = $(inputs[i]).val();
+    postData[tmpField] = tmpVal;
   }
-}
 
-function populateClassList(classes) {
-  $('#class-select').empty();
-
-  for (i = 0; i < classes.length; i++) {
-    html = '<option value="' + classes[i]['id'] + '"" data-bell="' + classes[i]['bell'] + '" data-course="' + classes[i]['course'] + '">' + 'Bell: ' + classes[i]['bell'] + ' Course: ' + classes[i]['course'] + '</option>\n';
-    $('#class-select').append(html);
-  }
-}
-
-function changeClass(id, bell, course) {
-  $('#class-row').attr("data-id", id);
-  $('#class-row-bell').text(bell);
-  $('#class-row-course').text(course);
-}
-
-function populateEnrolledList(classId) {
-  $('#class-row-roster').empty();
-  $.get('/api/teacher/get/enrolled/' + classId, function (data) {
-    for (i = 0; i < data.length; i++) {
-      html = '<p>' + data[i][0]['last'] + ', ' + data[i][0]['first'] + '<button type="button" class="btn btn-primary unenroll mx-2" data-name="' + data[i][0]['name'] + '"><i class="fas fa-trash-alt"></i></button></p>';
-      $('#class-row-roster').append(html);
-    }
+  $.post('/api/teacher/update/assignment/' + id, postData, function (data) {}).fail(function (data) {});
+});
+$(document).on('click', '#delete-assignment', function () {
+  var id = $(this).data('id');
+  $.post('/api/teacher/delete/assignment/' + id, function (data) {
+    location.reload();
   });
+});
+
+function makeForm(type, id) {
+  $('#edit-container').empty();
+  html = '<form>\n<label for="model-select">Assign Resource</label> \
+		<select class="form-control" name="model-select" id="edit-model-select"></select>\n';
+
+  if (type == 'b2r') {
+    html = html + '<label for="flag-select" class="my-2">Flags Required</label>\n \
+		<select class="form-control" name="flag-select" id="flag-select">\n \
+			<option value="both">User and Root</option>\n \
+			<option value="root">Root Only</option>\n \
+			<option value="user">User Only</option>\n \
+		</select>\n';
+  } else if (type == 'lab') {
+    html = html + '<div class="container d-flex justify-content-between my-3">\n \
+						<label for="start-flag">Starting Flag</label>\n \
+						<input type="number" class="form-control mx-3" name="start-flag" id="start-flag">\n \
+						<label for="end-flag">Ending Flag</label>\n \
+						<input type="number" class="form-control mx-3" name="end-flag" id="end-flag">\n \
+					</div>';
+  }
+
+  html = html + '<button type="button" class="btn btn-primary my-2" id="edit-assignment" data-id="' + id + '"><i class="fas fa-save"></i></button>\n \
+	 			 <button type="button" class="btn btn-primary my-2" id="delete-assignment" data-id="' + id + '"><i class="fas fa-trash-alt"></i></button>\n \
+		</form>';
+  $('#edit-container').append(html);
+}
+
+function populateForm(data, type, id) {
+  for (i = 0; i < data.length; i++) {
+    $('#edit-model-select').append('<option value="' + data[i] + '">' + data[i] + '</option>');
+  }
+
+  $.get('/api/teacher/get/assignment/modelname/' + id, function (data) {
+    $('#edit-model-select').val(data['name']);
+  });
+
+  if (type == "lab") {
+    $.get('/api/teacher/get/assignment/levels/' + id, function (data) {
+      $('#start-flag').val(data['start']);
+      $('#end-flag').val(data['end']);
+    });
+  }
 }
 
 /***/ }),
 
-/***/ 6:
-/*!*********************************************!*\
-  !*** multi ./resources/js/teacherenroll.js ***!
-  \*********************************************/
+/***/ 5:
+/*!**************************************************!*\
+  !*** multi ./resources/js/teacherassignments.js ***!
+  \**************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacherenroll.js */"./resources/js/teacherenroll.js");
+module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacherassignments.js */"./resources/js/teacherassignments.js");
 
 
 /***/ })

@@ -1,6 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/js/teacherassignments.js": "/js/teacherassignments.js",
     "/js/teacherb2r.js": "/js/teacherb2r.js",
     "/js/teacherclasses.js": "/js/teacherclasses.js",
     "/js/teacherenroll.js": "/js/teacherenroll.js",

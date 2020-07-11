@@ -57,11 +57,16 @@ Route::get('/teacher/get/courses', 'CourseController@apiGet');
 Route::get('/teacher/get/classes', 'ClassController@apiGetClasses');
 Route::get('/teacher/get/enrolled/{id}', 'EnrollController@apiGetEnrolled');
 Route::get('/teacher/get/b2r/{name}', 'B2RController@apiGetEditInfo');
+Route::get('/teacher/get/all/b2r', 'B2RController@apiGetAll');
+Route::get('/teacher/get/all/lab', 'LabController@apiGetAll');
+Route::get('/teacher/get/all/ctf', 'CtfController@apiGetAll');
 Route::get('/teacher/get/lab/{name}', 'LabController@apiGetEditInfo');
 Route::get('/teacher/get/b2r/hints/{name}', 'B2RController@apiGetHints');
 Route::get('/teacher/get/lab/hints/{name}', 'LabController@apiGetHints');
 Route::get('/teacher/get/teachers', 'TeacherController@apiGetTeachers');
 Route::get('/teacher/get/students', 'TeacherController@apiGetStudents');
+Route::get('/teacher/get/assignment/levels/{id}', 'AssignmentController@apiGetLevels');
+Route::get('/teacher/get/assignment/modelname/{id}', 'AssignmentController@apiGetModelName');
 
 
 
@@ -73,6 +78,8 @@ Route::post('/teacher/delete/lab/{name}/level/{id}', 'FlagController@apiLevelDes
 Route::post('/teacher/delete/vmskill/{name}', 'VMSkillController@apiDestroy');
 Route::post('/teacher/delete/course/{name}', 'CourseController@apiDestroy');
 Route::post('/teacher/delete/class/{id}', 'ClassController@apiDestroy');
+Route::post('/teacher/delete/assignment/{id}', 'AssignmentController@apiDestroy');
+
 
 Route::post('/teacher/create/b2r/{name}/hints', 'B2RHintController@apiCreate');
 Route::post('/teacher/create/lab/{name}/hints', 'LabHintController@apiCreate');
@@ -88,6 +95,7 @@ Route::post('/teacher/unenroll/{id}', 'EnrollController@apiUnenroll');
 
 Route::post('/teacher/update/b2r/{name}/hints', 'B2RHintController@apiUpdate');
 Route::post('/teacher/update/lab/{name}/hints', 'LabHintController@apiUpdate');
+Route::post('/teacher/update/assignment/{id}', 'AssignmentController@apiUpdate');
 //Route::middleware('auth:api')->post('/chunk_upload', 'ChunkUploadController@chunkStore');
 Route::post('/teacher/upload/chunkupload', 'ChunkUploadController@chunkStore');
 

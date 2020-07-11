@@ -15,12 +15,10 @@ class CreateB2rsAssignedTable extends Migration
     {
         Schema::create('b2rs_assigned', function (Blueprint $table) {
             $table->increments('id')->unique();
-            $table->integer('assignment_id')->unsigned();
-            $table->foreign('assignment_id')->references('id')->on('assignments');
-            $table->string('b2r_name');
+            $table->string('b2r_name')->nullable()->default(null);
             $table->foreign('b2r_name')->references('name')->on('vms');
-            $table->boolean('user');
-            $table->boolean('root');
+            $table->boolean('user')->default(true);
+            $table->boolean('root')->default(true);
             $table->timestamps();
         });
     }

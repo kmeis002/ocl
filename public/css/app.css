@@ -17864,6 +17864,10 @@ hr {
   width: 5em;
 }
 
+.main-list .class {
+  width: 20rem !important;
+}
+
 .double {
   max-width: 2000px !important;
 }

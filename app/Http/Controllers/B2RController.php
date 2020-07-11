@@ -90,5 +90,9 @@ class B2RController extends Controller
         $B2R->delete();
     }
 
+    public function apiGetAll(){
+        return B2R::all()->pluck('name');
+    }
+
 
 }

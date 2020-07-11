@@ -4,15 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Skills extends Model
+class CtfsAssigned extends Model
 {
     //Setup table information
-	protected $table = 'skills';
-
+	protected $table = 'ctfs_assigned';
 
 	//Mass fillable arrays
 	protected $fillable = [
-		'skill',
+		'assignment_id', 'ctf_name',
 	];
-
 }

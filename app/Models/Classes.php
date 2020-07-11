@@ -42,4 +42,8 @@ class Classes extends Model
     	return $this->hasMany('App\Models\Enrolled', 'class_id', 'id');
     }
 
+    public function assignments(){
+        return $this->hasMany('App\Models\Assignments', 'class_id', 'id');
+    }
+
 }

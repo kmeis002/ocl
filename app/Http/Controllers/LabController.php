@@ -92,5 +92,9 @@ class LabController extends Controller
         $Lab->delete();
     }
 
+    public function apiGetAll(){
+        return Labs::all()->pluck('name');
+    }
+
     
 }

@@ -26,7 +26,7 @@
 		<h5>Manage Classwork</h5>
 
 	<ul class="list-group">
-		<li class="list-group-item"><a href="#">Assignments</a></li>
+		<li class="list-group-item"><a href="/teacher/classwork/assignments">Assignments</a></li>
 		<li class="list-group-item"><a href="#">Guides</a></li>
 		<li class="list-group-item"><a href="#">Lessons</a></li>
 		<li class="list-group-item"><a href="#">Calendar</a></li>

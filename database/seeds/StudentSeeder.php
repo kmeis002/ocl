@@ -12,7 +12,7 @@ class StudentSeeder extends Seeder
      */
     public function run()
     {
-    	$first = array('John', 'Jessie', 'Mark', 'Natalie', 'Tom', 'Karl', 'Bart', 'Alyssa', 'Melanie', 'Cordelia', 'Ashton', 'Emil', 'Emily', 'Robert');
+    	$first = array('John', 'Jessie', 'Mark', 'Natalie', 'Tom', 'Erik', 'Karl', 'Bart', 'Alyssa', 'Melanie', 'Cordelia', 'Ashton', 'Emil', 'Emily', 'Robert');
     	$last = array('Gamache', 'Meister', 'Conner', 'Clark', 'Smith', 'Beleren', 'Fisher', 'Bowman', 'Trombley', 'Amos', 'Pollard');
     	
 

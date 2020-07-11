@@ -13,4 +13,8 @@ class Enrolled extends Model
 	protected $fillable = [
 		'student', 'class_id',
 	];
+
+	public function class(){
+		return $this->belongsTo('App\Models\Classes', 'class_id');
+	}
 }

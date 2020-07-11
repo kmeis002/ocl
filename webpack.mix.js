@@ -17,6 +17,6 @@ mix.webpackConfig({
  */
 
 mix.js('resources/js/app.js', 'public/js').js('resources/js/teacherresource.js', 'public/js/').js('resources/js/teacherclasses.js', 'public/js/')
-.js('resources/js/teacherb2r.js', 'public/js/').js('resources/js/teacherlab.js', 'public/js/')
+.js('resources/js/teacherb2r.js', 'public/js/').js('resources/js/teacherlab.js', 'public/js/').js('resources/js/teacherassignments.js', 'public/js')
 .js('resources/js/teacherenroll.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');

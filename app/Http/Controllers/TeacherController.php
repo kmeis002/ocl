@@ -14,6 +14,7 @@ use App\Models\Courses;
 use App\Models\Teacher;
 use App\Models\Student;
 use App\Models\Enrolled;
+use App\Models\Assignments;
 
 class TeacherController extends Controller
 {
@@ -63,11 +64,14 @@ class TeacherController extends Controller
             $enrolledList = Enrolled::all();
             return view('teacher.classes.classlist')->with(['enrolledList'=>$enrolledList, 'classList'=>$classList, 'type' => $type]);
         }
-
-        
-        
     }
 
+    public function assignmentsList(){
+        $types = array('Lab', 'CTF', 'B2R');
+        $classes = Classes::all();
+        $assignments = Assignments::all();
+        return view('teacher.classwork.assignments')->with(['types' => $types, 'classes' => $classes, 'assignments' => $assignments]);
+    }
 
 
     public function apiGetTeachers(){

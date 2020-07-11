@@ -15,12 +15,12 @@ class CreateAssignmentsTable extends Migration
     {
         Schema::create('assignments', function (Blueprint $table) {
             $table->increments('id')->unique();
-            $table->string('student');
-            $table->foreign('student')->references('name')->on('students');
+            $table->integer('class_id')->unsigned();
+            $table->foreign('class_id')->references('id')->on('classes');
             $table->string('prefix');
-            $table->string('model_id');
-            $table->string('start_date');
-            $table->string('end_date');
+            $table->integer('model_id')->nullable()->default(null);
+            $table->date('start_date');
+            $table->date('end_date');
             $table->timestamps();
         });
     }

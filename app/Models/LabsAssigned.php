@@ -4,15 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Skills extends Model
+class LabsAssigned extends Model
 {
     //Setup table information
-	protected $table = 'skills';
-
+	protected $table = 'labs_assigned';
 
 	//Mass fillable arrays
 	protected $fillable = [
-		'skill',
+		'assignment_id', 'lab_name', 'start_level', 'end_level',
 	];
 
 }
