@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class StudentSeeder extends Seeder
 {
@@ -27,7 +28,7 @@ class StudentSeeder extends Seeder
         	'name' => $name,
         	'first' => $first,
         	'last' => $last,
-        	'password' => md5(Str::random(50)),
+        	'password' => Hash::make('test'),
         	'total_score' => 0,
         	'created_at' => \Carbon\Carbon::now(),
         	'updated_at' => \Carbon\Carbon::now(),

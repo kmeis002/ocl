@@ -20,29 +20,38 @@ Route::get('/', function () {
 
 //Student Routes
 
-Route::group(['prefix'=>'/student'], function() {
-  Route::get('/login', [
+Route::group(['middleware' => 'auth:student', 'prefix'=>'/student'], function() {
+
+  Route::get('/','StudentController@show');
+  Route::get('/list/resources/{type}', 'StudentController@listResources');
+
+  Route::group(['prefix'=>'/get'], function() {
+    Route::get('/b2r/{name}', 'B2RController@apiStudentGet');
+    Route::get('/lab/{name}', 'LabController@apiStudentGet');
+    Route::post('/hint/b2r/{name}', 'B2RHintController@reveal');
+    Route::post('/hint/lab/{name}', 'LabHintController@reveal');
+  });
+
+
+
+ 
+});
+
+  Route::get('/student/login', [
     'as' => 'student.login',
     'uses' => 'Auth\StudentLoginController@showLoginForm'
   ]);
-  Route::post('/login', [
+
+  Route::post('/student/login', [
     'as' => '',
     'uses' => 'Auth\StudentLoginController@login'
   ]);
-  Route::get('/register', [
-    'as' => 'student.register',
-    'uses' => 'Auth\RegisterStudentController@showRegistrationForm'
+
+  //logout
+  Route::get('/student/logout', [
+    'as' => '/logout',
+    'uses' => 'Auth\StudentLoginController@logout'
   ]);
-  Route::post('/register', [
-    'as' => '',
-    'uses' => 'Auth\RegisterStudentController@register'
-  ]);
-  Route::get('/','StudentController@show');
-});
-
-
-
-
 //Teacher Routes
 Route::group(['prefix'=>'/teacher'], function(){
   Route::get('/home', 'PageTest@teacherHome');
@@ -58,11 +67,9 @@ Route::group(['prefix'=>'/teacher'], function(){
 
 });
 
-//logout
-Route::post('/logout', [
-  'as' => '/logout',
-  'uses' => 'Auth\StudentLoginController@logout'
-]);
+
+
+
 
 
 

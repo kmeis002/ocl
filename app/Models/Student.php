@@ -47,6 +47,10 @@ class Student extends Authenticatable
         return $this->hasMany('App\Models\Enrolled', 'student', 'name');
     }
 
+    public function hintsUsed(){
+        return $this->hasMany('App\Models\HintsUsed', 'student', 'name');
+    }
+
     public function enrolledCount(){
         return $this->enrolled()->get()->count();
     }

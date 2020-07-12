@@ -17719,6 +17719,10 @@ hr {
   color: #fff !important;
 }
 
+.model-view {
+  max-width: 2000px !important;
+}
+
 .lab-layout {
   border: 1px solid #fff !important;
 }
@@ -17803,6 +17807,7 @@ hr {
 }
 
 .machine-list table {
+  width: 1500px !important;
   border: 1px solid #fff;
   background: rgba(30, 207, 17, 0.25);
   table-layout: fixed;

@@ -53,25 +53,8 @@ class FlagController extends Controller
     }
 
     //Checks flag and rotates if config is set to do so (otherwise, rotate manually or timed task)
-    public function submitFlag(Request $request){
-    	    if(empty($request->input('name')) || empty($request->input('flag')) || empty($request->input('submission')))
-    		{
-    			return response()->json(['message'=>'Flag rotation requires fields \'name\', \'flag\', and \'submission\''], 400);
-     		}
-     		$name = $request->input('name');
-    		$flag = $request->input('flag');
-    		$sub = $request->input('submission');
-    		$vm = VM::find($name);
-
-    		if($vm->checkFlag($flag, $sub)){
-    			//Add student code here to update their profile
-    			if(config('flag.on_submit')){
-    				$this->rotateFlag($request);
-    			}
-    			return response()->json(['flag valid', true], 200);
-    		}
-
-    		return response()->json(['flag valid', false], 200);
+    public function submitFlag(Request $request, $name){
+    	    return $request;
     }
 
     public function apiLevelCreate(Request $request, $name){

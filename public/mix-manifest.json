@@ -1,6 +1,10 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/js/studentb2rs.js": "/js/studentb2rs.js",
+    "/js/studentctflist.js": "/js/studentctflist.js",
+    "/js/studentlabs.js": "/js/studentlabs.js",
+    "/js/studentmachinelist.js": "/js/studentmachinelist.js",
     "/js/teacherassignments.js": "/js/teacherassignments.js",
     "/js/teacherb2r.js": "/js/teacherb2r.js",
     "/js/teacherclasses.js": "/js/teacherclasses.js",

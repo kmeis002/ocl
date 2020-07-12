@@ -85,6 +85,22 @@ class B2R extends VM
 		return $this->hasMany('App\Models\VMSkills', 'vm_name', 'name');
 	}
 
+    public function getRootHints(){
+        $hintInfo = DB::table('b2r_hints')->select('id')->where([
+            ['b2r_name', '=', $this->name],
+            ['is_root', '=', '1']
+        ])->get();
+        return $hintInfo;
+    }
+
+    public function getUserHints(){
+        $hintInfo = DB::table('b2r_hints')->select('id')->where([
+            ['b2r_name', '=', $this->name],
+            ['is_root', '=', '0']
+        ])->get();
+        return $hintInfo;
+    }
+
 
 	//Events
 	public static function boot() {

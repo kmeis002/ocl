@@ -96,5 +96,15 @@ class LabController extends Controller
         return Labs::all()->pluck('name');
     }
 
+
+    public function apiStudentGet($name){
+        $lab = Labs::find($name);
+        $lab->skills;
+        $levelCount = $lab->countLevels();
+        $hints = $lab->getHints();
+        
+        return response()->json(['machine'=>$lab, 'levels' => $levelCount, 'hints'=>$hints], 200);
+    }
+
     
 }

@@ -68,7 +68,7 @@ class StudentLoginController extends Controller
             'password' => $request->password
         ];
         
-        //attempt to log user in as teacher
+        //attempt to log user in as student
         if(Auth::guard('student')->attempt($credentials, $request->remember)){
             return $this->sendLoginResponse($request);
         }

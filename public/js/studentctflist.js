@@ -81,106 +81,81 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/teacher/teacherclasses.js":
+/***/ "./resources/js/student/studentctflist.js":
 /*!************************************************!*\
-  !*** ./resources/js/teacher/teacherclasses.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(/*! ./teachercourses */ "./resources/js/teacher/teachercourses.js");
-
-/***/ }),
-
-/***/ "./resources/js/teacher/teachercourses.js":
-/*!************************************************!*\
-  !*** ./resources/js/teacher/teachercourses.js ***!
+  !*** ./resources/js/student/studentctflist.js ***!
   \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-//------------------COURSE JQUERY---------------------//
-$(document).on('click', '#add-new-course', function () {
-  var courseName = $('#new-course-name').val();
-  $.post('/api/teacher/create/course', {
-    name: courseName
-  }, function (data) {
-    location.reload();
-  });
-});
-$(document).on('click', '.delete-course', function () {
-  var id = $(this).data('id');
-  var courseName = $('#course-' + id).text();
-  $.post('/api/teacher/delete/course/' + courseName, {
-    name: courseName
-  }, function (data) {
-    location.reload();
-  });
-}); //------------------CLASS JQUERY---------------------//
-
-$(document).on('click', '#add-new-class', function () {
-  var courseName = $('#new-class-course').val();
-  var teacherName = $('#new-class-teacher').val();
-  var bell = $('#new-class-bell').val();
-  $.post('/api/teacher/create/class', {
-    course: courseName,
-    teacher: teacherName,
-    bell: bell
-  }, function (data) {
-    location.reload();
-  });
-});
-$(document).on('click', '.delete-class', function () {
-  var id = $(this).data('id');
-  $.post('/api/teacher/delete/class/' + id, function (data) {
-    location.reload();
-  });
-}); //------------------SELECT JQUERY---------------------//
-
 $(document).ready(function () {
-  $.get('/api/teacher/get/courses', function (data) {
-    makeCourseList(data);
+  var radios = $('input[type="radio"]');
+  radios.change(function () {
+    var catvalue = $('input[name="cat-options"]:checked').val().toLowerCase();
+    var ptvalue = $('input[name="pt-options"]:checked').val().toLowerCase();
+    var svalue = $('input[name="s-options"]:checked').val().toLowerCase();
+
+    if (catvalue == 'all' || ptvalue == 'all' || svalue == 'all') {
+      $("#ctf-list tr").filter(function () {
+        $(this).show();
+      });
+    }
+
+    if (catvalue != 'all') {
+      $("#ctf-list tr:visible").filter(function () {
+        $(this).toggle($(this).find('.cat').text().toLowerCase().indexOf(catvalue) > -1);
+      });
+    }
+
+    if (ptvalue != 'all') {
+      $("#ctf-list tr:visible").filter(function () {
+        $(this).toggle(parseInt($(this).find('.pts').text()) <= parseInt(ptvalue) && parseInt($(this).find('.pts').text()) > parseInt(ptvalue) - 10);
+      });
+    }
+
+    if (svalue != 'all') {
+      $("#ctf-list tr:visible").filter(function () {
+        $(this).toggle($(this).find('.assigned').text().toLowerCase().indexOf(svalue) > -1);
+      });
+    }
+  });
+  $("#name-search").on("keyup", function () {
+    var value = $(this).val().toLowerCase();
+    $("#ctf-list tr").filter(function () {
+      $(this).toggle($(this).find('.ctf-name').text().toLowerCase().indexOf(value) > -1);
+    });
+  });
+  $('#descriptionModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var title = button.data('title');
+    var msg = button.data('msg');
+    var modal = $(this);
+    modal.find('.modal-header').text(title);
+    modal.find('.modal-body').text(msg);
+  });
+  $('#flagModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var title = button.data('title');
+    var modal = $(this);
+    modal.find('.modal-header').text('Submit ' + title + ' Flag');
   });
 });
-$(document).ready(function () {
-  $.get('/api/teacher/get/teachers', function (data) {
-    makeTeacherList(data);
-  });
-});
-
-function makeCourseList(courses) {
-  $('#new-class-course').empty();
-
-  for (i = 0; i < courses.length; i++) {
-    html = '<option value = "' + courses[i]['name'] + '">' + courses[i]['name'] + '</option>\n';
-    $('#new-class-course').append(html);
-  }
-}
-
-function makeTeacherList(teachers) {
-  $('#new-class-teacher').empty();
-
-  for (i = 0; i < teachers.length; i++) {
-    html = '<option value = "' + teachers[i] + '">' + teachers[i] + '</option>\n';
-    $('#new-class-teacher').append(html);
-  }
-}
 
 /***/ }),
 
-/***/ 2:
+/***/ 10:
 /*!******************************************************!*\
-  !*** multi ./resources/js/teacher/teacherclasses.js ***!
+  !*** multi ./resources/js/student/studentctflist.js ***!
   \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacher/teacherclasses.js */"./resources/js/teacher/teacherclasses.js");
+module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/student/studentctflist.js */"./resources/js/student/studentctflist.js");
 
 
 /***/ })

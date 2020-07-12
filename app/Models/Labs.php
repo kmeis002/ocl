@@ -89,6 +89,16 @@ class Labs extends VM
 		return $this->hasMany('App\Models\VMSkills', 'vm_name', 'name');
 	}
 
+    public function getHints(){
+        $hintInfo = DB::table('lab_hints')->select('id', 'level')->where([
+            ['lab_name', '=', $this->name],
+        ])->get();
+        return $hintInfo;
+    }
+
+    public function countLevels(){
+    	return DB::table('lab_flags')->where(['lab_name' => $this->name])->count();
+    }
 
 	//Events
 	public static function boot() {

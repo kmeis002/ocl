@@ -86,10 +86,10 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/teacherb2r.js":
-/*!************************************!*\
-  !*** ./resources/js/teacherb2r.js ***!
-  \************************************/
+/***/ "./resources/js/teacher/teacherb2r.js":
+/*!********************************************!*\
+  !*** ./resources/js/teacher/teacherb2r.js ***!
+  \********************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -117,13 +117,13 @@ $(document).ready(function () {
 /***/ }),
 
 /***/ 3:
-/*!******************************************!*\
-  !*** multi ./resources/js/teacherb2r.js ***!
-  \******************************************/
+/*!**************************************************!*\
+  !*** multi ./resources/js/teacher/teacherb2r.js ***!
+  \**************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacherb2r.js */"./resources/js/teacherb2r.js");
+module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacher/teacherb2r.js */"./resources/js/teacher/teacherb2r.js");
 
 
 /***/ })

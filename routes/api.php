@@ -34,73 +34,103 @@ Route::post('/flag/rotate', 'FlagController@rotateFlag');
 
 //AJAX Student Routes
 Route::post('/hints/lab', 'LabHintController@reveal');
-Route::post('/hints/b2r', 'B2RHintController@reveal');
 
-Route::post('/vms/status', 'VboxController@status');
 
 
 //AJAX Teacher Testing Route (no auth!)
 
+Route::group(['prefix'=>'/teacher'], function() {
+	Route::group(['prefix' => '/get'], function(){
+		Route::get('/vbox/vminfo/{name}', 'VboxController@apiGetInfo');
+		Route::get('/vbox/interfaces', 'VboxController@apiGetHostInterfaces');
+		Route::get('/vbox/adapter/{name}', 'VboxController@apiGetBridgeAdapter');
+		Route::get('/vbox/vminfo/{name}', 'VboxController@apiGetInfo');
+		Route::get('/vbox/interfaces', 'VboxController@apiGetHostInterfaces');
+		Route::get('/vbox/adapter/{name}', 'VboxController@apiGetBridgeAdapter');
+		Route::get('/skills', 'SkillController@apiGet');
+		Route::get('/courses', 'CourseController@apiGet');
+		Route::get('/classes', 'ClassController@apiGetClasses');
+		Route::get('/enrolled/{id}', 'EnrollController@apiGetEnrolled');
+		Route::get('/b2r/{name}', 'B2RController@apiGetEditInfo');
+		Route::get('/all/b2r', 'B2RController@apiGetAll');
+		Route::get('/all/lab', 'LabController@apiGetAll');
+		Route::get('/all/ctf', 'CtfController@apiGetAll');
+		Route::get('/lab/{name}', 'LabController@apiGetEditInfo');
+		Route::get('/b2r/hints/{name}', 'B2RController@apiGetHints');
+		Route::get('/lab/hints/{name}', 'LabController@apiGetHints');
+		Route::get('/teachers', 'TeacherController@apiGetTeachers');
+		Route::get('/students', 'TeacherController@apiGetStudents');
+		Route::get('/assignment/levels/{id}', 'AssignmentController@apiGetLevels');
+		Route::get('/assignment/modelname/{id}', 'AssignmentController@apiGetModelName');
+	});
 
-Route::get('/teacher/get/vbox/vminfo/{name}', 'VboxController@apiGetInfo');
-Route::get('/teacher/get/vbox/interfaces', 'VboxController@apiGetHostInterfaces');
-Route::get('/teacher/get/vbox/adapter/{name}', 'VboxController@apiGetBridgeAdapter');
-Route::post('/teacher/set/vbox/network/{name}', 'VboxController@apiSetNetworkInterface');
-Route::post('/teacher/set/vbox/bridged/{name}', 'VboxController@apiSetBridgedAdapter');
-Route::post('/teacher/set/vbox/reset/{name}', 'VboxController@apiReset');
-Route::post('/teacher/set/vbox/power/{name}', 'VboxController@apiPower');
-Route::post('/teacher/set/vbox/unregister/{name}', 'VboxController@apiUnregister');
-Route::post('/teacher/set/vbox/register/{name}', 'VboxController@apiRegister');
+	Route::group(['prefix' => '/set/vbox'], function(){
+		Route::post('/network/{name}', 'VboxController@apiSetNetworkInterface');
+		Route::post('/bridged/{name}', 'VboxController@apiSetBridgedAdapter');
+		Route::post('/reset/{name}', 'VboxController@apiReset');
+		Route::post('/power/{name}', 'VboxController@apiPower');
+		Route::post('/unregister/{name}', 'VboxController@apiUnregister');
+		Route::post('/register/{name}', 'VboxController@apiRegister');
+		Route::post('/network/{name}', 'VboxController@apiSetNetworkInterface');
+		Route::post('/bridged/{name}', 'VboxController@apiSetBridgedAdapter');
+		Route::post('/reset/{name}', 'VboxController@apiReset');
+		Route::post('/power/{name}', 'VboxController@apiPower');
+		Route::post('/unregister/{name}', 'VboxController@apiUnregister');
+		Route::post('/register/{name}', 'VboxController@apiRegister');
+	});
 
-Route::get('/teacher/get/skills', 'SkillController@apiGet');
-Route::get('/teacher/get/courses', 'CourseController@apiGet');
-Route::get('/teacher/get/classes', 'ClassController@apiGetClasses');
-Route::get('/teacher/get/enrolled/{id}', 'EnrollController@apiGetEnrolled');
-Route::get('/teacher/get/b2r/{name}', 'B2RController@apiGetEditInfo');
-Route::get('/teacher/get/all/b2r', 'B2RController@apiGetAll');
-Route::get('/teacher/get/all/lab', 'LabController@apiGetAll');
-Route::get('/teacher/get/all/ctf', 'CtfController@apiGetAll');
-Route::get('/teacher/get/lab/{name}', 'LabController@apiGetEditInfo');
-Route::get('/teacher/get/b2r/hints/{name}', 'B2RController@apiGetHints');
-Route::get('/teacher/get/lab/hints/{name}', 'LabController@apiGetHints');
-Route::get('/teacher/get/teachers', 'TeacherController@apiGetTeachers');
-Route::get('/teacher/get/students', 'TeacherController@apiGetStudents');
-Route::get('/teacher/get/assignment/levels/{id}', 'AssignmentController@apiGetLevels');
-Route::get('/teacher/get/assignment/modelname/{id}', 'AssignmentController@apiGetModelName');
+	Route::group(['prefix' => '/delete'], function(){
+		Route::post('/b2r/hints/{id}', 'B2RHintController@apiDestroy');
+		Route::post('/b2r/{name}', 'B2RController@apiDestroy');
+		Route::post('/lab/{name}', 'LabController@apiDestroy');
+		Route::post('/lab/hints/{id}', 'LabHintController@apiDestroy');
+		Route::post('/lab/{name}/level/{id}', 'FlagController@apiLevelDestroy');
+		Route::post('/vmskill/{name}', 'VMSkillController@apiDestroy');
+		Route::post('/course/{name}', 'CourseController@apiDestroy');
+		Route::post('/class/{id}', 'ClassController@apiDestroy');
+		Route::post('/assignment/{id}', 'AssignmentController@apiDestroy');
+		Route::post('/vm/file/{name}', 'VMController@apiDeleteOva');
+	});
 
+	Route::group(['prefix' => '/create'], function(){
+		Route::post('/b2r/{name}/hints', 'B2RHintController@apiCreate');
+		Route::post('/lab/{name}/hints', 'LabHintController@apiCreate');
+		Route::post('/lab/{name}/level', 'FlagController@apiLevelCreate');
+		Route::post('/vmskill/{name}', 'VMSkillController@apiCreate');
+		//Route::post('/b2r', 'B2RController@apiCreate');
+		//Route::post('/lab', 'LabController@apiCreate');
+		Route::post('/course', 'CourseController@apiCreate');
+		Route::post('/class', 'ClassController@apiCreate');
+	});
 
+	Route::group(['prefix' => '/update'], function(){
+		Route::post('/b2r/{name}/hints', 'B2RHintController@apiUpdate');
+		Route::post('/lab/{name}/hints', 'LabHintController@apiUpdate');
+		Route::post('/assignment/{id}', 'AssignmentController@apiUpdate');
+	});
+	
+	Route::post('/enroll/{id}', 'EnrollController@apiEnroll');
+	Route::post('/unenroll/{id}', 'EnrollController@apiUnenroll');
+	Route::post('/upload/chunkupload', 'ChunkUploadController@chunkStore');
 
-Route::post('/teacher/delete/b2r/hints/{id}', 'B2RHintController@apiDestroy');
-Route::post('/teacher/delete/b2r/{name}', 'B2RController@apiDestroy');
-Route::post('/teacher/delete/lab/{name}', 'LabController@apiDestroy');
-Route::post('/teacher/delete/lab/hints/{id}', 'LabHintController@apiDestroy');
-Route::post('/teacher/delete/lab/{name}/level/{id}', 'FlagController@apiLevelDestroy');
-Route::post('/teacher/delete/vmskill/{name}', 'VMSkillController@apiDestroy');
-Route::post('/teacher/delete/course/{name}', 'CourseController@apiDestroy');
-Route::post('/teacher/delete/class/{id}', 'ClassController@apiDestroy');
-Route::post('/teacher/delete/assignment/{id}', 'AssignmentController@apiDestroy');
-
-
-Route::post('/teacher/create/b2r/{name}/hints', 'B2RHintController@apiCreate');
-Route::post('/teacher/create/lab/{name}/hints', 'LabHintController@apiCreate');
-Route::post('/teacher/create/lab/{name}/level', 'FlagController@apiLevelCreate');
-Route::post('/teacher/create/vmskill/{name}', 'VMSkillController@apiCreate');
-Route::post('/teacher/create/b2r', 'B2RController@apiCreate');
-Route::post('/teacher/create/course', 'CourseController@apiCreate');
-Route::post('/teacher/create/class', 'ClassController@apiCreate');
-
-Route::post('/teacher/enroll/{id}', 'EnrollController@apiEnroll');
-Route::post('/teacher/unenroll/{id}', 'EnrollController@apiUnenroll');
-
-
-Route::post('/teacher/update/b2r/{name}/hints', 'B2RHintController@apiUpdate');
-Route::post('/teacher/update/lab/{name}/hints', 'LabHintController@apiUpdate');
-Route::post('/teacher/update/assignment/{id}', 'AssignmentController@apiUpdate');
-//Route::middleware('auth:api')->post('/chunk_upload', 'ChunkUploadController@chunkStore');
-Route::post('/teacher/upload/chunkupload', 'ChunkUploadController@chunkStore');
+});
 
 
-Route::post('/teacher/delete/vm/file/{name}', 'VMController@apiDeleteOva');
+Route::group(['prefix'=>'/student', 'middleware'=>'auth:student'], function() {
+	Route::group(['prefix'=>'/get'], function() {
+		Route::get('/b2r/{name}', 'B2RController@apiStudentGet');
+		Route::get('/lab/{name}', 'LabController@apiStudentGet');
+		Route::post('/hint/b2r/{name}', 'B2RHintController@reveal');
+		Route::post('/hint/lab/{name}', 'LabHintController@reveal');
+	});
 
 
-Route::get('/test/{name}', 'ChunkUploadController@test');
+});
+
+
+
+
+
+
+
+

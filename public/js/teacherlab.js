@@ -86,10 +86,10 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/teacherlab.js":
-/*!************************************!*\
-  !*** ./resources/js/teacherlab.js ***!
-  \************************************/
+/***/ "./resources/js/teacher/teacherlab.js":
+/*!********************************************!*\
+  !*** ./resources/js/teacher/teacherlab.js ***!
+  \********************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -156,13 +156,13 @@ $(document).ready(function () {
 /***/ }),
 
 /***/ 4:
-/*!******************************************!*\
-  !*** multi ./resources/js/teacherlab.js ***!
-  \******************************************/
+/*!**************************************************!*\
+  !*** multi ./resources/js/teacher/teacherlab.js ***!
+  \**************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacherlab.js */"./resources/js/teacherlab.js");
+module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacher/teacherlab.js */"./resources/js/teacher/teacherlab.js");
 
 
 /***/ })

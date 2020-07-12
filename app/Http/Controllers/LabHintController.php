@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\LabHints;
-use App\Models\LabFlags;
+use App\Models\HintsUsed;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,18 +74,25 @@ class LabHintController extends Controller
     }
 
     //api method for revealing hints via ajax (still need to add updating functionality for student tracking)
-    public function reveal(Request $request){
+    public function reveal(Request $request, $name){
         $request->validate([
-            'lab_name' => 'required',
-            'hint_num' => 'required|numeric'
+            'hint' => 'required|numeric',
         ]); 
 
-        $lab = $request->input('lab_name');
-        $hint = $request->input('hint_num');
 
-        $hint = LabHints::where(['lab_name' => $lab])->get()[$hint]['hint'];
+        $hint = LabHints::find($request->input('hint'));
 
-        return response()->json(['hint' => $hint]);
+        //Update HintsUsed table
+        $username = Auth::user()->name;
+        $hintId = $hint->id;
+
+        HintsUsed::create([
+            'student' => $username,
+            'hint_id' => $hintId,
+            'machine_name' => $name,
+        ]);
+
+        return response()->json(['hint' => $hint['hint'], 'user' => Auth::user()]);
     }
 
 }

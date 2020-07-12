@@ -86,10 +86,10 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/teacherenroll.js":
-/*!***************************************!*\
-  !*** ./resources/js/teacherenroll.js ***!
-  \***************************************/
+/***/ "./resources/js/teacher/teacherenroll.js":
+/*!***********************************************!*\
+  !*** ./resources/js/teacher/teacherenroll.js ***!
+  \***********************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -171,13 +171,13 @@ function populateEnrolledList(classId) {
 /***/ }),
 
 /***/ 6:
-/*!*********************************************!*\
-  !*** multi ./resources/js/teacherenroll.js ***!
-  \*********************************************/
+/*!*****************************************************!*\
+  !*** multi ./resources/js/teacher/teacherenroll.js ***!
+  \*****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacherenroll.js */"./resources/js/teacherenroll.js");
+module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacher/teacherenroll.js */"./resources/js/teacher/teacherenroll.js");
 
 
 /***/ })

@@ -95,4 +95,14 @@ class B2RController extends Controller
     }
 
 
+    public function apiStudentGet($name){
+        $b2r = B2R::find($name);
+        $b2r->skills;
+        $userHints = $b2r->getUserHints();
+        $rootHints = $b2r->getRootHints();
+        
+        return response()->json(['machine'=>$b2r, 'userHints'=>$userHints, 'rootHints'=>$rootHints], 200);
+    }
+
+
 }

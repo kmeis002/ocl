@@ -21,7 +21,6 @@ class CreateHintsUsedTable extends Migration
             $table->string('machine_name');
             $table->foreign('machine_name')->references('name')->on('vms');
             $table->foreign('student')->references('name')->on('students');
-            $table->foreign('hint_id')->references('id')->on('lab_hints');
             $table->timestamps();
         });
     }

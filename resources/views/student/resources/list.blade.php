@@ -2,10 +2,15 @@
 
 @section('scripts')
 @if($type !== 'ctf')
-<script src={{ asset('js/machine-list-scripts.js') }}></script>
+<script src={{ asset('js/studentmachinelist.js') }}></script>
+  @if($type === 'b2r')
+  <script src={{ asset('js/studentb2rs.js') }}></script>
+  @elseif($type === 'lab')
+  <script src={{ asset('js/studentlabs.js') }}></script>
+  @endif
 @endif
 @if($type === 'ctf')
-<script src={{ asset('js/ctf-list-scripts.js') }}></script>
+<script src={{ asset('js/studentctflist.js') }}></script>
 @endif
 @endsection
 
@@ -65,9 +70,9 @@
   <label class="btn btn-secondary">
     <input type="radio" name="s-options" id="s-option3" value="Incomplete" autocomplete="off"> Incomplete
   </label>
-</div>
+  </div>
 
-  <div class="btn-group btn-group-toggle mx-5" data-toggle="buttons">
+<div class="btn-group btn-group-toggle mx-5" data-toggle="buttons">
   <label class="btn btn-secondary active">
     <input type="radio" name="pt-options" id="pt-option1" value="All" autocomplete="off" checked> All
   </label>
@@ -76,73 +81,37 @@
     <input type="radio" name="pt-options" id="pt-option2" value="{{$i}}" autocomplete="off"> {{$i}}
   </label>
   @endfor
-</div>
-</div>
-
-
-@if($type === 'lab' || $type === 'b2r')
- <div class='container d-flex flex-row my-3 justify-content-start machine-list' style="max-width: 1500px; flex-wrap: wrap">
-  <table class="table table-dark table-borderless table-striped table-hover">
-    <thead>
-      <tr>
-        <th class= "icon" cope="col"> </th>
-        <th scope="col">Machine Name</th>
-        <th scope="col">OS</th>
-        <th scope="col">Points</th>
-        <th scope="col">Assigned</th>
-      </tr>
-    </thead>
-    <tbody id="machine-list">
-      @foreach($list as $item)
-      <tr>
-        <td class="icon"><span class="text-center"><i class="{{$item->icon}}"></i></span></td>
-        <td class="machine-name"><a href="/presenter/{{$type}}/{{$item->name}}">{{$item->name}}</a></td>
-        <td class="os" >{{$item->os}}</td>
-        <td class="pts">{{$item->points}}</td>
-        <td>To Be Implemented</td>
-      </tr></a>
-      @endforeach
-    </tbody>
-  </table>
  </div>
- @endif
+</div>
 
- @if($type === 'ctf')
- <div class='container d-flex flex-row my-3 justify-content-start ctf-list' style="max-width: 1500px; flex-wrap: wrap">
-  <table class="table table-dark table-borderless table-striped table-hover">
-    <thead>
-      <tr>
-        <th class= "icon" cope="col"> </th>
-        <th scope="col">CTF Name</th>
-        <th scope="col">Category</th>
-        <th scope="col">Points</th>
-        <th scope="col">Description</th>
-        <th scope="col">Assigned</th>
-        <th scope="col">Submit Flag</th>
-      </tr>
-    </thead>
-    <tbody id="ctf-list">
-      @foreach($list as $item)
-      <tr>
-        <td class="icon"><span class="text-center"><i class="{{$item->icon}}"></i></span></td>
-        <td class="ctf-name"><a href="#">{{$item->name}}</a></td>
-        <td class="cat">{{$item->category}}</td>
-        <td class="pts">{{$item->points}}</td>
-        <td class="description" ><button type="button" class="btn-primary" data-toggle="modal" data-target="#descriptionModal" data-title="{{$item->name}} Description" data-msg="{{$item->description}}"><i class="fas fa-question fa-2x"></i></button></td>
-        <td class="assigned">filler</td>
-        <td><button type='button' class="btn-secondary" data-toggle="modal" data-target="#flagModal" data-title="{{$item->name}}"><i class="fas fa-flag fa-2x"></i></button></td>
-      </tr></a>
-      @endforeach
-    </tbody>
-  </table>
- </div>
- @endif
-
+@if($type !== 'ctf')
+  <div class="container d-flex justify-content-between model-view my-5">
+@else
+ <div class="container d-flex justify-content-between my-5">
+@endif
+    <div class="row">
+      <div class="col-lg">
+        @include('student.resources.tables.tablelist')
+      </div>
+@if($type !== 'ctf')
+      <div class="col-lg">
+        @if($type === 'b2r')
+        @include('student.resources.forms.displayb2r')
+        @elseif($type === 'lab')
+        @include('student.resources.forms.displaylab')
+        @endif
+      </div>
+@endif
+    </div>
+  </div>
+</div>
 @endsection
 
 
 
 @section('modals')
+@if($type === 'ctf')
 @include('student.modal.description')
+@endif
 @include('student.modal.flag')
 @endsection

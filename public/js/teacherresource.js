@@ -86,10 +86,10 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/chunkupload.js":
-/*!*************************************!*\
-  !*** ./resources/js/chunkupload.js ***!
-  \*************************************/
+/***/ "./resources/js/teacher/chunkupload.js":
+/*!*********************************************!*\
+  !*** ./resources/js/teacher/chunkupload.js ***!
+  \*********************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -206,10 +206,10 @@ window.selectorScript = function (url, name) {
 
 /***/ }),
 
-/***/ "./resources/js/createvm.js":
-/*!**********************************!*\
-  !*** ./resources/js/createvm.js ***!
-  \**********************************/
+/***/ "./resources/js/teacher/createvm.js":
+/*!******************************************!*\
+  !*** ./resources/js/teacher/createvm.js ***!
+  \******************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -217,10 +217,10 @@ $(document).ready(function () {});
 
 /***/ }),
 
-/***/ "./resources/js/teacheredithints.js":
-/*!******************************************!*\
-  !*** ./resources/js/teacheredithints.js ***!
-  \******************************************/
+/***/ "./resources/js/teacher/teacheredithints.js":
+/*!**************************************************!*\
+  !*** ./resources/js/teacher/teacheredithints.js ***!
+  \**************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -410,27 +410,27 @@ window.makePagination = function (pages) {
 
 /***/ }),
 
-/***/ "./resources/js/teacherresource.js":
-/*!*****************************************!*\
-  !*** ./resources/js/teacherresource.js ***!
-  \*****************************************/
+/***/ "./resources/js/teacher/teacherresource.js":
+/*!*************************************************!*\
+  !*** ./resources/js/teacher/teacherresource.js ***!
+  \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./chunkupload */ "./resources/js/chunkupload.js");
+__webpack_require__(/*! ./chunkupload */ "./resources/js/teacher/chunkupload.js");
 
-__webpack_require__(/*! ./teacherresourcefunctions */ "./resources/js/teacherresourcefunctions.js");
+__webpack_require__(/*! ./teacherresourcefunctions */ "./resources/js/teacher/teacherresourcefunctions.js");
 
-__webpack_require__(/*! ./createvm */ "./resources/js/createvm.js");
+__webpack_require__(/*! ./createvm */ "./resources/js/teacher/createvm.js");
 
-__webpack_require__(/*! ./teacheredithints */ "./resources/js/teacheredithints.js");
+__webpack_require__(/*! ./teacheredithints */ "./resources/js/teacher/teacheredithints.js");
 
 /***/ }),
 
-/***/ "./resources/js/teacherresourcefunctions.js":
-/*!**************************************************!*\
-  !*** ./resources/js/teacherresourcefunctions.js ***!
-  \**************************************************/
+/***/ "./resources/js/teacher/teacherresourcefunctions.js":
+/*!**********************************************************!*\
+  !*** ./resources/js/teacher/teacherresourcefunctions.js ***!
+  \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -779,13 +779,13 @@ function makeStatus(status) {
 /***/ }),
 
 /***/ 1:
-/*!***********************************************!*\
-  !*** multi ./resources/js/teacherresource.js ***!
-  \***********************************************/
+/*!*******************************************************!*\
+  !*** multi ./resources/js/teacher/teacherresource.js ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacherresource.js */"./resources/js/teacherresource.js");
+module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacher/teacherresource.js */"./resources/js/teacher/teacherresource.js");
 
 
 /***/ })

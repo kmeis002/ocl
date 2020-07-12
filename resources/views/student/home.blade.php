@@ -26,7 +26,7 @@
     <div class="container py-5 selector-grid">
         <div class="row w-100">
             <div class="col my-3">
-                <a href="/presenter/list/lab">
+                <a href="/student/list/resources/lab">
                     <div class="card bg-primary-trans overlay">
                         <i class="fas fa-flask fa-7x card-img-top text-center my-5"></i>
                         <div class="card-body"><p class="text-center">Lab Machines</p></div>
@@ -34,7 +34,7 @@
                 </a>
             </div>
             <div class="col my-3">
-                <a href="/presenter/list/b2r">
+                <a href="/student/list/resources/b2r">
                     <div class="card bg-primary-trans">
                         <i class="fas fa-hashtag fa-7x card-img-top text-center my-5"></i>
                         <div class="card-body"><p class="text-center">Boot2Root Machines</p></div>
@@ -42,7 +42,7 @@
                 </a>
             </div>
             <div class="col my-3">
-                <a href="/presenter/list/ctf">
+                <a href="/student/list/resources/ctf">
                     <div class="card bg-primary-trans">
                         <i class="fas fa-flag fa-7x card-img-top text-center my-5"></i>
                         <div class="card-body"><p class="text-center">Capture the Flags</p></div>

@@ -86,10 +86,10 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/teacherassignments.js":
-/*!********************************************!*\
-  !*** ./resources/js/teacherassignments.js ***!
-  \********************************************/
+/***/ "./resources/js/teacher/teacherassignments.js":
+/*!****************************************************!*\
+  !*** ./resources/js/teacher/teacherassignments.js ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -168,13 +168,13 @@ function populateForm(data, type, id) {
 /***/ }),
 
 /***/ 5:
-/*!**************************************************!*\
-  !*** multi ./resources/js/teacherassignments.js ***!
-  \**************************************************/
+/*!**********************************************************!*\
+  !*** multi ./resources/js/teacher/teacherassignments.js ***!
+  \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacherassignments.js */"./resources/js/teacherassignments.js");
+module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacher/teacherassignments.js */"./resources/js/teacher/teacherassignments.js");
 
 
 /***/ })

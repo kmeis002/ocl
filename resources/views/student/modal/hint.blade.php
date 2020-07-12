@@ -11,13 +11,8 @@
       <div class="modal-body">
       </div>
       <div class="modal-footer">
-        <form>
-          <input type="hidden" id="lab-name" name="lab-name" value="{{$vm->name}}">
-          <input type="hidden" id="hint-num" name="hint-num" value="">
-          <input type="hidden" id="is-root"  name="is-root"  value="test">
-        </form>
         <button type="button" class="btn btn-secondary-trans" data-dismiss="modal">Close</button>
-        <button type="button" id="reveal" class="btn btn-primary-trans">Reveal</button>
+        <button type="button" id="hint-reveal" class="btn btn-primary-trans" data-hint-id="">Reveal</button>
       </div>
     </div>
   </div>
