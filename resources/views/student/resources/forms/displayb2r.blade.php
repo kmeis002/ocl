@@ -33,11 +33,11 @@
                     <div class="student-progress">
                             <div class="col-md-6 user-flag">
                                 <p class='text-center'>User Flag</p>
-                                <div class="text-center" id='user-flag'><button type="button" class="btn btn-danger" id="user-flag" data-toggle="modal" data-target="#flagModal" data-title="Submit User Flag"><i class="fas fa-flag fa-3x"></i></button></i></div>
+                                <div class="text-center" id='user-flag'><button type="button" class="btn btn-danger" id="user-flag" data-toggle="modal" data-target="#flagModal" data-title="Submit User Flag" data-flag="user"><i class="fas fa-flag fa-3x"></i></button></i></div>
                             </div>
                             <div class="col-md-6 user-flag">
                                 <p class='text-center'>Root Flag</p>
-                                <div class="text-center" id='user-flag'><button type="button" class="btn btn-danger" id="root-flag" data-toggle="modal" data-target="#flagModal" data-title="Submit Root Flag"><i class="fas fa-flag fa-3x"></i></button></i></div>
+                                <div class="text-center" id='user-flag'><button type="button" class="btn btn-danger" id="root-flag" data-toggle="modal" data-target="#flagModal" data-title="Submit Root Flag" data-flag="root"><i class="fas fa-flag fa-3x"></i></button></i></div>
                             </div>
                     </div>
             </div>

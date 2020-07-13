@@ -18,7 +18,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary-trans" data-dismiss="modal">Close</button>
-        <button type="button" id="reveal" class="btn btn-primary-trans">Submit</button>
+        <button type="button" id="submit-flag" class="btn btn-primary-trans" data-name="" data-flag-id="" data-type="{{$type}}">Submit</button>
       </div>
     </div>
   </div>

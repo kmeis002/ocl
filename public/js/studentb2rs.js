@@ -128,6 +128,33 @@ $(document).ready(function () {
     modal.find('.modal-header').text(title);
   });
 });
+$(document).on('show.bs.modal', '#flagModal', function (event) {
+  var button = $(event.relatedTarget);
+  var flagId = button.data('flag'); //set submit data
+
+  $('#submit-flag').data('flag-id', flagId);
+});
+$(document).on('click', '#submit-flag', function () {
+  var name = $('#vm-name').text();
+  var flagId = $('#submit-flag').data('flag-id');
+  var flag = $('#flag').val();
+  var type = $('#submit-flag').data('type');
+  $.ajax({
+    url: '/student/submit/flag/' + name,
+    type: 'post',
+    data: {
+      flag: flag,
+      flagId: flagId,
+      type: type
+    },
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {//refresh data
+    },
+    error: function error(data) {}
+  });
+});
 $(document).on('click', '.update-model-view', function () {
   var name = $(this).data('name');
   $.get('/student/get/b2r/' + name, function (data) {

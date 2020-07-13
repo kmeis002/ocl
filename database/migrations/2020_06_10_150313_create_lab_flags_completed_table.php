@@ -19,6 +19,7 @@ class CreateLabFlagsCompletedTable extends Migration
             $table->integer('level');   //
             $table->foreign('student')->references('name')->on('students');
             $table->foreign('lab_name')->references('name')->on('vms');
+            $table->timestamps();
         });
     }
 

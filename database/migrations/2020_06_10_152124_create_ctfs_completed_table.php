@@ -18,6 +18,7 @@ class CreateCtfsCompletedTable extends Migration
             $table->string('ctf_name');
             $table->foreign('student')->references('name')->on('students');
             $table->foreign('ctf_name')->references('name')->on('ctfs');
+            $table->timestamps();
         });
     }
 

@@ -18,6 +18,33 @@ $(document).on('click', '#hint-reveal', function(){
 	});
 });
 
+$(document).on('show.bs.modal', '#flagModal', function(event){
+	var button = $(event.relatedTarget);
+	var flagId = button.data('level')
+	//set submit data
+	$('#submit-flag').data('flag-id', flagId);
+});
+
+$(document).on('click', '#submit-flag', function(){
+	var name = $('#vm-name').text();
+	var flagId = $('#submit-flag').data('flag-id');
+	var flag = $('#flag').val();
+	var type = $('#submit-flag').data('type');
+
+	$.ajax({
+		url: '/student/submit/flag/'+name,
+		type: 'post',
+		data: {flag: flag, flagId: flagId, type: type},
+		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		success: function(data){
+			//refresh data
+		},
+		error: function(data){
+		}
+	});
+
+});
+
 $(document).ready(function(){
 	     $('#hintModal').on('show.bs.modal', function(event){
 	     	  var button = $(event.relatedTarget);
@@ -93,7 +120,7 @@ function populateLevels(levels){
 	                    <div class="btn-group btn-group-sm" id="level-hints-'+i+'" role="group" aria-label="Basic example">\n\
 	                    </div>\n\
 	                </td>\n\
-	            	<td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#flagModal"><i class="fas fa-plus"></i></button></td>\n\
+	            	<td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#flagModal" data-level="'+i+'"><i class="fas fa-plus"></i></button></td>\n\
 	        </tr>\n'
 	    $('#lab-table-body').append(html);
 	}

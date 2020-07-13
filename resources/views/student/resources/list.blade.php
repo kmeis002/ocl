@@ -109,9 +109,5 @@
 
 
 
-@section('modals')
-@if($type === 'ctf')
+
 @include('student.modal.description')
-@endif
-@include('student.modal.flag')
-@endsection

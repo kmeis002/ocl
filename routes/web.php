@@ -32,7 +32,9 @@ Route::group(['middleware' => 'auth:student', 'prefix'=>'/student'], function() 
     Route::post('/hint/lab/{name}', 'LabHintController@reveal');
   });
 
-
+  Route::group(['prefix' => '/submit'], function(){
+    Route::post('/flag/{name}', 'FlagController@submitFlag');
+  });
 
  
 });

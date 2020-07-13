@@ -16,10 +16,10 @@ class CreateB2rFlagsCompletedTable extends Migration
         Schema::create('b2r_flags_completed', function (Blueprint $table) {
             $table->string('student');
             $table->string('b2r_name');
-            $table->boolean('user_flag');
-            $table->boolean('root_flag');
+            $table->boolean('is_root');
             $table->foreign('student')->references('name')->on('students');
             $table->foreign('b2r_name')->references('name')->on('vms');
+            $table->timestamps();
         });
     }
 

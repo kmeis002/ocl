@@ -59,4 +59,31 @@ $(document).ready(function(){
 	     });
 });
 
+$(document).on('show.bs.modal', '#flagModal', function(event){
+	var button = $(event.relatedTarget);
+	var flagId = button.data('title')
+	//set submit data
+	$('#submit-flag').data('flag-id', flagId);
+});
+
+$(document).on('click', '#submit-flag', function(){
+	var name = $('#submit-flag').data('flagId');
+	var type = $('#submit-flag').data('type');
+	var flag = $('#flag').val();
+
+	$.ajax({
+		url: '/student/submit/flag/'+name,
+		type: 'post',
+		data: {type: type, flag: flag},
+		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		success: function(data){
+			console.log(data);
+		},
+		error: function(data){
+			console.log(data);
+		}
+	});
+
+});
+
 

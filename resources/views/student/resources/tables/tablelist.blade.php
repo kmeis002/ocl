@@ -59,4 +59,7 @@
 @section('modals')
 @include('student.modal.flag')
 @include('student.modal.hint')
+@if($type==='ctf')
+@include('student.modal.description')
+@endif
 @endsection

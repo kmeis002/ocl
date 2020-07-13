@@ -124,7 +124,6 @@ Route::group(['prefix'=>'/student', 'middleware'=>'auth:student'], function() {
 		Route::post('/hint/lab/{name}', 'LabHintController@reveal');
 	});
 
-
 });
 
 
