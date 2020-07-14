@@ -118,7 +118,7 @@ Route::group(['prefix'=>'/teacher'], function() {
 
 Route::group(['prefix'=>'/student', 'middleware'=>'auth:student'], function() {
 	Route::group(['prefix'=>'/get'], function() {
-		Route::get('/b2r/{name}', 'B2RController@apiStudentGet');
+		
 		Route::get('/lab/{name}', 'LabController@apiStudentGet');
 		Route::post('/hint/b2r/{name}', 'B2RHintController@reveal');
 		Route::post('/hint/lab/{name}', 'LabHintController@reveal');

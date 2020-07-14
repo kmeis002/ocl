@@ -29,7 +29,6 @@ use Vbox;
 | To Do:
 |	- Full Unit Testing
 | 	- Consider new ways of testing verification of vbox controls
-|   - Deletion of flags/hints/ova files.
 |
 */
 
@@ -87,7 +86,7 @@ class VM extends Model
 			}
 
 			if($this->isLab()){
-				if($flag_id <= $this->countLevels()){
+				if($flag_id <= LabFlags::where('lab_name', '=', $this->name)->count()){
 					$lvl = LabFlags::where([
 						'lab_name' => $this->name,
 						'level'    => $flag_id])->get()[0];
@@ -131,10 +130,6 @@ class VM extends Model
 		return $this->hasMany('App\Models\VMSkills', 'vm_name', 'name');
 	}
 
-	//Need to FIX THIS WITH ELOQUENT CHANGES!!!
-	public function checkFlag($flag_id, $submitted){
-		return ($this->getFlag($flag_id) == $submitted);
-	}
 
 
 
@@ -144,141 +139,6 @@ class VM extends Model
 
 	public function isLab(){
 		return LabFlags::where('lab_name', $this->name)->exists();
-	}
-
-
-	//Loads the vm .ova (must be uploaded up)
-	public function loadVM(){
-    	if(!Storage::exists('/vm/'.$this->name.'.ova')){
-    		throw new GenericVMException($this->name.'.ova was not found.');
-    	}
-
-    	//Verify its not already registered
-    	if(Vbox::isRegistered($this->name)){
-    		throw new GenericVMException($this->name.' is already registered.');
-    	}
-    	
-    	$mqtt = new Mqtt();
-    	$mqtt->publish('vm/import', $this->name);
-
-	}
-
-	public function unregisterVM(){
-		//Verify machine is registered
-    	if(!Vbox::isRegistered($this->name)){
-    		throw new GenericVMException($this->name.' is not registered.');
-    	}
-
-    	//Verify its not already registered
-    	if(Vbox::isRunning($this->ip)){
-    		throw new GenericVMException($this->name.' must be powered off.');
-    	}
-
-    	$mqtt = new Mqtt();
-    	$mqtt->publish('vm/unregister', $this->name);
-
-    	if(Vbox::isRegistered($this->name)){
-    		throw new GenericVMException($this->name.' is still registered.');
-    	}
-
-	}
-
-	public function turnOn(){
-		if(Vbox::isRunning($this->ip)){
-			throw new GenericVMException($this->name.' is already active.');
-		}
-
-    	if(!Vbox::isRegistered($this->name)){
-    		throw new GenericVMException($this->name.' is not yet registered.');
-    	}
-
-		$mqtt = new Mqtt();
-		$mqtt->publish('vm/start', $this->name);
-
-		//Change this to a better method for status verification.
-		sleep(40);
-
-		$this->changeStatus();
-	}
-
-	public function reset(){
-		if(!Vbox::isRunning($this->ip)){
-			throw new GenericVMException($this->name.' is powered off.');
-		}
-
-    	if(!Vbox::isRegistered($this->name)){
-    		throw new GenericVMException($this->name.' is not yet registered.');
-    	}
-
-		$mqtt = new Mqtt();
-		$mqtt->publish('vm/reset', $this->name);
-
-		//Change this to a better method for status verification.
-		sleep(40);
-
-		$this->changeStatus();
-
-	}
-
-	public function turnOff(){
-		if(!Vbox::isRunning($this->ip)){
-			throw new GenericVMException($this->name.' is already powered off.');
-		}
-
-    	if(!Vbox::isRegistered($this->name)){
-    		throw new GenericVMException($this->name.' is not yet registered.');
-    	}
-
-		$mqtt = new Mqtt();
-		$mqtt->publish('vm/stop', $this->name);
-
-		sleep(3);
-
-		$this->changeStatus();
-	}
-
-	//only NAT, Bridged supported (to support intnet soon)
-	public function modifyNetworkType($type){
-    	if(!Vbox::isRegistered($this->name)){
-    		throw new GenericVMException($this->name.' is not yet registered.');
-    	}
-
-		if(Vbox::isRunning($this->ip)){
-			throw new GenericVMException($this->name.' must be powered off to change networking type.');
-		}
-
-		$mqtt = new Mqtt();
-    	$mqtt->publish('vm/modifyNIC', $this->name.','.$type);
-
-    	sleep(3);
-
-    	if(!strpos(strtolower(Vbox::getNetworkInterface($this->name, 'NIC 1')), strtolower($type))){
-    		throw new GenericVMException('Network type did not change');
-    	}
-	}
-
-	//Changes bridged adapter.
-	public function modifyBridgeAdapter($adapter){
-    	if(!Vbox::isRegistered($this->name)){
-    		throw new GenericVMException($this->name.' is not yet registered.');
-    	}
-
-		if(Vbox::isRunning($this->ip)){
-			throw new GenericVMException($this->name.' must be powered off to change networking type.');
-		}
-
-		if(!in_array($adapter, Vbox::getHostInterfaces())){
-			throw new GenericVMException($adapter.' is not a valid host interface.');
-		}
-
-		$mqtt = new Mqtt();
-    	$mqtt->publish('vm/modifyBridged', $this->name.','.$adapter);
-
-    	sleep(3);
-
-    	if(!strpos(strtolower(Vbox::getNetworkInterface($this->name, 'NIC 1')), strtolower($adapter))){
-    		throw new GenericVMException('Adapter did not change.');
-    	}
 	}
 
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\B2R;
 use App\Models\B2RFlags;
@@ -95,13 +96,16 @@ class B2RController extends Controller
     }
 
 
-    public function apiStudentGet($name){
+    public function studentGet($name){
         $b2r = B2R::find($name);
         $b2r->skills;
         $userHints = $b2r->getUserHints();
         $rootHints = $b2r->getRootHints();
+
+        $hintsUsed = Auth::user()->HintsCheck($name);
+        $flagCheck = Auth::user()->B2RCheck($name);
         
-        return response()->json(['machine'=>$b2r, 'userHints'=>$userHints, 'rootHints'=>$rootHints], 200);
+        return response()->json(['machine'=>$b2r, 'userHints'=>$userHints, 'rootHints'=>$rootHints, 'hintsUsed' => $hintsUsed, 'flags' => $flagCheck], 200);
     }
 
 

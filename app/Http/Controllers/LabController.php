@@ -7,6 +7,7 @@ use Illuminate\Http\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Labs;
 use App\Models\LabFlags;
@@ -97,13 +98,17 @@ class LabController extends Controller
     }
 
 
-    public function apiStudentGet($name){
+    public function studentGet($name){
         $lab = Labs::find($name);
         $lab->skills;
+
         $levelCount = $lab->countLevels();
         $hints = $lab->getHints();
+
+        $hintsUsed = Auth::user()->HintsCheck($name);
+        $flagCheck = Auth::user()->LabCheck($name);
         
-        return response()->json(['machine'=>$lab, 'levels' => $levelCount, 'hints'=>$hints], 200);
+        return response()->json(['machine'=>$lab, 'levels' => $levelCount, 'hints'=>$hints, 'hintsUsed' => $hintsUsed, 'flags' => $flagCheck], 200);
     }
 
     

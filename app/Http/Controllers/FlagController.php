@@ -22,16 +22,13 @@ use App\Models\Mqtt;
 | Flag Controller
 |--------------------------------------------------------------------------
 |
-| API Endpoint logic for flag submissions and rotations. 
+| Endpoint logic for flag submissions and rotations. 
 | Initiates Flag Rotation Messaging if marked True in .env file. Default 
 | rotation is once a successful flag is submitted by student
 |
 | Rotations use MQTT to serve up {machine}/{user,root,level#}. Lab/B2R Machines
 | must have the listener service installed for flag rotation. 
 |
-| To-Do:
-| - Score update fn
-| - Machines solved update fn
 |
 |
 */
@@ -41,7 +38,7 @@ class FlagController extends Controller
 {
     
     //Rotates flags (called manually or automatically when )
-    public function rotateFlag(Request $request){
+    public function apiRotateFlag(Request $request){
     	if(config('flag.rotate')){
     		if(empty($request->input('name')) || empty($request->input('flag')))
     		{
@@ -67,46 +64,53 @@ class FlagController extends Controller
 
         $student = Auth::user()['name'];
 
-        //check flag
-        if($request->input('type') === 'lab'){
-            $realFlag = LabFlags::where(['lab_name' => $name, 'level' => $request->input('flagId')])->get()[0]['flag'];
-
-        }elseif($request->input('type') === 'b2r'){
-            $realFlag = B2RFlags::where(['b2r_name' => $name])->get()[0][$request->input('flagId').'_flag'];
-        }elseif($request->input('type') === 'ctf'){
-            $realFlag = Ctfs::find($name)['flag'];
-        }
-
-        if($realFlag === $request->input('flag')){
+        if(VM::find($name)->status || !config('flag.rotate')){
+            //check flag
             if($request->input('type') === 'lab'){
-                CompletedLabFlags::create([
-                    'student' => $student,
-                    'lab_name' => $name,
-                    'level' => $request->input('flagId'),
-                ]);
-                return response()->json(['message' => 'Correct flag'], 200);
-            }elseif($request->input('type') === 'b2r'){
-                CompletedB2RFlags::create([
-                    'student' => $student,
-                    'b2r_name' => $name,
-                    'is_root' => $request->input('flagId') === 'root',
-                ]);
-                return response()->json(['message' => 'Correct flag'], 200);
-            }elseif($request->input('type') === 'ctf'){
-                CompletedCtfs::create([
-                    'student' => $student,
-                    'ctf_name' => $name,
-                ]);
-                return response()->json(['message' => 'Correct flag'], 200);
-            }
-        }else{
-                return response()->json(['message' => 'Incorrect flag'], 200);
-        }
+                $realFlag = LabFlags::where(['lab_name' => $name, 'level' => $request->input('flagId')])->get()[0]['flag'];
 
-        return response()->json([
-            'request' => $request->all(),
-            'name' => $name,
-            'user' => Auth::user()]);
+            }elseif($request->input('type') === 'b2r'){
+                $realFlag = B2RFlags::where(['b2r_name' => $name])->get()[0][$request->input('flagId')];
+            }elseif($request->input('type') === 'ctf'){
+                $realFlag = Ctfs::find($name)['flag'];
+            }
+
+            if($realFlag === $request->input('flag')){
+                if(config('flag.rotate') && $request->input('type') !== 'ctf'){
+                    $this->rotateFlag($name, $request->input('flagId'));
+                }
+
+                if($request->input('type') === 'lab'){
+                    CompletedLabFlags::create([
+                        'student' => $student,
+                        'lab_name' => $name,
+                        'level' => $request->input('flagId'),
+                    ]);
+                    return response()->json(['message' => 'Correct flag'], 200);
+                }elseif($request->input('type') === 'b2r'){
+                    CompletedB2RFlags::create([
+                        'student' => $student,
+                        'b2r_name' => $name,
+                        'is_root' => $request->input('flagId') === 'root_flag',
+                    ]);
+                    return response()->json(['message' => 'Correct flag'], 200);
+                }elseif($request->input('type') === 'ctf'){
+                    CompletedCtfs::create([
+                        'student' => $student,
+                        'ctf_name' => $name,
+                    ]);
+                    return response()->json(['message' => 'Correct flag'], 200);
+                }
+            }else{
+                    return response()->json(['message' => 'Incorrect flag'], 200);
+            }
+        }
+    }
+
+    //Helper function for flag check
+    private function rotateFlag($name, $flag){
+        $vm = VM::find($name);
+        return $vm->changeFlag($flag);
     }
 
     public function apiLevelCreate(Request $request, $name){

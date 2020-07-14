@@ -68,11 +68,13 @@ class B2RHintController extends Controller
         $username = Auth::user()->name;
         $hintId = $hint->id;
 
-        HintsUsed::create([
-            'student' => $username,
-            'hint_id' => $hintId,
-            'machine_name' => $name,
-        ]);
+        if( !HintsUsed::where([['student','=', $username], ['hint_id', '=', $hintId], ['machine_name', '=', $name]])->exists()){
+            HintsUsed::create([
+                'student' => $username,
+                'hint_id' => $hintId,
+                'machine_name' => $name,
+            ]);
+        }
 
         return response()->json(['hint' => $hint['hint'], 'user' => Auth::user()]);
     }

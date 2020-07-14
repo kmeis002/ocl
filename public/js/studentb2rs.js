@@ -95,20 +95,22 @@
 
 $(document).on('click', '#hint-reveal', function () {
   var name = $('#vm-name').text();
+  var id = $('#hint-reveal').data('hint-id');
   $.ajax({
     url: '/student/get/hint/b2r/' + name,
     type: 'post',
     data: {
-      hint: $('#hint-reveal').data('hint-id')
+      hint: id
     },
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
     success: function success(data) {
-      console.log(data);
       $('#ajax-alert').text('Hint!\n ' + data['hint']);
       $('#hintModal').modal('hide');
-    }
+      $('#hint-' + id).attr('class', 'btn btn-warning my-2 hint-modal');
+    },
+    error: function error(data) {}
   });
 });
 $(document).ready(function () {
@@ -136,7 +138,7 @@ $(document).on('show.bs.modal', '#flagModal', function (event) {
 });
 $(document).on('click', '#submit-flag', function () {
   var name = $('#vm-name').text();
-  var flagId = $('#submit-flag').data('flag-id');
+  var flagId = $('#submit-flag').data('flag-id') + '_flag';
   var flag = $('#flag').val();
   var type = $('#submit-flag').data('type');
   $.ajax({
@@ -150,19 +152,63 @@ $(document).on('click', '#submit-flag', function () {
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
-    success: function success(data) {//refresh data
+    success: function success(data) {
+      getModel(name);
+      $('#flagModal').modal('hide');
     },
-    error: function error(data) {}
+    error: function error(data) {
+      console.log(data);
+    }
   });
 });
 $(document).on('click', '.update-model-view', function () {
   var name = $(this).data('name');
-  $.get('/student/get/b2r/' + name, function (data) {
-    updateMachineInfo(data['machine']);
-    populateUserHints(data['userHints']);
-    populateRootHints(data['rootHints']);
-  });
+  getModel(name);
 });
+$(document).on('click', '.hint-modal', function (event) {
+  if ($(this).attr('class').includes('primary')) {
+    var msg = $(this).data('msg');
+    var id = $(this).data('hint-id');
+    $('#hintModal').modal('show');
+    $('#hintModal').find('.modal-body').text(msg);
+    $('#hint-reveal').data('hint-id', id);
+  } else {
+    var name = $('#vm-name').text(); //just reveal hint, no message!
+
+    $.ajax({
+      url: '/student/get/hint/b2r/' + name,
+      type: 'post',
+      data: {
+        hint: $(this).data('hint-id')
+      },
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function success(data) {
+        $('#ajax-alert').text('Hint!\n ' + data['hint']);
+        $('#hintModal').modal('hide');
+      },
+      error: function error(data) {}
+    });
+  }
+});
+
+function getModel(name) {
+  $.ajax({
+    url: '/student/get/b2r/' + name,
+    type: 'get',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      updateMachineInfo(data['machine']);
+      populateUserHints(data['userHints']);
+      populateRootHints(data['rootHints']);
+      updateStudentInfo(data['flags'], data['hintsUsed']);
+    },
+    error: function error(data) {}
+  });
+}
 
 function updateMachineInfo(machineInfo) {
   var iconClasses = 'fa-7x ';
@@ -198,8 +244,8 @@ function populateUserHints(userHints) {
   $('#user-hints').empty();
 
   for (i = 0; i < userHints.length; i++) {
-    html = '<button type="button" class="btn btn-primary my-2" \
-		id="user-hint-n" data-toggle="modal" data-target="#hintModal" data-hint-id="' + userHints[i]['id'] + '" \
+    html = '<button type="button" class="btn btn-primary my-2 hint-modal" \
+		id="hint-' + userHints[i]['id'] + '" data-hint-id="' + userHints[i]['id'] + '" \
 		data-msg="Revealing this hint will reduce your total online score (but not your grade). Do you still want to reveal User Hint #' + (i + 1) + '" \
 		data-isroot="false">Hint #' + (i + 1) + '</button><br>';
     $('#user-hints').append(html);
@@ -210,11 +256,35 @@ function populateRootHints(rootHints) {
   $('#root-hints').empty();
 
   for (i = 0; i < rootHints.length; i++) {
-    html = '<button type="button" class="btn btn-primary my-2" \
-		id="user-hint-n" data-toggle="modal" data-target="#hintModal" data-hint-id="' + rootHints[i]['id'] + '" \
+    html = '<button type="button" class="btn btn-primary my-2 hint-modal" \
+		id="hint-' + rootHints[i]['id'] + '" data-hint-id="' + rootHints[i]['id'] + '" \
 		data-msg="Revealing this hint will reduce your total online score (but not your grade). Do you still want to reveal Root Hint #' + (i + 1) + '" \
 		data-isroot="false">Hint #' + (i + 1) + '</button><br>';
     $('#root-hints').append(html);
+  }
+}
+
+function updateStudentInfo(flags, hints) {
+  //Modify flag buttons
+  if (flags[0] == 1) {
+    $('#user-flag').attr('class', 'btn btn-primary ');
+    $('#user-flag').prop('disabled', true);
+  } else {
+    $('#user-flag').attr('class', 'btn btn-danger');
+    $('#user-flag').prop('disabled', false);
+  }
+
+  if (flags[1] == 1) {
+    $('#root-flag').attr('class', 'btn btn-primary ');
+    $('#root-flag').prop('disabled', true);
+  } else {
+    $('#root-flag').attr('class', 'btn btn-danger');
+    $('#root-flag').prop('disabled', false);
+  } //modify hint buttons
+
+
+  for (i = 0; i < hints.length; i++) {
+    $('#hint-' + hints[i]['hint_id']).attr('class', 'btn btn-warning my-2 hint-modal');
   }
 }
 

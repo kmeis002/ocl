@@ -26,8 +26,8 @@ Route::group(['middleware' => 'auth:student', 'prefix'=>'/student'], function() 
   Route::get('/list/resources/{type}', 'StudentController@listResources');
 
   Route::group(['prefix'=>'/get'], function() {
-    Route::get('/b2r/{name}', 'B2RController@apiStudentGet');
-    Route::get('/lab/{name}', 'LabController@apiStudentGet');
+    Route::get('/b2r/{name}', 'B2RController@studentGet');
+    Route::get('/lab/{name}', 'LabController@studentGet');
     Route::post('/hint/b2r/{name}', 'B2RHintController@reveal');
     Route::post('/hint/lab/{name}', 'LabHintController@reveal');
   });

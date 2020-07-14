@@ -95,24 +95,50 @@
 
 $(document).on('click', '#hint-reveal', function () {
   var name = $('#vm-name').text();
+  var id = $('#hint-reveal').data('hint-id');
   $.ajax({
     url: '/student/get/hint/lab/' + name,
     type: 'post',
     data: {
-      hint: $('#hint-reveal').data('hint-id')
+      hint: id
     },
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
     success: function success(data) {
-      console.log(data);
       $('#ajax-alert').text('Hint!\n ' + data['hint']);
       $('#hintModal').modal('hide');
+      $('#hint-' + id).attr('class', 'btn btn-warning my-2 hint-modal');
     },
-    error: function error(data) {
-      console.log(data);
-    }
+    error: function error(data) {}
   });
+});
+$(document).on('click', '.hint-modal', function (event) {
+  if ($(this).attr('class').includes('primary')) {
+    var msg = $(this).data('msg');
+    var id = $(this).data('hint-id');
+    $('#hintModal').modal('show');
+    $('#hintModal').find('.modal-body').text(msg);
+    $('#hint-reveal').data('hint-id', id);
+  } else {
+    var name = $('#vm-name').text(); //just reveal hint, no message!
+
+    $.ajax({
+      url: '/student/get/hint/lab/' + name,
+      type: 'post',
+      data: {
+        hint: $(this).data('hint-id')
+      },
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function success(data) {
+        $('#ajax-alert').text('Hint!\n ' + data['hint']);
+        $('#hintModal').modal('hide');
+      },
+      error: function error(data) {}
+    });
+  }
 });
 $(document).on('show.bs.modal', '#flagModal', function (event) {
   var button = $(event.relatedTarget);
@@ -136,10 +162,14 @@ $(document).on('click', '#submit-flag', function () {
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
-    success: function success(data) {//refresh data
+    success: function success(data) {
+      getModel(name);
     },
-    error: function error(data) {}
+    error: function error(data) {
+      console.log(data);
+    }
   });
+  $('#flagModal').modal('hide');
 });
 $(document).ready(function () {
   $('#hintModal').on('show.bs.modal', function (event) {
@@ -160,12 +190,27 @@ $(document).ready(function () {
 });
 $(document).on('click', '.update-model-view', function () {
   var name = $(this).data('name');
-  $.get('/student/get/lab/' + name, function (data) {
-    updateMachineInfo(data['machine']);
-    populateLevels(data['levels']);
-    populateHints(data['hints']);
-  });
+  getModel(name);
 });
+
+function getModel(name) {
+  $.ajax({
+    url: '/student/get/lab/' + name,
+    type: 'get',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      updateMachineInfo(data['machine']);
+      populateLevels(data['levels']);
+      populateHints(data['hints']);
+      updateStudentInfo(data['flags'], data['hintsUsed']);
+    },
+    error: function error(data) {
+      console.log(data);
+    }
+  });
+}
 
 function updateMachineInfo(machineInfo) {
   var iconClasses = 'fa-7x ';
@@ -207,7 +252,7 @@ function populateLevels(levels) {
 	                    <div class="btn-group btn-group-sm" id="level-hints-' + i + '" role="group" aria-label="Basic example">\n\
 	                    </div>\n\
 	                </td>\n\
-	            	<td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#flagModal" data-level="' + i + '"><i class="fas fa-plus"></i></button></td>\n\
+	            	<td><button type="button" id="flag-submit-' + i + '" class="btn btn-danger" data-toggle="modal" data-target="#flagModal" data-level="' + i + '"><i class="fas fa-plus"></i></button></td>\n\
 	        </tr>\n';
     $('#lab-table-body').append(html);
   }
@@ -217,8 +262,8 @@ function populateHints(hints) {
   var count = 1;
 
   for (i = 0; i < hints.length; i++) {
-    html = '<button type="button" class="btn btn-primary my-2" \
-		id="user-hint-n" data-toggle="modal" data-target="#hintModal" data-hint-id="' + hints[i]['id'] + '" \
+    html = '<button type="button" class="btn btn-primary my-2 hint-modal" \
+		id="hint-' + hints[i]['id'] + '"" data-hint-id="' + hints[i]['id'] + '" \
 		data-msg="Revealing this hint will reduce your total online score (but not your grade). Do you still want to reveal User Hint #' + count + '" \
 		data-isroot="false">Hint #' + count + '</button><br>';
     count++;
@@ -228,6 +273,21 @@ function populateHints(hints) {
     }
 
     $('#level-hints-' + hints[i]['level']).append(html);
+  }
+}
+
+function updateStudentInfo(flags, hints) {
+  //Modify flag buttons
+  for (i = 1; i <= flags.length; i++) {
+    if (flags[i - 1] == 1) {
+      $('#flag-submit-' + i).attr('class', 'btn btn-primary');
+      $('#flag-submit-' + i).prop('disabled', true);
+    }
+  } //modify hint buttons
+
+
+  for (i = 0; i < hints.length; i++) {
+    $('#hint-' + hints[i]['hint_id']).attr('class', 'btn btn-warning my-2 hint-modal');
   }
 }
 
