@@ -166,13 +166,15 @@ $(document).on('click', '#submit-flag', function () {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
     success: function success(data) {
-      console.log(data);
+      location.reload();
     },
     error: function error(data) {
       console.log(data);
     }
   });
 });
+
+function updateCtfRow() {}
 
 /***/ }),
 

@@ -77,7 +77,7 @@ $(document).on('click', '#submit-flag', function(){
 		data: {type: type, flag: flag},
 		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 		success: function(data){
-			console.log(data);
+			location.reload();
 		},
 		error: function(data){
 			console.log(data);
@@ -86,4 +86,8 @@ $(document).on('click', '#submit-flag', function(){
 
 });
 
+
+function updateCtfRow(){
+
+}
 

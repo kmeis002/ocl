@@ -48,7 +48,11 @@
             <td class="pts">{{$item->points}}</td>
             <td class="description" ><button type="button" class="btn-primary" data-toggle="modal" data-target="#descriptionModal" data-title="{{$item->name}} Description" data-msg="{{$item->description}}"><i class="fas fa-question fa-2x"></i></button></td>
             <td class="assigned">filler</td>
-            <td><button type='button' class="btn-secondary" data-toggle="modal" data-target="#flagModal" data-title="{{$item->name}}"><i class="fas fa-flag fa-2x"></i></button></td>
+            @if(in_array($item->name, $completed))
+            <td><button type='button' class="btn btn-primary" disabled="true" data-toggle="modal" data-target="#flagModal" data-title="{{$item->name}}"><i class="fas fa-flag fa-2x"></i></button></td>
+            @else
+            <td><button type='button' class="btn btn-secondary" data-toggle="modal" data-target="#flagModal" data-title="{{$item->name}}"><i class="fas fa-flag fa-2x"></i></button></td>
+            @endif
           </tr></a>
           @endforeach
         </tbody>

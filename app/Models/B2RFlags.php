@@ -33,5 +33,7 @@ class B2RFlags extends Model
 	public function getAttr(){
 		return $this->fillable;
 	}
+
+
 }
 

@@ -14,6 +14,7 @@ class CreateCtfsCompletedTable extends Migration
     public function up()
     {
         Schema::create('ctfs_completed', function (Blueprint $table) {
+            $table->id()->unique();
             $table->string('student');
             $table->string('ctf_name');
             $table->foreign('student')->references('name')->on('students');

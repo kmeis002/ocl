@@ -16,6 +16,7 @@ use App\Models\CompletedLabFlags;
 use App\Models\CompletedB2RFlags;
 use App\Models\CompletedCtfs;
 use App\Models\Mqtt;
+use App\Models\Score;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,7 +65,7 @@ class FlagController extends Controller
 
         $student = Auth::user()['name'];
 
-        if(VM::find($name)->status || !config('flag.rotate')){
+        if( ($request->input('type') === 'ctf') || VM::find($name)->status || !config('flag.rotate')){
             //check flag
             if($request->input('type') === 'lab'){
                 $realFlag = LabFlags::where(['lab_name' => $name, 'level' => $request->input('flagId')])->get()[0]['flag'];
@@ -76,9 +77,6 @@ class FlagController extends Controller
             }
 
             if($realFlag === $request->input('flag')){
-                if(config('flag.rotate') && $request->input('type') !== 'ctf'){
-                    $this->rotateFlag($name, $request->input('flagId'));
-                }
 
                 if($request->input('type') === 'lab'){
                     CompletedLabFlags::create([
@@ -132,4 +130,5 @@ class FlagController extends Controller
             return response()->json(['message'=>'You can only delete the last known level for a lab. Please modify existing flags.']);
         }
     }
+
 }

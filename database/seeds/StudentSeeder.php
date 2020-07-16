@@ -29,7 +29,8 @@ class StudentSeeder extends Seeder
         	'first' => $first,
         	'last' => $last,
         	'password' => Hash::make('test'),
-        	'total_score' => 0,
+        	'raw_score' => 0,
+            'mod_score' => 0,
         	'created_at' => \Carbon\Carbon::now(),
         	'updated_at' => \Carbon\Carbon::now(),
         ]);

@@ -14,6 +14,7 @@ class CreateLabFlagsCompletedTable extends Migration
     public function up()
     {
         Schema::create('lab_flags_completed', function (Blueprint $table) {
+            $table->id()->unique();
             $table->string('student');
             $table->string('lab_name');
             $table->integer('level');   //

@@ -14,6 +14,7 @@ class CreateB2rFlagsCompletedTable extends Migration
     public function up()
     {
         Schema::create('b2r_flags_completed', function (Blueprint $table) {
+            $table->id()->unique();
             $table->string('student');
             $table->string('b2r_name');
             $table->boolean('is_root');

@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Student;
 use App\Models\Labs;
 use App\Models\B2R;
 use App\Models\Ctfs;
+use App\Models\CompletedCtfs;
 
 class StudentController extends Controller
 {
@@ -36,14 +38,27 @@ class StudentController extends Controller
         }
         if($type === 'ctf'){
             $list = Ctfs::all();
+            $completed = $this->makeCompletedArray();
             $categories = DB::table('ctfs')->select('category')->distinct()->get();
         }
 
         if($type === 'lab' || $type === 'b2r'){
             return view('student.resources.list')->with(['list'=>$list, 'type' => $type]);
         }else if($type === 'ctf'){
-            return view('student.resources.list')->with(['list'=>$list, 'type' => $type, 'categories' => $categories]);
+            return view('student.resources.list')->with(['list' => $list, 'type' => $type, 'categories' => $categories, 'completed' => $completed]);
         }
     }
 
+
+
+    private function makeCompletedArray(){
+        $out = array();
+        $completed = CompletedCtfs::where('student', '=', Auth::user()->name)->get();
+
+        foreach ($completed as $c) {
+            array_push($out, $c->ctf_name);
+        }
+
+        return $out;
+    }
 }
