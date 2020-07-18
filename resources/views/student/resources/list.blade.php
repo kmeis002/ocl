@@ -68,7 +68,7 @@
     <input type="radio" name="s-options" id="s-option2" value="Assigned" autocomplete="off"> Assigned
   </label>
   <label class="btn btn-secondary">
-    <input type="radio" name="s-options" id="s-option3" value="Incomplete" autocomplete="off"> Incomplete
+    <input type="radio" name="s-options" id="s-option3" value="Not Assigned" autocomplete="off"> Not Assigned
   </label>
   </div>
 

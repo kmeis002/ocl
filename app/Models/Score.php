@@ -94,12 +94,10 @@ class Score extends Model
 	}
 
 	//returns RawScore - Hints
-	public static function studentModifiedScore($name){
-		$rawScore = Score::studentRawScore($name);
+	public static function calculateModifier($name){
+		$hintsUsed = HintsUsed::where('student', '=', $name)->count();
 
-		$hintsUsed = HintsUsed::find($name)->count();
-
-		return $rawScore - config('score.hints_points')*$hintsUsed;
+		return config('score.hint_points')*$hintsUsed;
 	}
 
 	public static function b2rFlagToScore($flag){
@@ -122,6 +120,23 @@ class Score extends Model
 	public static function ctfFlagToScore($flag){
 		return config('score.ctf_weight')*$flag->basePoints();
 	}
+
+    public static function boot() {
+        parent::boot();
+
+        //Delete event to delete entries in other tables/files
+        static::created(function($score) { 
+            //Get Student raw score and add new score
+            $s = Student::where('name', '=', $score->student)->get()[0];
+
+            $raw = $s->raw_score;
+            $raw = $raw + $score->points;
+            $s->raw_score = $raw; 
+            $mod = $raw - Score::calculateModifier($s->name);
+            $s->mod_score = $mod;
+            $s->save();
+        });
+    }
 
 }
 

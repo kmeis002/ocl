@@ -27,7 +27,7 @@ class Teacher extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'api_token', 'remember_token',
+        'password', 'remember_token',
     ];
 
     /**
@@ -38,4 +38,24 @@ class Teacher extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function classes(){
+        return $this->hasMany('App\Models\Classes', 'teacher', 'name');
+    }
+
+
+    public static function boot() {
+        parent::boot();
+
+        //Delete event to delete entries in other tables/files
+        static::deleting(function($teacher) { 
+            //Delete hasMany relations
+            $classes = $teacher->classes()->get();
+
+            foreach($classes as $c){
+                $c->delete();
+            }
+        });
+    }
+
 }

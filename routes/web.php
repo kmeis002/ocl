@@ -57,6 +57,8 @@ Route::group(['middleware' => 'auth:student', 'prefix'=>'/student'], function() 
 //Teacher Routes
 Route::group(['prefix'=>'/teacher'], function(){
   Route::get('/home', 'PageTest@teacherHome');
+  Route::get('/accounts/students', 'TeacherController@students');
+  Route::get('/accounts/teachers', 'TeacherController@teachers');
   Route::get('/resources/list/{type}', 'TeacherController@resourcesList');
   Route::get('/classes/list/{type}', 'TeacherController@classesList');
   Route::get('/classwork/assignments', 'TeacherController@assignmentsList');
@@ -66,7 +68,15 @@ Route::group(['prefix'=>'/teacher'], function(){
   Route::post('/create/lab', 'LabController@create');
   Route::post('/create/assignment', 'AssignmentController@create');
   Route::post('/edit/lab/{name}', 'LabController@update');
-
+  Route::get('/accounts/edit/student/{id}', 'TeacherController@editStudent');
+  Route::post('/accounts/edit/student/{id}', 'TeacherController@editStudent');
+  Route::post('/accounts/create/student', 'TeacherController@createStudent');
+  Route::post('/accounts/delete/student/{id}', 'TeacherController@deleteStudent');
+  Route::get('/accounts/edit/teacher/{id}', 'TeacherController@editTeacher');
+  Route::post('/accounts/edit/teacher/{id}', 'TeacherController@editTeacher');
+  Route::post('/accounts/create/teacher', 'TeacherController@createTeacher');
+  Route::post('/accounts/delete/teacher/{id}', 'TeacherController@deleteTeacher');
+  Route::post('/accounts/teacher/api_regen/{id}', 'TeacherController@regenerateApiToken');
 });
 
 

@@ -2,10 +2,11 @@ $(document).ready(function(){
 		var radios = $('input[type="radio"]');
 
 		radios.change(function(){
+
 			var catvalue = $('input[name="cat-options"]:checked').val().toLowerCase();
 			var ptvalue = $('input[name="pt-options"]:checked').val().toLowerCase();
 			var svalue = $('input[name="s-options"]:checked').val().toLowerCase();
-
+			
 
 			if(catvalue == 'all' || ptvalue == 'all' || svalue == 'all'){
  		    	$("#ctf-list tr").filter(function() {
@@ -27,7 +28,7 @@ $(document).ready(function(){
 
 			if(svalue != 'all'){
 				$("#ctf-list tr:visible").filter(function() {
-			      	$(this).toggle($(this).find('.assigned').text().toLowerCase().indexOf(svalue) > -1);
+			      	$(this).toggle($(this).find('.assign').text().toLowerCase().indexOf(svalue) == 0);
 			    });
 			}
 
@@ -87,7 +88,4 @@ $(document).on('click', '#submit-flag', function(){
 });
 
 
-function updateCtfRow(){
-
-}
 

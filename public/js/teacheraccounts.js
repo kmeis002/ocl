@@ -81,87 +81,107 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/student/studentctflist.js":
-/*!************************************************!*\
-  !*** ./resources/js/student/studentctflist.js ***!
-  \************************************************/
+/***/ "./resources/js/teacher/teacheraccounts.js":
+/*!*************************************************!*\
+  !*** ./resources/js/teacher/teacheraccounts.js ***!
+  \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-$(document).ready(function () {
-  var radios = $('input[type="radio"]');
-  radios.change(function () {
-    var catvalue = $('input[name="cat-options"]:checked').val().toLowerCase();
-    var ptvalue = $('input[name="pt-options"]:checked').val().toLowerCase();
-    var svalue = $('input[name="s-options"]:checked').val().toLowerCase();
-
-    if (catvalue == 'all' || ptvalue == 'all' || svalue == 'all') {
-      $("#ctf-list tr").filter(function () {
-        $(this).show();
-      });
-    }
-
-    if (catvalue != 'all') {
-      $("#ctf-list tr:visible").filter(function () {
-        $(this).toggle($(this).find('.cat').text().toLowerCase().indexOf(catvalue) > -1);
-      });
-    }
-
-    if (ptvalue != 'all') {
-      $("#ctf-list tr:visible").filter(function () {
-        $(this).toggle(parseInt($(this).find('.pts').text()) <= parseInt(ptvalue) && parseInt($(this).find('.pts').text()) > parseInt(ptvalue) - 10);
-      });
-    }
-
-    if (svalue != 'all') {
-      $("#ctf-list tr:visible").filter(function () {
-        $(this).toggle($(this).find('.assign').text().toLowerCase().indexOf(svalue) == 0);
-      });
-    }
-  });
-  $("#name-search").on("keyup", function () {
-    var value = $(this).val().toLowerCase();
-    $("#ctf-list tr").filter(function () {
-      $(this).toggle($(this).find('.ctf-name').text().toLowerCase().indexOf(value) > -1);
-    });
-  });
-  $('#descriptionModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget);
-    var title = button.data('title');
-    var msg = button.data('msg');
-    var modal = $(this);
-    modal.find('.modal-header').text(title);
-    modal.find('.modal-body').text(msg);
-  });
-  $('#flagModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget);
-    var title = button.data('title');
-    var modal = $(this);
-    modal.find('.modal-header').text('Submit ' + title + ' Flag');
-  });
-});
-$(document).on('show.bs.modal', '#flagModal', function (event) {
-  var button = $(event.relatedTarget);
-  var flagId = button.data('title'); //set submit data
-
-  $('#submit-flag').data('flag-id', flagId);
-});
-$(document).on('click', '#submit-flag', function () {
-  var name = $('#submit-flag').data('flagId');
-  var type = $('#submit-flag').data('type');
-  var flag = $('#flag').val();
+$(document).on('click', '.edit-student', function (event) {
+  var id = $(this).data('id');
   $.ajax({
-    url: '/student/submit/flag/' + name,
-    type: 'post',
-    data: {
-      type: type,
-      flag: flag
+    url: '/teacher/accounts/edit/student/' + id,
+    type: 'get',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
+    success: function success(data) {
+      populateTeacherForm(data);
+    },
+    error: function error(data) {
+      console.log(data);
+    }
+  });
+});
+$(document).on('click', '.edit-teacher', function (event) {
+  var id = $(this).data('id');
+  $.ajax({
+    url: '/teacher/accounts/edit/teacher/' + id,
+    type: 'get',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      populateTeacherForm(data);
+    },
+    error: function error(data) {
+      console.log(data);
+    }
+  });
+});
+$(document).on('click', '.delete-student', function () {
+  var id = $(this).data('id');
+  $.ajax({
+    url: '/teacher/accounts/delete/student/' + id,
+    type: 'post',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      location.reload();
+    },
+    error: function error(data) {
+      console.log(data);
+    }
+  });
+});
+$(document).on('click', '.delete-teacher', function () {
+  var id = $(this).data('id');
+  $.ajax({
+    url: '/teacher/accounts/delete/teacher/' + id,
+    type: 'post',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      location.reload();
+    },
+    error: function error(data) {
+      console.log(data);
+    }
+  });
+});
+$(document).on('click', '#add-new-student', function () {
+  var action = '/teacher/accounts/create/student';
+  $('#modify-student').attr('action', action);
+  $('#name').show();
+  $('#student-name').text('');
+  $('#first').val('');
+  $('#last').val('');
+});
+$(document).on('click', '#add-new-teacher', function () {
+  var action = '/teacher/accounts/create/teacher';
+  $('#modify-teacher').attr('action', action);
+  $('#name').show();
+  $('#teacher-name').text('');
+  $('#first').val('');
+  $('#last').val('');
+});
+$(document).on('click', '#api-reveal', function () {
+  $('#api-token').attr('type', 'text');
+});
+$(document).on('click', '#api-regen', function () {
+  var id = $(this).data('id');
+  console.log(id);
+  $.ajax({
+    url: '/teacher/accounts/teacher/api_regen/' + id,
+    type: 'post',
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
@@ -174,16 +194,37 @@ $(document).on('click', '#submit-flag', function () {
   });
 });
 
+function populateStudentForm(student) {
+  $('#student-name').text(student['name']);
+  $('#first').val(student['first']);
+  $('#last').val(student['last']);
+  $('#name').hide();
+  var action = '/teacher/accounts/edit/student/' + student['id'];
+  $('#modify-student').attr('action', action);
+}
+
+function populateTeacherForm(teacher) {
+  $('#api-regen').data('id', teacher['id']);
+  $('#api-token').attr('type', 'password');
+  $('#api-token').attr('type', 'password');
+  $('#teacher-name').text(teacher['name']);
+  $('#email').val(teacher['email']);
+  $('#api-token').val(teacher['api_token']);
+  $('#name').hide();
+  var action = '/teacher/accounts/edit/teacher/' + teacher['id'];
+  $('#modify-teacher').attr('action', action);
+}
+
 /***/ }),
 
-/***/ 11:
-/*!******************************************************!*\
-  !*** multi ./resources/js/student/studentctflist.js ***!
-  \******************************************************/
+/***/ 7:
+/*!*******************************************************!*\
+  !*** multi ./resources/js/teacher/teacheraccounts.js ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/student/studentctflist.js */"./resources/js/student/studentctflist.js");
+module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacher/teacheraccounts.js */"./resources/js/teacher/teacheraccounts.js");
 
 
 /***/ })

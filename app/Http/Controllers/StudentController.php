@@ -32,20 +32,26 @@ class StudentController extends Controller
     public function listResources($type){
         if($type === 'lab'){
             $list = Labs::all();
+            $assigned = Auth::user()->labArray();
         }
         if($type === 'b2r'){
             $list = B2R::all();
+            $assigned = Auth::user()->b2rArray();
         }
         if($type === 'ctf'){
             $list = Ctfs::all();
             $completed = $this->makeCompletedArray();
             $categories = DB::table('ctfs')->select('category')->distinct()->get();
+            $assigned = Auth::user()->ctfArray();
         }
 
+
+        
+
         if($type === 'lab' || $type === 'b2r'){
-            return view('student.resources.list')->with(['list'=>$list, 'type' => $type]);
+            return view('student.resources.list')->with(['list'=>$list, 'type' => $type, 'assigned' => $assigned]);
         }else if($type === 'ctf'){
-            return view('student.resources.list')->with(['list' => $list, 'type' => $type, 'categories' => $categories, 'completed' => $completed]);
+            return view('student.resources.list')->with(['list' => $list, 'type' => $type, 'categories' => $categories, 'completed' => $completed, 'assigned' => $assigned]);
         }
     }
 
@@ -61,4 +67,8 @@ class StudentController extends Controller
 
         return $out;
     }
+
+
+
+
 }

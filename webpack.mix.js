@@ -22,8 +22,10 @@ mix.js('resources/js/app.js', 'public/js').js('resources/js/teacher/teacherresou
 .js('resources/js/teacher/teacherlab.js', 'public/js/')
 .js('resources/js/teacher/teacherassignments.js', 'public/js')
 .js('resources/js/teacher/teacherenroll.js', 'public/js')
+.js('resources/js/teacher/teacheraccounts.js', 'public/js')
 .js('resources/js/student/studentlabs.js', 'public/js')
 .js('resources/js/student/studentb2rs.js', 'public/js')
 .js('resources/js/student/studentmachinelist.js', 'public/js')
 .js('resources/js/student/studentctflist.js', 'public/js')
+
  .sass('resources/sass/app.scss', 'public/css');

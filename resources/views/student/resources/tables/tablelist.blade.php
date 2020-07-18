@@ -17,7 +17,11 @@
             <td class="machine-name"><button type="button" class="btn btn-primary update-model-view" data-name="{{$item->name}}">{{$item->name}}</button></td>
             <td class="os" >{{$item->os}}</td>
             <td class="pts">{{$item->points}}</td>
-            <td>To Be Implemented</td>
+            @if(count($assigned) > 0 && in_array($item->name, $assigned))
+            <td class="assign">Assigned</td>
+            @else
+            <td class="assign">Not Assigned</td>
+            @endif
           </tr></a>
           @endforeach
         </tbody>
@@ -47,8 +51,12 @@
             <td class="cat">{{$item->category}}</td>
             <td class="pts">{{$item->points}}</td>
             <td class="description" ><button type="button" class="btn-primary" data-toggle="modal" data-target="#descriptionModal" data-title="{{$item->name}} Description" data-msg="{{$item->description}}"><i class="fas fa-question fa-2x"></i></button></td>
-            <td class="assigned">filler</td>
-            @if(in_array($item->name, $completed))
+            @if(count($assigned) > 0 && in_array($item->name, $assigned))
+            <td class="assign">Assigned</td>
+            @else
+            <td class="assign">Not Assigned</td>
+            @endif
+            @if(count($completed) > 0 &&in_array($item->name, $completed))
             <td><button type='button' class="btn btn-primary" disabled="true" data-toggle="modal" data-target="#flagModal" data-title="{{$item->name}}"><i class="fas fa-flag fa-2x"></i></button></td>
             @else
             <td><button type='button' class="btn btn-secondary" data-toggle="modal" data-target="#flagModal" data-title="{{$item->name}}"><i class="fas fa-flag fa-2x"></i></button></td>

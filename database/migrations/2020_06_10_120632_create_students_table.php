@@ -21,8 +21,8 @@ class CreateStudentsTable extends Migration
             $table->string('first');
             $table->string('last');
             $table->string('password');
-            $table->integer('raw_score');
-            $table->integer('mod_score');
+            $table->integer('raw_score')->default(0);
+            $table->integer('mod_score')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

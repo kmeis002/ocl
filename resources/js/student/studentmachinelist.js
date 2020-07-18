@@ -27,7 +27,7 @@ $(document).ready(function(){
 
 			if(svalue != 'all'){
 				$("#machine-list tr:visible").filter(function() {
-			      	$(this).toggle($(this).find('.assigned').text().toLowerCase().indexOf(svalue) > -1);
+			      	$(this).toggle($(this).find('.assign').text().toLowerCase().indexOf(svalue) == 0);
 			    });
 			}
 		});

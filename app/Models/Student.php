@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Labs;
 use App\Models\B2RHints;
 use App\Models\LabHints;
+use App\Models\LabsAssigned;
+use App\Models\B2RsAssigned;
+use App\Models\CtfsAssigned;
 
 class Student extends Authenticatable
 {
@@ -22,7 +25,7 @@ class Student extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'password', 'first', 'last', 'total_score',
+        'name', 'password', 'first', 'last', 'raw_score', 'mod_score',
     ];
 
     /**
@@ -67,6 +70,9 @@ class Student extends Authenticatable
         return $this->hasMany('App\Models\CompletedCtfs', 'student', 'name');
     }
 
+    public function score(){
+        return $this->hasMany('App\Models\Score', 'student', 'name');
+    }
 
     public function enrolledCount(){
         return $this->enrolled()->get()->count();
@@ -75,6 +81,67 @@ class Student extends Authenticatable
     public function classAssignments($i){
         return $this->enrolled()->get()[$i]->class->assignments;
         
+    }
+
+    public function allAssignments(){
+        if($this->enrolledCount() > 0){
+            $out = $this->classAssignments(0);
+            for($i=1; $i<$this->enrolledCount(); $i++){
+                $out = $out->merge($this->classAssignments($i));
+            }
+            return $out;
+        }
+
+        return collect();
+    }
+
+    public function labsAssigned(){
+        return $this->allAssignments()->where('prefix', '=', 'Lab');
+    }
+
+    public function b2rsAssigned(){
+        return $this->allAssignments()->where('prefix', '=', 'B2R');
+    }
+
+    public function ctfsAssigned(){
+        return $this->allAssignments()->where('prefix', '=', 'CTF');
+    }
+
+    //array of lab names assigned
+    public function labArray(){
+        $labs = $this->labsAssigned();
+        $out = array();
+
+        foreach($labs as $l){
+            $name = LabsAssigned::find($l->model_id)->lab_name;
+            array_push($out, $name);
+        }
+
+        return $out;
+    }
+
+    public function b2rArray(){
+        $b2rs = $this->b2rsAssigned();
+        $out = array();
+
+        foreach($b2rs as $b){
+            $name = B2RsAssigned::find($b->model_id)->b2r_name;
+            array_push($out, $name);
+        }
+
+        return $out;
+    }
+
+    public function ctfArray(){
+        $ctfs = $this->ctfsAssigned();
+        $out = array();
+
+        foreach($ctfs as $c){
+            $name = CtfsAssigned::find($c->model_id)->ctf_name;
+            array_push($out, $name);
+        }
+
+        return $out;
     }
 
     public function B2RCheck($name){
@@ -123,6 +190,22 @@ class Student extends Authenticatable
 
     public function HintsCheck($name){
         return $this->HintsUsed()->where('machine_name', '=', $name)->get();
+    }
+
+
+    public static function boot() {
+        parent::boot();
+
+        //Delete event to delete entries in other tables/files
+        static::deleting(function($Student) { 
+            //Delete hasMany relations
+             $Student->HintsUsed()->delete();
+             $Student->enrolled()->delete();
+             $Student->B2RFlags()->delete();
+             $Student->LabFlags()->delete();
+             $Student->CTFFlags()->delete();
+             $Student->score()->delete();
+        });
     }
 
 }

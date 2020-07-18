@@ -8,8 +8,8 @@
 		<h5>Manage Accounts</h5>
 
 	<ul class="list-group">
-		<li class="list-group-item"><a href="#">Teacher Accounts</a></li>
-		<li class="list-group-item"><a href="#">Student Accounts</a></li>
+		<li class="list-group-item"><a href="/teacher/accounts/teachers">Teacher Accounts</a></li>
+		<li class="list-group-item"><a href="/teacher/accounts/students">Student Accounts</a></li>
 	</ul>
     </div>
     <hr />
