@@ -17,7 +17,7 @@ class CreateCtfsTable extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('icon');
-            $table->string('file');
+            $table->string('file')->nullable();
             $table->integer('points');
             $table->string('category');
             $table->text('description')->nullable();

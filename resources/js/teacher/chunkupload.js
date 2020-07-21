@@ -49,6 +49,7 @@ window.chunkUpload = class {
 		$.ajax( {
           	 	url: obj.url,
             	type: 'POST',
+                headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             	dataType: 'text',
             	cache: false,
             	data: {
@@ -82,13 +83,25 @@ window.chunkUpload = class {
 
 }
 
-window.selectorScript = function(url, name){
+window.ovaSelectorScript = function(url, name){
     var filePath = $('#ova-file').val().split('\\');
     var fileName = filePath[filePath.length-1];
     if(fileName == name+'.ova'){
     	const p = new window.chunkUpload(url, 10000);
     	p.upload_file(0, p);
     }else{
-        alert('OVA File must be labeled the same name as the Machine. Please select a file with the name: '+name+'.ova');
+        alert('OVA File must be labeled the same name as the Machine. Please select a file with the name: '+name+'.ova.');
+    }
+}
+
+
+window.zipSelectorScript = function(url, name){
+    var filePath = $('#ova-file').val().split('\\');
+    var fileName = filePath[filePath.length-1];
+    if(fileName == name+'.zip'){
+        const p = new window.chunkUpload(url, 10000);
+        p.upload_file(0, p);
+    }else{
+        alert('Zip File must be labeled the same name as the Machine. Please select a file with the name: '+name+'.zip.');
     }
 }

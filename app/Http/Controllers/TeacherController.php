@@ -17,18 +17,19 @@ use App\Models\Teacher;
 use App\Models\Student;
 use App\Models\Enrolled;
 use App\Models\Assignments;
+use App\Models\Skills;
 
 class TeacherController extends Controller
 {
 
 	public function __construct(){
 
-        //$this->middleware('auth:teacher');
+        $this->middleware('auth:teacher');
 
     }
 
 
-    public function show(){
+    public function home(){
 
     	return view('teacher.home');
 
@@ -54,6 +55,11 @@ class TeacherController extends Controller
         }
     }
 
+    public function skills(){
+        $skills = Skills::all();
+        return view('teacher.resources.skills')->with(['skills' => $skills]);
+    }
+
 
     public function classesList($type){
         if($type === 'course'){
@@ -72,7 +78,8 @@ class TeacherController extends Controller
         $types = array('Lab', 'CTF', 'B2R');
         $classes = Classes::all();
         $assignments = Assignments::all();
-        return view('teacher.classwork.assignments')->with(['types' => $types, 'classes' => $classes, 'assignments' => $assignments]);
+        $students = Student::all();
+        return view('teacher.classwork.assignments')->with(['types' => $types, 'classes' => $classes, 'assignments' => $assignments, 'students' => $students]);
     }
 
     public function students(){
@@ -85,12 +92,12 @@ class TeacherController extends Controller
         return view('teacher.accounts.teachers')->with(['teachers' => $teachers]);
     }
 
-    public function apiGetTeachers(){
+    public function getTeachers(){
         return DB::table('teachers')->pluck('name');
     }
 
 
-    public function apiGetStudents(){
+    public function getStudents(){
         return DB::table('students')->select('name', 'first', 'last')->get();
     }
 
@@ -193,4 +200,16 @@ class TeacherController extends Controller
         $teacher->api_token = Str::random(60);
         $teacher->save();
     }
+
+    public function completedAssignments($id){
+        $student = Student::find($id);
+        return $student->completedAssignments();
+    }
+
+    public function incompleteAssignments($id){
+        $student = Student::find($id);
+        return $student->incompleteAssignments();
+    }
+
+
 }

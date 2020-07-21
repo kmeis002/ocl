@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -115,8 +115,18 @@ $(document).ready(function () {
     if (name == '') {
       alert('Please select a machine before adding a level');
     } else {
-      $.post('/api/teacher/create/lab/' + name + '/level', function () {
-        window.getModelInfo($('#type-header').data('model-type'), name);
+      $.ajax({
+        url: '/teacher/create/lab/' + name + '/level',
+        type: 'post',
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function success(data) {
+          window.getModelInfo($('#type-header').data('model-type'), name);
+        },
+        error: function error(data) {
+          console.log(data);
+        }
       });
     }
   }); //manual flags for creating VM Modal
@@ -135,8 +145,18 @@ $(document).ready(function () {
   $(document).on('click', '.delete-level', function (event) {
     id = $(this).data('id');
     name = $('#edit-vm-name').text();
-    $.post('/api/teacher/delete/lab/' + name + '/level/' + id, function () {
-      window.getModelInfo($('#type-header').data('model-type'), name);
+    $.ajax({
+      url: '/api/teacher/delete/lab/' + name + '/level/' + id,
+      type: 'post',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function success(data) {
+        window.getModelInfo($('#type-header').data('model-type'), name);
+      },
+      error: function error(data) {
+        console.log(data);
+      }
     });
   });
 
@@ -155,7 +175,7 @@ $(document).ready(function () {
 
 /***/ }),
 
-/***/ 4:
+/***/ 5:
 /*!**************************************************!*\
   !*** multi ./resources/js/teacher/teacherlab.js ***!
   \**************************************************/

@@ -12,7 +12,25 @@ class Skills extends Model
 
 	//Mass fillable arrays
 	protected $fillable = [
-		'skill',
+		'name',
 	];
+
+	public function vms(){
+		return $this->hasMany('App\Models\VMSkills', 'skill', 'name');
+	}
+
+
+	public static function boot() {
+        parent::boot();
+
+        //Delete event to delete entries in other tables/files
+        static::deleting(function($skill) { 
+        	$relations = $skill->vms()->get();
+
+        	foreach($relations as $r){
+        		$r->delete();
+        	}
+        });
+    }
 
 }

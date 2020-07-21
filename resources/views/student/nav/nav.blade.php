@@ -12,7 +12,7 @@
 					<div class="dropdown-menu" aria-labelledby="dropdownBars">
 						<a class="dropdown-item" href="#">Leaderboards</a>
 						<a class="dropdown-item" href="#">Settings</a>
-						<a class="dropdown-item" href="#">Logout</a>
+						<a class="dropdown-item" href="/student/logout">Logout</a>
 					</div>
 			</div>
 		</nav>

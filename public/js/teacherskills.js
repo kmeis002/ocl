@@ -81,49 +81,45 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/teacher/teacherb2r.js":
-/*!********************************************!*\
-  !*** ./resources/js/teacher/teacherb2r.js ***!
-  \********************************************/
+/***/ "./resources/js/teacher/teacherskills.js":
+/*!***********************************************!*\
+  !*** ./resources/js/teacher/teacherskills.js ***!
+  \***********************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-$(document).ready(function () {
-  //management buttons
-  $('.edit-b2r').click(function () {
-    //edit form action
-
-    /*
-    var baseAction = $('#edit-b2r').attr('action');
-    baseAction = '/'+ baseAction.split("/")[1] +'/'+ baseAction.split("/")[2] +'/'+ baseAction.split("/")[3] + '/';
-    $('#edit-b2r').attr('action', baseAction+$(this).data('name'));*/
-    window.getModelInfo($('#type-header').data('model-type'), $(this).data('name'));
-  }); //manual flags for creating VM
-
-  $('#manual-flags').change(function () {
-    if ($(this).val() == "Manual") {
-      $('#flags').show();
-    } else {
-      $('#flags').hide();
+$(document).on('click', '.delete-skill', function () {
+  var id = $(this).data('id');
+  $.ajax({
+    url: '/teacher/delete/skill/' + id,
+    type: 'post',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      location.reload();
+    },
+    error: function error(data) {
+      console.log(data);
     }
   });
 });
 
 /***/ }),
 
-/***/ 4:
-/*!**************************************************!*\
-  !*** multi ./resources/js/teacher/teacherb2r.js ***!
-  \**************************************************/
+/***/ 7:
+/*!*****************************************************!*\
+  !*** multi ./resources/js/teacher/teacherskills.js ***!
+  \*****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacher/teacherb2r.js */"./resources/js/teacher/teacherb2r.js");
+module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacher/teacherskills.js */"./resources/js/teacher/teacherskills.js");
 
 
 /***/ })

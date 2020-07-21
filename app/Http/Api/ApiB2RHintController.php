@@ -8,11 +8,10 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\B2RHints;
-use App\Models\HintsUsed;
 
-class B2RHintController extends Controller
+class ApiB2RHintController extends Controller
 {
-    public function create(Request $request, $name){
+    public function apiCreate(Request $request, $name){
 
         $v = Validator::make($request->all(), [
                 'hint' =>'required',
@@ -31,7 +30,7 @@ class B2RHintController extends Controller
 
 	}
 
-    public function update(Request $request){
+    public function apiUpdate(Request $request){
 
         foreach ($request->all() as $hint) {
             
@@ -51,32 +50,8 @@ class B2RHintController extends Controller
         }
     }
 
-    public function destroy($id){
+    public function apiDestroy($id){
     	$hint = B2RHints::find($id);
     	$hint->delete();
     }
-
-    //api method for revealing hints via ajax (still need to add updating functionality for student tracking)
-    public function reveal(Request $request, $name){
-        $request->validate([
-            'hint' => 'required|numeric',
-        ]); 
-
-        $hint = B2RHints::find($request->input('hint'));
-
-        //Update HintsUsed table
-        $username = Auth::user()->name;
-        $hintId = $hint->id;
-
-        if( !HintsUsed::where([['student','=', $username], ['hint_id', '=', $hintId], ['machine_name', '=', $name]])->exists()){
-            HintsUsed::create([
-                'student' => $username,
-                'hint_id' => $hintId,
-                'machine_name' => $name,
-            ]);
-        }
-
-        return response()->json(['hint' => $hint['hint'], 'user' => Auth::user()]);
-    }
-
 }

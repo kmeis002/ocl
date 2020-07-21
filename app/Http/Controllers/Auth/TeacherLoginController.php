@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+
 
 class TeacherLoginController extends Controller
 {
@@ -28,7 +30,7 @@ class TeacherLoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/teacher';
+    protected $redirectTo = '/teacher/home';
 
     /**
      * Create a new controller instance.
@@ -51,7 +53,7 @@ class TeacherLoginController extends Controller
 
         $this->validate($request, [
             'email' => ['required', 'email'],
-            'password' => ['required', 'string']
+            'password' => ['required', 'string'],
         ]);
 
 
@@ -75,6 +77,13 @@ class TeacherLoginController extends Controller
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
+    }
+
+    public function logout(Request $request){
+        Auth::logout();
+        Session::flush();
+
+        return redirect('/teacher/login');
     }
 
 }

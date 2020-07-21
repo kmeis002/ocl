@@ -37,11 +37,12 @@ $('#update-hints').click(function(event){
 			hints.push({'id' : idContent, 'hint': hintContent, 'level': level});
 		}
 	});
-	url='/api/teacher/update/'+type+'/'+name+'/hints';
+	url='/teacher/update/'+type+'/'+name+'/hints';
 	$.ajax({
 		type: "POST",
 		url: url,
 		data: JSON.stringify(hints),
+		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 		dataType: "json",
 		contentType: "application/json",
 		processData: "false",
@@ -61,21 +62,39 @@ $('#create-hint').click(function(){
 	var hintContent=$('#new-hint').val();
 	if($('#is-root').length){
 		var isRoot=$('#is-root').prop('checked');
-		$.post(url, { hint: hintContent, is_root: isRoot }, function(data){
-			$('#new-hint').val('');
-			$('#newHintModal').modal('hide');
-			$('#edit-hints-table').empty();
-			name=$('#edit-hints').data('name');
-			window.getModelInfo(type+'/hints', name);
+		$.ajax({
+			url: url,
+			type: 'post',
+			data: { hint: hintContent, is_root: isRoot },
+			headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+			success: function(data){
+				$('#new-hint').val('');
+				$('#newHintModal').modal('hide');
+				$('#edit-hints-table').empty();
+				name=$('#edit-hints').data('name');
+				window.getModelInfo(type+'/hints', name);
+			},
+			error: function(data){
+				console.log(data);
+			}
 		});
 	}else if($('#new-level').length){
-		var level=$('#new-level').val();
-		$.post(url, { hint: hintContent, level: level }, function(data){
-			$('#new-hint').val('');
-			$('#newHintModal').modal('hide');
-			$('#edit-hints-table').empty();
-			name=$('#edit-hints').data('name');
-			window.getModelInfo(type+'/hints', name, $('#hint-page-nav').attr('data-current'));
+		var level=$('#new-level').val();		
+		$.ajax({
+			url: url,
+			type: 'post',
+			data: { hint: hintContent, level: level },
+			headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+			success: function(data){
+				$('#new-hint').val('');
+				$('#newHintModal').modal('hide');
+				$('#edit-hints-table').empty();
+				name=$('#edit-hints').data('name');
+				window.getModelInfo(type+'/hints', name, $('#hint-page-nav').attr('data-current'));
+			},
+			error: function(data){
+				console.log(data);
+			}
 		});
 	}
 
@@ -95,22 +114,31 @@ $(document).on('click', '.remove-hint' , function (event) {
     //Process button click event
     id = this.id.substring(12);
     type=$('#edit-hints').data('type');
-    url='/api/teacher/delete/' + type + '/hints/'+id;
+    url='/teacher/delete/' + type + '/hints/'+id;
     name=$(this).data('name');
     //post to hints CRUD api then refresh modal
 
-    $.post(url, function(data){
-    	$('#edit-hints-table').empty();
-    	if($('#hint-page-nav').length){
-    		window.getModelInfo(type+'/hints', name, $('#hint-page-nav').attr('data-current'));
-    	}else{
-    		window.getModelInfo(type+'/hints', name);
-    	}
-    });
+	$.ajax({
+		url: url,
+		type: 'post',
+		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		success: function(data){
+	    	$('#edit-hints-table').empty();
+	    	if($('#hint-page-nav').length){
+	    		window.getModelInfo(type+'/hints', name, $('#hint-page-nav').attr('data-current'));
+	    	}else{
+	    		window.getModelInfo(type+'/hints', name);
+	    	}
+		},
+		error: function(data){
+			console.log(data);
+		}
+	});
 });
 
 //hint pagination
 $(document).on('click', '.hint-page-link' , function (event) {
+	console.log('beep');
 	var page = $(this).text();
 	var name = $('#edit-hints').data('name');
 	var type = $('#type-header').data('model-type');

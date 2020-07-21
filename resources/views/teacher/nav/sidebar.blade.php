@@ -1,7 +1,7 @@
 <div id="side" class="side-menu-container">
 	<div class="container d-flex justify-content-between">
-		<span>Teacher Account Name</span>
-		<span><a href="#"><i class="fas fa-cog mx-1 my-auto"></i></a><a href="#"><i class="fas fa-sign-out-alt my-auto mx-1"></i></a></span>
+		<span>{{Auth::user()->name}}</span>
+		<span><a href="/teacher/logout"><i class="fas fa-sign-out-alt my-auto mx-1"></i></a></span>
 	</div>
 	<hr />
 	<div class="container my-3">
@@ -39,7 +39,7 @@
 		<li class="list-group-item"><a href="/teacher/resources/list/b2r">Boot2Root Machines</a></li>
 		<li class="list-group-item"><a href="/teacher/resources/list/lab">Lab Machines</a></li>
 		<li class="list-group-item"><a href="/teacher/resources/list/ctf">Capture the Flags</a></li>
-		<li class="list-group-item"><a href="/teacher/resources/list/skills">Skills</a></li>
+		<li class="list-group-item"><a href="/teacher/resources/skills">Skills</a></li>
 	</ul>
 	</div>
 </div>

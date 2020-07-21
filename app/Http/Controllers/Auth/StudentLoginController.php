@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\RedirectsUsers;
@@ -29,7 +30,7 @@ class StudentLoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/student';
+    protected $redirectTo = '/student/home';
 
     /**
      * Create a new controller instance.
@@ -77,6 +78,10 @@ class StudentLoginController extends Controller
         return $this->sendFailedLoginResponse($request);
     }
 
-
+    public function logout(){
+        Auth::logout();
+        Session::flush();
+        return redirect('/student/login');
+    }
 
 }

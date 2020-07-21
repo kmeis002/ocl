@@ -16,7 +16,7 @@ use App\Models\VMSkills;
 class B2RController extends Controller
 {
     
-    public function apiGetEditInfo($name){
+    public function getEditInfo($name){
         $b2r = B2R::find($name);
         $b2r->flags;
         $b2r->skills;
@@ -62,7 +62,7 @@ class B2RController extends Controller
         return redirect('/teacher/resources/list/b2r')->with(['updated' => $name]);
     }
 
-    public function apiGetHints($name){
+    public function getHints($name){
     	$b2r = B2R::find($name);
     	$hints = $b2r->hints;
 
@@ -83,15 +83,15 @@ class B2RController extends Controller
 
         B2R::create($request->all());
 
-        return redirect('/teacher/list/b2r');
+        return redirect('/teacher/resources/list/b2r');
     }
 
-    public function apiDestroy($name){
+    public function destroy($name){
         $B2R = B2R::find($name);
         $B2R->delete();
     }
 
-    public function apiGetAll(){
+    public function getAll(){
         return B2R::all()->pluck('name');
     }
 

@@ -37,6 +37,11 @@ $(document).ready(function(){
 					console.log(data);
 				}
 			});
+			/*
+			$.post('/api/teacher/create/lab/'+name+'/level', function(){
+				window.getModelInfo($('#type-header').data('model-type'), name);
+			});
+			*/
 		}
 	});
 
@@ -73,6 +78,10 @@ $(document).ready(function(){
 				console.log(data);
 			}
 		});
+
+		/*$.post('/api/teacher/delete/lab/'+name+'/level/'+id, function(){
+			window.getModelInfo($('#type-header').data('model-type'), name);
+		})*/
 	});
 
 	function makeLevelFlagItem(levels){

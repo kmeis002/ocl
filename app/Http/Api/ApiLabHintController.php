@@ -23,10 +23,10 @@ use App\Models\HintsUsed;
 */
 
 
-class LabHintController extends Controller
+class ApiLabHintController extends Controller
 {
 
-    public function create(Request $request, $name){
+    public function apiCreate(Request $request, $name){
         $levels = LabFlags::where(['lab_name' => $name])->get()->count();
 
         $v = Validator::make($request->all(), [
@@ -47,7 +47,7 @@ class LabHintController extends Controller
 
     }
 
-    public function update(Request $request, $id){
+    public function apiUpdate(Request $request, $id){
         foreach ($request->all() as $hint) {
             
             $v = Validator::make($hint, [
@@ -68,34 +68,8 @@ class LabHintController extends Controller
         }
     }
 
-    public function destroy($id){
+    public function apiDestroy($id){
     	$hint = LabHints::find($id);
     	$hint->delete();
     }
-
-    //api method for revealing hints via ajax (still need to add updating functionality for student tracking)
-    public function reveal(Request $request, $name){
-        $request->validate([
-            'hint' => 'required|numeric',
-        ]); 
-
-
-        $hint = LabHints::find($request->input('hint'));
-
-        //Update HintsUsed table
-        $username = Auth::user()->name;
-        $hintId = $hint->id;
-
-        if(!HintsUsed::where([['student','=', $username], ['hint_id', '=', $hintId], ['machine_name', '=', $name]])->exists()){
-
-            HintsUsed::create([
-                'student' => $username,
-                'hint_id' => $hintId,
-                'machine_name' => $name,
-            ]);
-        }
-
-        return response()->json(['hint' => $hint['hint']]);
-    }
-
 }

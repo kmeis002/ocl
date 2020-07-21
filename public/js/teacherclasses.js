@@ -107,19 +107,41 @@ __webpack_require__(/*! ./teachercourses */ "./resources/js/teacher/teachercours
 //------------------COURSE JQUERY---------------------//
 $(document).on('click', '#add-new-course', function () {
   var courseName = $('#new-course-name').val();
-  $.post('/api/teacher/create/course', {
-    name: courseName
-  }, function (data) {
-    location.reload();
+  $.ajax({
+    url: '/teacher/create/course',
+    type: 'post',
+    data: {
+      name: courseName
+    },
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      location.reload();
+    },
+    error: function error(data) {
+      console.log(data);
+    }
   });
 });
 $(document).on('click', '.delete-course', function () {
   var id = $(this).data('id');
   var courseName = $('#course-' + id).text();
-  $.post('/api/teacher/delete/course/' + courseName, {
-    name: courseName
-  }, function (data) {
-    location.reload();
+  $.ajax({
+    url: '/teacher/delete/course/' + courseName,
+    type: 'post',
+    data: {
+      name: courseName
+    },
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      location.reload();
+    },
+    error: function error(data) {
+      console.log(data);
+    }
   });
 }); //------------------CLASS JQUERY---------------------//
 
@@ -127,29 +149,70 @@ $(document).on('click', '#add-new-class', function () {
   var courseName = $('#new-class-course').val();
   var teacherName = $('#new-class-teacher').val();
   var bell = $('#new-class-bell').val();
-  $.post('/api/teacher/create/class', {
-    course: courseName,
-    teacher: teacherName,
-    bell: bell
-  }, function (data) {
-    location.reload();
+  $.ajax({
+    url: '/teacher/create/class',
+    type: 'post',
+    data: {
+      course: courseName,
+      teacher: teacherName,
+      bell: bell
+    },
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      location.reload();
+    },
+    error: function error(data) {
+      console.log(data);
+    }
   });
 });
 $(document).on('click', '.delete-class', function () {
   var id = $(this).data('id');
-  $.post('/api/teacher/delete/class/' + id, function (data) {
-    location.reload();
+  $.ajax({
+    url: '/teacher/delete/class/' + id,
+    type: 'post',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      location.reload();
+    },
+    error: function error(data) {
+      console.log(data);
+    }
   });
 }); //------------------SELECT JQUERY---------------------//
 
 $(document).ready(function () {
-  $.get('/api/teacher/get/courses', function (data) {
-    makeCourseList(data);
+  $.ajax({
+    url: '/teacher/get/courses',
+    type: 'get',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      makeCourseList(data);
+    },
+    error: function error(data) {
+      console.log(data);
+    }
   });
 });
 $(document).ready(function () {
-  $.get('/api/teacher/get/teachers', function (data) {
-    makeTeacherList(data);
+  $.ajax({
+    url: '/teacher/get/teachers',
+    type: 'get',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      makeTeacherList(data);
+    },
+    error: function error(data) {
+      console.log(data);
+    }
   });
 });
 

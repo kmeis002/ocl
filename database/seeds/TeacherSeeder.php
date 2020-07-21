@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class TeacherSeeder extends Seeder
 {
@@ -21,9 +22,9 @@ class TeacherSeeder extends Seeder
     public function make($name){
         DB::table('teachers')->insert([
         	'name' => $name,
-        	'password' => md5(Str::random(50)),
+        	'password' => Hash::make('test'),
         	'api_token' => Str::random(50),
-        	'email' => $name.'@email.com',
+        	'email' => str_replace(' ', '', $name).'@email.com',
         	'created_at' => \Carbon\Carbon::now(),
         	'updated_at' => \Carbon\Carbon::now(),
         ]);

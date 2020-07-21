@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -290,7 +290,7 @@ function updateStudentInfo(flags, hints) {
 
 /***/ }),
 
-/***/ 9:
+/***/ 12:
 /*!***************************************************!*\
   !*** multi ./resources/js/student/studentb2rs.js ***!
   \***************************************************/

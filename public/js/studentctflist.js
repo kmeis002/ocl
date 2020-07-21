@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 14);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -176,7 +176,7 @@ $(document).on('click', '#submit-flag', function () {
 
 /***/ }),
 
-/***/ 11:
+/***/ 14:
 /*!******************************************************!*\
   !*** multi ./resources/js/student/studentctflist.js ***!
   \******************************************************/

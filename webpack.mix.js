@@ -18,8 +18,11 @@ mix.webpackConfig({
 
 mix.js('resources/js/app.js', 'public/js').js('resources/js/teacher/teacherresource.js', 'public/js/')
 .js('resources/js/teacher/teacherclasses.js', 'public/js/')
+.js('resources/js/teacher/teacherforms.js', 'public/js/')
 .js('resources/js/teacher/teacherb2r.js', 'public/js/')
 .js('resources/js/teacher/teacherlab.js', 'public/js/')
+.js('resources/js/teacher/teacherctf.js', 'public/js/')
+.js('resources/js/teacher/teacherskills.js', 'public/js/')
 .js('resources/js/teacher/teacherassignments.js', 'public/js')
 .js('resources/js/teacher/teacherenroll.js', 'public/js')
 .js('resources/js/teacher/teacheraccounts.js', 'public/js')

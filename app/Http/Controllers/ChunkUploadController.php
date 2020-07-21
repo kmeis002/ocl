@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 use App\Models\VM;
+use App\Models\Ctfs;
 use Vbox;
 
 /*
@@ -26,7 +27,7 @@ class ChunkUploadController extends Controller
 {
 
 
-    //Chunk upload for VM/Zip files.
+    //Chunk upload for OVA files.
     public function chunkStore(Request $request){
 
 
@@ -41,7 +42,8 @@ class ChunkUploadController extends Controller
                 return response()->json(['message'=>'File Exists, Choose another name'], 500);
             }
 
-            $tmpFile = 'API_KEY.chunk';
+            //replace with teacher name!
+            $tmpFile = 'name.ova.chunk';
 
             //clear out any temp files before uploading
             if(Storage::exists('/tmp/'.$tmpFile) && $request->input('first_chunk') === 'true'){
@@ -75,7 +77,52 @@ class ChunkUploadController extends Controller
 
     }
 
-    public function test($name){
-        Vbox::importVM($name);
+
+    //Chunk upload for Zip files.
+    public function zipStore(Request $request){
+
+
+        $uploadName = explode('.',$request->input('file'))[0];
+        $uploadType = $request->input('file_type');
+        $spacedName = str_replace('_', ' ', $uploadName);
+
+        //Check if resources exists + mimetype:
+        if((Ctfs::exists($spacedName)) && $uploadType === 'application/zip'){
+            //Check if file expected file exists and return 404
+            if(Storage::exists('/ctf/'.$request->input('file'))){
+                return response()->json(['message'=>'File Exists, Choose another name'], 500);
+            }
+
+            //replace with teacher name!
+            $tmpFile = 'name.zip.chunk';
+
+            //clear out any temp files before uploading
+            if(Storage::exists('/tmp/'.$tmpFile) && $request->input('first_chunk') === 'true'){
+                Storage::delete('/tmp/'.$tmpFile);
+            }
+            //Grab data, encode, and store in tmp 
+            $data = explode(',',$request->input('file_data'))[1];
+            $data = base64_decode($data);
+            $path = Storage::path('/tmp/'.$tmpFile);
+            File::append($path, $data);
+
+            //Check if chunk is last from user and move file
+            if($request->input('final_chunk') === 'true'){
+                Storage::move('/tmp/'.$tmpFile,'/ctf/'.$uploadName.'.zip');
+
+                if($uploadType === 'application/zip'){
+                    $ctf = Ctfs::find($spacedName);
+                    $ctf->file = $uploadName.'.zip';
+                    $ctf->save();
+                }
+                return response()->json(['message' => 'final chunk received, file stored'], 200);
+            }
+
+            return response()->json(['message' => 'chunk received'], 200);
+        }else{
+            return response()->json(['message' => 'upload error'], 500);
+        }
+
     }
+
 }

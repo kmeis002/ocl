@@ -66,4 +66,32 @@
 		</div>
 	</div>
 </div>
+
+<div class="container d-flex justify-content-center">
+	<h2>Assignment Check</h2>
+</div>
+
+<div class="container d-flex main-list justify-content-center mb-5">
+	<table class="table table-dark table-striped table-hover">
+		<thead>
+			<tr>
+				<th>Student Name</th>
+				<th>Outstanding Assignments</th>
+				<th>Finished Assignments</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><select class="form-control" name="student-select" id="student-select">
+					@foreach($students as $student)
+					<option value="{{$student->id}}">{{$student->name}}</option>
+					@endforeach
+				</select></td>
+				<td id="incomplete-assignments"></td>
+				<td id="completed-assignments"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
 @endsection

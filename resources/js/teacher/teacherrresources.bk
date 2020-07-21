@@ -15,6 +15,13 @@ $(document).on('click', '.delete-model', function(){
 			console.log(data);
 		}
 	});
+
+	/*
+	$.post('/api/teacher/delete/'+type+'/'+name, function(data){
+		location.reload();
+	});
+	*/
+
 });
 
 
@@ -48,6 +55,12 @@ $(document).on('click', '#add-new-skill', function(){
 			console.log(data);
 		}
 	});
+
+	/*
+	$.post('/api/teacher/create/vmskill/'+name, {skill: skill}, function(data){
+		window.getModelInfo(modeltype, name);
+	});
+	*/
 });
 
 //Delete VM Skill
@@ -69,6 +82,12 @@ $(document).on('click', '.delete-skill', function(){
 			console.log(data);
 		}
 	});
+
+	/*
+	$.post('/api/teacher/delete/vmskill/' + name, {id: skillId}, function(){
+		window.getModelInfo(modeltype, name);
+	})
+	*/
 });
 
 
@@ -78,13 +97,7 @@ $(document).on('click', '.delete-skill', function(){
 $(document).on('show.bs.modal', '#uploadOvaModal', function(event){
 	var button = $(event.relatedTarget);
 	var name = window.convertName(button.data('name'));
-	$('#ova-file').attr('onchange', 'window.ovaSelectorScript(\'http://www.ocl.dev/teacher/upload/chunkupload\',\''+name+'\')');
-});
-
-$(document).on('show.bs.modal', '#uploadZipModal', function(event){
-	var button = $(event.relatedTarget);
-	var name = window.convertName(button.data('name'));
-	$('#ova-file').attr('onchange', 'window.zipSelectorScript(\'http://www.ocl.dev/teacher/upload/zipupload\',\''+name+'\')');
+	$('#ova-file').attr('onchange', 'window.selectorScript(\'http://www.ocl.dev/api/teacher/upload/chunkupload\',\''+name+'\')');
 });
 
 //OVA Delete
@@ -102,6 +115,15 @@ $(document).on('click', '#delete-ova', function(){
 			console.log(data);
 		}
 	});
+
+	/*
+	$.post('/api/teacher/delete/vm/file/' + name, function(data){
+		console.log(data);
+		$('#edit-file-name').text('');
+	}).fail(function(data){
+		console.log(data);
+	});
+	*/
 });
 
 
@@ -128,6 +150,15 @@ $(document).on('click', '.vmmanage-modal', function(event){
 			console.log(data);
 		}
 	});
+
+	/*
+	$.get('/api/teacher/get/vbox/interfaces', function(data){
+		$('#vm-bridged-adapter').empty();
+		for(i = 0; i < data.length; i++){
+			$('#vm-bridged-adapter').append('<option value='+data[i]+'>'+data[i]+'</option.');
+		}
+	});
+	*/
 	updateVMManage(name);
 });
 
@@ -140,19 +171,9 @@ $(document).on('hide.bs.modal', '#vmManageModal', function(){
 $(document).on('click', '#modify-network-mode', function(){
 	var name = $('#vmManageModal').data('name');
 	var mode = $('#vm-network-mode').val();
-
-	$.ajax({
-		url: '/teacher/set/vbox/network/'+window.convertName(name),
-		type: 'post',
-		data: {'vm-network-mode' : mode},
-		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-		success: function(data){
-			alert(data['message']);
-			updateVMManage(name);
-		},
-		error: function(data){
-			console.log(data);
-		}
+	$.post('/api/teacher/set/vbox/network/'+window.convertName(name), {'vm-network-mode' : mode}, function(data){
+		alert(data['message']);
+		updateVMManage(name);
 	});
 });
 
@@ -160,19 +181,9 @@ $(document).on('click', '#modify-network-mode', function(){
 $(document).on('click', '#modify-bridged-adapter', function(){
 	var name = $('#vmManageModal').data('name');
 	var device = $('#vm-bridged-adapter').val();
-
-	$.ajax({
-		url: '/teacher/set/vbox/bridged/'+window.convertName(name),
-		type: 'post',
-		data: {'vm-bridged-adapter' : device},
-		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-		success: function(data){
-			alert(data['message']);
-			updateVMManage(name);
-		},
-		error: function(data){
-			console.log(data);
-		}
+	$.post('/api/teacher/set/vbox/bridged/'+window.convertName(name), {'vm-bridged-adapter' : device}, function(data){
+		alert(data['message']);
+		updateVMManage(name);
 	});
 });
 
@@ -194,6 +205,14 @@ $(document).on('click', '#vm-power-toggle', function(){
 			makeStatus(json['status']);
 		}
 	});
+	/*
+	$.post('/api/teacher/set/vbox/power/' + window.convertName(name), function(data){
+		makeStatus(data['status']);
+	}).fail(function(data){
+		json = data['responseJSON'];
+		makeStatus(json['status']);
+	});
+	*/
 });
 
 //Reset Button
@@ -214,6 +233,16 @@ $(document).on('click', '#vm-reset', function(){
 			makeStatus(json['status']);
 		}
 	});
+
+	/*
+	$.post('/api/teacher/set/vbox/reset/' + window.convertName(name), function(data){
+		console.log(data);
+		makeStatus(data['status']);
+	}).fail(function(data){
+		json = data['responseJSON'];
+		makeStatus(json['status']);
+	});
+	*/
 });
 
 //Unregister Button
@@ -234,6 +263,17 @@ $(document).on('click', '#unregister-vm', function(){
 			location.reload();
 		}
 	});
+
+	/*
+	$.post('/api/teacher/set/vbox/unregister/'+window.convertName(name), function(data){
+		alert(data['message']);
+		location.reload();
+	}).fail(function(data){
+		json = data['responseJSON'];
+		alert(json['message']);
+		location.reload();
+	});
+	*/
 });
 
 //Register Button
@@ -250,6 +290,14 @@ $(document).on('click', '#register-vm', function(){
 			console.log(data);
 		}
 	});
+
+	/*
+	$.post('/api/teacher/set/vbox/register/'+window.convertName(name), function(data){
+		location.reload();
+	}).fail(function(data){
+		console.log(data);
+	});
+	*/
 });
 
 
@@ -290,6 +338,33 @@ function updateVMManage(name){
 			console.log(data);
 		}
 	});
+
+	/*
+	$.get('/api/teacher/get/vbox/vminfo/'+window.convertName(name), function(data){
+		makeStatus(data['status']);
+		if(data['registered']){
+			$('#vm-register-state').text('Machine is Registered.');
+			$('#register-vm').hide();
+			$('#unregister-vm').show();
+			$('#vm-network-table').show();
+			$('#vm-power').show();
+			if(data['NIC 1'].includes('Bridged')){
+				$('#vm-network-mode').val('Bridged');
+				$('.vm-bridged').show();
+				$('#vm-bridged-adapter').val(data['NIC 1'].split('\'')[1]);
+			}else if(data['NIC 1'].includes('NAT')){
+				$('#vm-network-mode').val('NAT');
+				$('.vm-bridged').hide();
+			}
+		}else{
+			$('#vm-register-state').text('Machine is not yet registered.');
+			$('#unregister-vm').hide();
+			$('#register-vm').show();
+			$('#vm-network-table').hide();
+			$('#vm-power').hide();
+		}
+	});
+	*/
 }
 
 
@@ -299,13 +374,12 @@ window.getModelInfo = function(modeltype, name, page=0){
 		baseAction = '/'+ baseAction.split("/")[1] +'/'+ baseAction.split("/")[2] +'/'+ baseAction.split("/")[3] + '/'
 		$('#edit-'+modeltype).attr('action', baseAction+name);
 	}
-	var url = '/teacher/get/'+modeltype+'/'+name;
+	var url = '/api/teacher/get/'+modeltype+'/'+name;
 	var output;
 
 	$.ajax({
 		url: url,
 		type: 'get',
-		data: {page: page},
 		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 		success: function(data){
 			if(!modeltype.includes('hints')){
@@ -315,12 +389,27 @@ window.getModelInfo = function(modeltype, name, page=0){
 		  	}else if(modeltype.includes('lab')){
 		  		$('#add-new-hint-form').attr('data-levels', data['levels']);
 		  		window.updateLabHintModal(data['hints'], name, data['levels']);
+
 		  	}
 		},
 		error: function(data){
 			console.log(data);
 		}
 	});
+
+	/*
+	$.get( url , {'page':page}, function( data ) {
+		if(!modeltype.includes('hints')){
+	  		window.updateModelView(modeltype, data);
+	  	}else if(modeltype.includes('b2r')){
+	  		window.updateB2RHintModal(data, name);
+	  	}else if(modeltype.includes('lab')){
+	  		$('#add-new-hint-form').attr('data-levels', data['levels']);
+	  		window.updateLabHintModal(data['hints'], name, data['levels']);
+
+	  	}
+	});
+	*/
 }
 
 window.updateModelView = function(modeltype, ajaxdata){
@@ -353,14 +442,6 @@ window.updateModelView = function(modeltype, ajaxdata){
 		//make and update skill items for vm
 		window.makeSkillLineItems(ajaxdata[modeltype]['skills']);
 		window.updateSkillItems(ajaxdata[modeltype]['skills']);
-	}else{
-		$('#ctf-name').text(ajaxdata['name']);
-		$('#edit-category').val(ajaxdata['category']);
-		$('#edit-description').val(ajaxdata['description']);
-		$('#edit-file-name').text(ajaxdata['file']);
-		$('#edit-flag').val(ajaxdata['flag']);
-		$('#edit-pts').val(ajaxdata['points']);
-		$('#edit-icon-picker').val(ajaxdata['icon']);
 	}
 }
 
@@ -442,7 +523,7 @@ window.convertName= function (name){
 
 function makeSkillsList(){
 	$.ajax({
-    url: '/teacher/get/skills',
+    url: '/api/teacher/get/skills',
     headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
     success: function(data) {
       skills = data;

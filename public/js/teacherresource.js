@@ -156,6 +156,9 @@ window.chunkUpload = /*#__PURE__*/function () {
         $.ajax({
           url: obj.url,
           type: 'POST',
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
           dataType: 'text',
           cache: false,
           data: {
@@ -192,7 +195,7 @@ window.chunkUpload = /*#__PURE__*/function () {
   return _class;
 }();
 
-window.selectorScript = function (url, name) {
+window.ovaSelectorScript = function (url, name) {
   var filePath = $('#ova-file').val().split('\\');
   var fileName = filePath[filePath.length - 1];
 
@@ -200,7 +203,19 @@ window.selectorScript = function (url, name) {
     var p = new window.chunkUpload(url, 10000);
     p.upload_file(0, p);
   } else {
-    alert('OVA File must be labeled the same name as the Machine. Please select a file with the name: ' + name + '.ova');
+    alert('OVA File must be labeled the same name as the Machine. Please select a file with the name: ' + name + '.ova.');
+  }
+};
+
+window.zipSelectorScript = function (url, name) {
+  var filePath = $('#ova-file').val().split('\\');
+  var fileName = filePath[filePath.length - 1];
+
+  if (fileName == name + '.zip') {
+    var p = new window.chunkUpload(url, 10000);
+    p.upload_file(0, p);
+  } else {
+    alert('Zip File must be labeled the same name as the Machine. Please select a file with the name: ' + name + '.zip.');
   }
 };
 
@@ -266,11 +281,14 @@ $(document).ready(function () {
         });
       }
     });
-    url = '/api/teacher/update/' + type + '/' + name + '/hints';
+    url = '/teacher/update/' + type + '/' + name + '/hints';
     $.ajax({
       type: "POST",
       url: url,
       data: JSON.stringify(hints),
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
       dataType: "json",
       contentType: "application/json",
       processData: "false",
@@ -290,27 +308,49 @@ $(document).ready(function () {
 
     if ($('#is-root').length) {
       var isRoot = $('#is-root').prop('checked');
-      $.post(url, {
-        hint: hintContent,
-        is_root: isRoot
-      }, function (data) {
-        $('#new-hint').val('');
-        $('#newHintModal').modal('hide');
-        $('#edit-hints-table').empty();
-        name = $('#edit-hints').data('name');
-        window.getModelInfo(type + '/hints', name);
+      $.ajax({
+        url: url,
+        type: 'post',
+        data: {
+          hint: hintContent,
+          is_root: isRoot
+        },
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function success(data) {
+          $('#new-hint').val('');
+          $('#newHintModal').modal('hide');
+          $('#edit-hints-table').empty();
+          name = $('#edit-hints').data('name');
+          window.getModelInfo(type + '/hints', name);
+        },
+        error: function error(data) {
+          console.log(data);
+        }
       });
     } else if ($('#new-level').length) {
       var level = $('#new-level').val();
-      $.post(url, {
-        hint: hintContent,
-        level: level
-      }, function (data) {
-        $('#new-hint').val('');
-        $('#newHintModal').modal('hide');
-        $('#edit-hints-table').empty();
-        name = $('#edit-hints').data('name');
-        window.getModelInfo(type + '/hints', name, $('#hint-page-nav').attr('data-current'));
+      $.ajax({
+        url: url,
+        type: 'post',
+        data: {
+          hint: hintContent,
+          level: level
+        },
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function success(data) {
+          $('#new-hint').val('');
+          $('#newHintModal').modal('hide');
+          $('#edit-hints-table').empty();
+          name = $('#edit-hints').data('name');
+          window.getModelInfo(type + '/hints', name, $('#hint-page-nav').attr('data-current'));
+        },
+        error: function error(data) {
+          console.log(data);
+        }
       });
     }
   });
@@ -322,21 +362,32 @@ $(document).ready(function () {
     //Process button click event
     id = this.id.substring(12);
     type = $('#edit-hints').data('type');
-    url = '/api/teacher/delete/' + type + '/hints/' + id;
+    url = '/teacher/delete/' + type + '/hints/' + id;
     name = $(this).data('name'); //post to hints CRUD api then refresh modal
 
-    $.post(url, function (data) {
-      $('#edit-hints-table').empty();
+    $.ajax({
+      url: url,
+      type: 'post',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function success(data) {
+        $('#edit-hints-table').empty();
 
-      if ($('#hint-page-nav').length) {
-        window.getModelInfo(type + '/hints', name, $('#hint-page-nav').attr('data-current'));
-      } else {
-        window.getModelInfo(type + '/hints', name);
+        if ($('#hint-page-nav').length) {
+          window.getModelInfo(type + '/hints', name, $('#hint-page-nav').attr('data-current'));
+        } else {
+          window.getModelInfo(type + '/hints', name);
+        }
+      },
+      error: function error(data) {
+        console.log(data);
       }
     });
   }); //hint pagination
 
   $(document).on('click', '.hint-page-link', function (event) {
+    console.log('beep');
     var page = $(this).text();
     var name = $('#edit-hints').data('name');
     var type = $('#type-header').data('model-type');
@@ -438,8 +489,18 @@ __webpack_require__(/*! ./teacheredithints */ "./resources/js/teacher/teacheredi
 $(document).on('click', '.delete-model', function () {
   var name = $(this).data('name');
   var type = $(this).data('type');
-  $.post('/api/teacher/delete/' + type + '/' + name, function (data) {
-    location.reload();
+  $.ajax({
+    url: '/teacher/delete/' + type + '/' + name,
+    type: 'post',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      location.reload();
+    },
+    error: function error(data) {
+      console.log(data);
+    }
   });
 }); //--------------------------Skills JQUERY--------------------------------//
 //collapse skills
@@ -458,10 +519,21 @@ $(document).on('click', '#add-new-skill', function () {
   modeltype = $('#type-header').data('model-type');
   name = $('#edit-vm-name').text();
   skill = $('#new-skill').val();
-  $.post('/api/teacher/create/vmskill/' + name, {
-    skill: skill
-  }, function (data) {
-    window.getModelInfo(modeltype, name);
+  $.ajax({
+    url: '/teacher/create/vmskill/' + name,
+    type: 'post',
+    data: {
+      skill: skill
+    },
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      window.getModelInfo(modeltype, name);
+    },
+    error: function error(data) {
+      console.log(data);
+    }
   });
 }); //Delete VM Skill
 
@@ -470,10 +542,21 @@ $(document).on('click', '.delete-skill', function () {
   name = $('#edit-vm-name').text();
   skill = $('#new-skill').val();
   skillId = $(this).attr('id').split('-')[2];
-  $.post('/api/teacher/delete/vmskill/' + name, {
-    id: skillId
-  }, function () {
-    window.getModelInfo(modeltype, name);
+  $.ajax({
+    url: '/teacher/delete/vmskill/' + name,
+    type: 'post',
+    data: {
+      id: skillId
+    },
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      window.getModelInfo(modeltype, name);
+    },
+    error: function error(data) {
+      console.log(data);
+    }
   });
 }); //--------------------------OVA JQUERY--------------------------------//
 //OVA Upload
@@ -481,16 +564,28 @@ $(document).on('click', '.delete-skill', function () {
 $(document).on('show.bs.modal', '#uploadOvaModal', function (event) {
   var button = $(event.relatedTarget);
   var name = window.convertName(button.data('name'));
-  $('#ova-file').attr('onchange', 'window.selectorScript(\'http://www.ocl.dev/api/teacher/upload/chunkupload\',\'' + name + '\')');
+  $('#ova-file').attr('onchange', 'window.ovaSelectorScript(\'http://www.ocl.dev/teacher/upload/chunkupload\',\'' + name + '\')');
+});
+$(document).on('show.bs.modal', '#uploadZipModal', function (event) {
+  var button = $(event.relatedTarget);
+  var name = window.convertName(button.data('name'));
+  $('#ova-file').attr('onchange', 'window.zipSelectorScript(\'http://www.ocl.dev/teacher/upload/zipupload\',\'' + name + '\')');
 }); //OVA Delete
 
 $(document).on('click', '#delete-ova', function () {
   var name = window.convertName($('#edit-vm-name').text());
-  $.post('/api/teacher/delete/vm/file/' + name, function (data) {
-    console.log(data);
-    $('#edit-file-name').text('');
-  }).fail(function (data) {
-    console.log(data);
+  $.ajax({
+    url: '/teacher/delete/vm/file/' + name,
+    type: 'post',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      location.reload();
+    },
+    error: function error(data) {
+      console.log(data);
+    }
   });
 }); //--------------------------VM Management JQUERY----------------------//
 //manage vm Modal
@@ -502,11 +597,21 @@ $(document).on('click', '.vmmanage-modal', function (event) {
   modal.modal('show');
   modal.find('.modal-title').text('Manage ' + name + ' Virtual Machine');
   modal.data('name', name);
-  $.get('/api/teacher/get/vbox/interfaces', function (data) {
-    $('#vm-bridged-adapter').empty();
+  $.ajax({
+    url: '/teacher/get/vbox/interfaces',
+    type: 'get',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      $('#vm-bridged-adapter').empty();
 
-    for (i = 0; i < data.length; i++) {
-      $('#vm-bridged-adapter').append('<option value=' + data[i] + '>' + data[i] + '</option.');
+      for (i = 0; i < data.length; i++) {
+        $('#vm-bridged-adapter').append('<option value=' + data[i] + '>' + data[i] + '</option.');
+      }
+    },
+    error: function error(data) {
+      console.log(data);
     }
   });
   updateVMManage(name);
@@ -519,22 +624,44 @@ $(document).on('hide.bs.modal', '#vmManageModal', function () {
 $(document).on('click', '#modify-network-mode', function () {
   var name = $('#vmManageModal').data('name');
   var mode = $('#vm-network-mode').val();
-  $.post('/api/teacher/set/vbox/network/' + window.convertName(name), {
-    'vm-network-mode': mode
-  }, function (data) {
-    alert(data['message']);
-    updateVMManage(name);
+  $.ajax({
+    url: '/teacher/set/vbox/network/' + window.convertName(name),
+    type: 'post',
+    data: {
+      'vm-network-mode': mode
+    },
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      alert(data['message']);
+      updateVMManage(name);
+    },
+    error: function error(data) {
+      console.log(data);
+    }
   });
 }); //Change VM Bridged Adapter
 
 $(document).on('click', '#modify-bridged-adapter', function () {
   var name = $('#vmManageModal').data('name');
   var device = $('#vm-bridged-adapter').val();
-  $.post('/api/teacher/set/vbox/bridged/' + window.convertName(name), {
-    'vm-bridged-adapter': device
-  }, function (data) {
-    alert(data['message']);
-    updateVMManage(name);
+  $.ajax({
+    url: '/teacher/set/vbox/bridged/' + window.convertName(name),
+    type: 'post',
+    data: {
+      'vm-bridged-adapter': device
+    },
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      alert(data['message']);
+      updateVMManage(name);
+    },
+    error: function error(data) {
+      console.log(data);
+    }
   });
 }); //Toggle Power Button
 
@@ -542,11 +669,19 @@ $(document).on('click', '#vm-power-toggle', function () {
   var name = $('#vmManageModal').data('name'); //set status to indicate awaiting repsonse
 
   makeSpinner('vm-status');
-  $.post('/api/teacher/set/vbox/power/' + window.convertName(name), function (data) {
-    makeStatus(data['status']);
-  }).fail(function (data) {
-    json = data['responseJSON'];
-    makeStatus(json['status']);
+  $.ajax({
+    url: '/teacher/set/vbox/power/' + window.convertName(name),
+    type: 'post',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      makeStatus(data['status']);
+    },
+    error: function error(data) {
+      json = data['responseJSON'];
+      makeStatus(json['status']);
+    }
   });
 }); //Reset Button
 
@@ -554,61 +689,94 @@ $(document).on('click', '#vm-reset', function () {
   var name = $('#vmManageModal').data('name'); //set status to indicate awaiting repsonse
 
   makeSpinner('vm-status');
-  $.post('/api/teacher/set/vbox/reset/' + window.convertName(name), function (data) {
-    console.log(data);
-    makeStatus(data['status']);
-  }).fail(function (data) {
-    json = data['responseJSON'];
-    makeStatus(json['status']);
+  $.ajax({
+    url: '/teacher/set/vbox/reset/' + window.convertName(name),
+    type: 'post',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      makeStatus(data['status']);
+    },
+    error: function error(data) {
+      json = data['responseJSON'];
+      makeStatus(json['status']);
+    }
   });
 }); //Unregister Button
 
 $(document).on('click', '#unregister-vm', function () {
   var name = $('#vmManageModal').data('name');
-  $.post('/api/teacher/set/vbox/unregister/' + window.convertName(name), function (data) {
-    alert(data['message']);
-    location.reload();
-  }).fail(function (data) {
-    json = data['responseJSON'];
-    alert(json['message']);
-    location.reload();
+  $.ajax({
+    url: '/teacher/set/vbox/unregister/' + window.convertName(name),
+    type: 'post',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      alert(data['message']);
+      location.reload();
+    },
+    error: function error(data) {
+      json = data['responseJSON'];
+      alert(json['message']);
+      location.reload();
+    }
   });
 }); //Register Button
 
 $(document).on('click', '#register-vm', function () {
   var name = $('#vmManageModal').data('name');
-  $.post('/api/teacher/set/vbox/register/' + window.convertName(name), function (data) {
-    location.reload();
-  }).fail(function (data) {
-    console.log(data);
+  $.ajax({
+    url: '/teacher/set/vbox/register/' + window.convertName(name),
+    type: 'post',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      location.reload();
+    },
+    error: function error(data) {
+      console.log(data);
+    }
   });
 }); //--------------------------Functions-------------------------------//
 
 function updateVMManage(name) {
-  $.get('/api/teacher/get/vbox/vminfo/' + window.convertName(name), function (data) {
-    makeStatus(data['status']);
+  $.ajax({
+    url: '/teacher/get/vbox/vminfo/' + window.convertName(name),
+    type: 'get',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      makeStatus(data['status']);
 
-    if (data['registered']) {
-      $('#vm-register-state').text('Machine is Registered.');
-      $('#register-vm').hide();
-      $('#unregister-vm').show();
-      $('#vm-network-table').show();
-      $('#vm-power').show();
+      if (data['registered']) {
+        $('#vm-register-state').text('Machine is Registered.');
+        $('#register-vm').hide();
+        $('#unregister-vm').show();
+        $('#vm-network-table').show();
+        $('#vm-power').show();
 
-      if (data['NIC 1'].includes('Bridged')) {
-        $('#vm-network-mode').val('Bridged');
-        $('.vm-bridged').show();
-        $('#vm-bridged-adapter').val(data['NIC 1'].split('\'')[1]);
-      } else if (data['NIC 1'].includes('NAT')) {
-        $('#vm-network-mode').val('NAT');
-        $('.vm-bridged').hide();
+        if (data['NIC 1'].includes('Bridged')) {
+          $('#vm-network-mode').val('Bridged');
+          $('.vm-bridged').show();
+          $('#vm-bridged-adapter').val(data['NIC 1'].split('\'')[1]);
+        } else if (data['NIC 1'].includes('NAT')) {
+          $('#vm-network-mode').val('NAT');
+          $('.vm-bridged').hide();
+        }
+      } else {
+        $('#vm-register-state').text('Machine is not yet registered.');
+        $('#unregister-vm').hide();
+        $('#register-vm').show();
+        $('#vm-network-table').hide();
+        $('#vm-power').hide();
       }
-    } else {
-      $('#vm-register-state').text('Machine is not yet registered.');
-      $('#unregister-vm').hide();
-      $('#register-vm').show();
-      $('#vm-network-table').hide();
-      $('#vm-power').hide();
+    },
+    error: function error(data) {
+      console.log(data);
     }
   });
 }
@@ -622,18 +790,29 @@ window.getModelInfo = function (modeltype, name) {
     $('#edit-' + modeltype).attr('action', baseAction + name);
   }
 
-  var url = '/api/teacher/get/' + modeltype + '/' + name;
+  var url = '/teacher/get/' + modeltype + '/' + name;
   var output;
-  $.get(url, {
-    'page': page
-  }, function (data) {
-    if (!modeltype.includes('hints')) {
-      window.updateModelView(modeltype, data);
-    } else if (modeltype.includes('b2r')) {
-      window.updateB2RHintModal(data, name);
-    } else if (modeltype.includes('lab')) {
-      $('#add-new-hint-form').attr('data-levels', data['levels']);
-      window.updateLabHintModal(data['hints'], name, data['levels']);
+  $.ajax({
+    url: url,
+    type: 'get',
+    data: {
+      page: page
+    },
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function success(data) {
+      if (!modeltype.includes('hints')) {
+        window.updateModelView(modeltype, data);
+      } else if (modeltype.includes('b2r')) {
+        window.updateB2RHintModal(data, name);
+      } else if (modeltype.includes('lab')) {
+        $('#add-new-hint-form').attr('data-levels', data['levels']);
+        window.updateLabHintModal(data['hints'], name, data['levels']);
+      }
+    },
+    error: function error(data) {
+      console.log(data);
     }
   });
 };
@@ -666,6 +845,14 @@ window.updateModelView = function (modeltype, ajaxdata) {
 
     window.makeSkillLineItems(ajaxdata[modeltype]['skills']);
     window.updateSkillItems(ajaxdata[modeltype]['skills']);
+  } else {
+    $('#ctf-name').text(ajaxdata['name']);
+    $('#edit-category').val(ajaxdata['category']);
+    $('#edit-description').val(ajaxdata['description']);
+    $('#edit-file-name').text(ajaxdata['file']);
+    $('#edit-flag').val(ajaxdata['flag']);
+    $('#edit-pts').val(ajaxdata['points']);
+    $('#edit-icon-picker').val(ajaxdata['icon']);
   }
 };
 
@@ -745,7 +932,10 @@ window.convertName = function (name) {
 
 function makeSkillsList() {
   $.ajax({
-    url: '/api/teacher/get/skills',
+    url: '/teacher/get/skills',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
     success: function success(data) {
       skills = data;
     },

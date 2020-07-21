@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -217,7 +217,7 @@ function populateTeacherForm(teacher) {
 
 /***/ }),
 
-/***/ 7:
+/***/ 10:
 /*!*******************************************************!*\
   !*** multi ./resources/js/teacher/teacheraccounts.js ***!
   \*******************************************************/

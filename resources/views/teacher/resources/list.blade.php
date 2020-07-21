@@ -2,10 +2,13 @@
 
 @section('scripts')
   <script src="{{ asset('js/teacherresource.js') }}"></script>
+  <script src="{{ asset('js/teacherforms.js') }}"></script>
 @if($type === 'b2r')
   <script src="{{ asset('js/teacherb2r.js') }}"></script>
 @elseif($type === 'lab')
-<script src="{{ asset('js/teacherlab.js') }}"></script>
+  <script src="{{ asset('js/teacherlab.js') }}"></script>
+@else
+  <script src="{{ asset('js/teacherctf.js') }}"></script>
 @endif
 @if(Session::has('updated'))
   <script>
@@ -103,18 +106,24 @@
           <td class="option-cluster text-right" >
             <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
                 <button type="button" class="edit-{{$type}} btn btn-primary" data-name="{{$item->name}}" data-toggle="tooltip" data-placement="top" title="Edit Machine"><i class="fas fa-pen"></i></button>
+
+                @if($type !== 'ctf')
                 <button type="button" class="edit-hints btn btn-primary edit-hints-modal" data-name="{{$item->name}}" data-toggle="tooltip" data-placement="top" title="Edit Hints"><i class="fas fa-puzzle-piece"></i></button>
-                @if(isset($item->file))
-                <button type="button" class="rotate-flags btn btn-primary" data-name="{{$item->name}}" data-toggle="tooltip" data-placement="top" title="Sync Flags"><i class="fas fa-sync"></i></button>     
-                @if($item->status === 0)
-                <button type="button" class="power-off btn btn-danger vmmanage-modal" data-name="{{$item->name}}" data-toggle="tooltip" data-placement="top" title="Manage Virtual Machine"><i class="fas fa-cube"></i></button>
-                @else
-                <button type="button" class="power-off btn btn-primary vmmanage-modal" data-name="{{$item->name}}" data-toggle="tooltip" data-placement="top" title="Manage Virtual Machine"><i class="fas fa-cube"></i></button>
-                @endif
-                @else
-                <button type="button" class="upload-ova btn btn-primary" data-name="{{$item->name}}" data-toggle="modal" data-target="#uploadOvaModal" data-toggle="tooltip" data-placement="top" title="Upload Virtual Machine"><i class="fas fa-upload"></i></button>
+                  @if(isset($item->file))
+                  <button type="button" class="rotate-flags btn btn-primary" data-name="{{$item->name}}" data-toggle="tooltip" data-placement="top" title="Sync Flags"><i class="fas fa-sync"></i></button>     
+                  @if($item->status === 0)
+                  <button type="button" class="power-off btn btn-danger vmmanage-modal" data-name="{{$item->name}}" data-toggle="tooltip" data-placement="top" title="Manage Virtual Machine"><i class="fas fa-cube"></i></button>
+                  @else
+                  <button type="button" class="power-off btn btn-primary vmmanage-modal" data-name="{{$item->name}}" data-toggle="tooltip" data-placement="top" title="Manage Virtual Machine"><i class="fas fa-cube"></i></button>
+                  @endif
+                  @else
+                  <button type="button" class="upload-ova btn btn-primary" data-name="{{$item->name}}" data-toggle="modal" data-target="#uploadOvaModal" data-toggle="tooltip" data-placement="top" title="Upload Virtual Machine"><i class="fas fa-upload"></i></button>
+                  @endif
+                  @else
+                  <button type="button" class="upload-zip btn btn-primary" data-name="{{$item->name}}" data-toggle="modal" data-target="#uploadZipModal" data-toggle="tooltip" data-placement="top" title="Upload Zip File" @if($item->file !== null) disabled="true" @endif><i class="fas fa-upload"></i></button>
                 @endif
                 <button type="button" class="delete-model btn btn-primary"  data-type="{{$type}}" data-name="{{$item->name}}" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash-alt"></i></button>
+
             </div>
           </td>
         </tr></a>
@@ -129,6 +138,8 @@
               @include('teacher.resources.forms.editB2R')
             @elseif($type === 'lab')
               @include('teacher.resources.forms.editLab')
+            @elseif($type === 'ctf')
+              @include('teacher.resources.forms.editCtf')
             @endif
             </div>
           </div>
@@ -143,12 +154,17 @@
 @section('modals')
 @if($type === 'b2r')
 @include('teacher.resources.modal.createB2RForm')
-@endif
-@if($type === 'lab')
+@elseif($type === 'lab')
 @include('teacher.resources.modal.createLabForm')
+@else
+@include('teacher.resources.modal.createCtfForm')
 @endif
 @include('teacher.resources.modal.editHints')
+@if($type !== 'ctf')
 @include('teacher.resources.modal.uploadOva')
+@else
+@include('teacher.resources.modal.uploadZip')
+@endif
 @include('teacher.resources.modal.vmManage')
 @endsection
 

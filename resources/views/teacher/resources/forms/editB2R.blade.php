@@ -28,7 +28,10 @@
                     <label for="edit-root-flag" class="my-1">Root Flag</label>
                     <input type="text" class="form-control" id="edit-root-flag" name='edit-root-flag'>
                     <div class="my-1">
-                      <h4>Skills <button type="button" class="btn btn-primary" id="collapse-skills"><i id='collapse-skills-icon' class="fas fa-compress-arrows-alt"></i></button></h4>
+                      <h4>Skills 
+                        <button type="button" class="btn btn-primary" id="collapse-skills"><i id='collapse-skills-icon' class="fas fa-compress-arrows-alt"></i></button>
+                      </h4>
+                      </h4>
                     </div>
                     <div id="edit-skills">
                       <table>

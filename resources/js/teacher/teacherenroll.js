@@ -1,17 +1,34 @@
 $(document).ready(function(){
 
-	$.get('/api/teacher/get/students', function(data){
-		populateStudentList(data);
-	})
-	$.get('/api/teacher/get/classes', function(data){
+	$.ajax({
+		url: '/teacher/get/students',
+		type: 'get',
+		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		success: function(data){
+			populateStudentList(data);
+		},
+		error: function(data){
+			console.log(data);
+		}
+	});
+
+	$.ajax({
+		url: '/teacher/get/classes',
+		type: 'get',
+		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		success: function(data){
 		populateClassList(data);
-		var classSelect = $('#class-select');
-		var id = classSelect.val();
-		var bell = classSelect.find('[value="'+id+'"').data('bell');
-		var course = classSelect.find('[value="'+id+'"').data('course');
-		changeClass(id, bell, course);
-		populateEnrolledList(id);
-	})
+			var classSelect = $('#class-select');
+			var id = classSelect.val();
+			var bell = classSelect.find('[value="'+id+'"').data('bell');
+			var course = classSelect.find('[value="'+id+'"').data('course');
+			changeClass(id, bell, course);
+			populateEnrolledList(id);
+		},
+		error: function(data){
+			console.log(data);
+		}
+	});
 });
 
 $(document).on('change', '#class-select', function(event){
@@ -26,17 +43,39 @@ $(document).on('change', '#class-select', function(event){
 $(document).on('click', '#enroll-student', function(){
 	var student = $('#enroll-student-select').val();
 	var classId = $('#class-row').attr('data-id');
-	$.post('/api/teacher/enroll/'+classId, {student : student}, function(data){
-		console.log(data);
-		populateEnrolledList(classId);
+
+	$.ajax({
+		url: '/teacher/enroll/'+classId,
+		type: 'post',
+		data: {student : student},
+		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		success: function(data){
+		populateClassList(data);
+			console.log(data);
+			populateEnrolledList(classId);
+		},
+		error: function(data){
+			console.log(data);
+		}
 	});
 });
 
 $(document).on('click', '.unenroll', function(event){
 	var student = $(this).data('name');
 	var classId = $('#class-row').attr('data-id');
-	$.post('/api/teacher/unenroll/' + classId, { studentName: student }, function(data){
-		populateEnrolledList(classId);
+
+
+	$.ajax({
+		url: '/teacher/unenroll/' + classId,
+		type: 'post',
+		data: { studentName: student },
+		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		success: function(data){
+			populateEnrolledList(classId);
+		},
+		error: function(data){
+			console.log(data);
+		}
 	});
 });
 
@@ -65,10 +104,18 @@ function changeClass(id, bell, course){
 
 function populateEnrolledList(classId){
 	$('#class-row-roster').empty();
-	$.get('/api/teacher/get/enrolled/'+classId, function(data){
-		for(i = 0; i < data.length; i++){
-			html = '<p>'+data[i][0]['last'] + ', ' + data[i][0]['first'] + '<button type="button" class="btn btn-primary unenroll mx-2" data-name="'+data[i][0]['name']+'"><i class="fas fa-trash-alt"></i></button></p>';
-			$('#class-row-roster').append(html);
+	$.ajax({
+		url: '/teacher/get/enrolled/'+classId,
+		type: 'get',
+		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		success: function(data){
+			for(i = 0; i < data.length; i++){
+				html = '<p>'+data[i][0]['last'] + ', ' + data[i][0]['first'] + '<button type="button" class="btn btn-primary unenroll mx-2" data-name="'+data[i][0]['name']+'"><i class="fas fa-trash-alt"></i></button></p>';
+				$('#class-row-roster').append(html);
+			}
+		},
+		error: function(data){
+			console.log(data);
 		}
 	});
 }

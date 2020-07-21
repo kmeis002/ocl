@@ -40,7 +40,9 @@
                       </table>
                     </div>
                     <div class="my-1">
-                      <h4>Skills <button type="button" class="btn btn-primary" id="collapse-skills"><i id='collapse-skills-icon' class="fas fa-compress-arrows-alt"></i></button></h4>
+                      <h4>Skills 
+                        <button type="button" class="btn btn-primary" id="collapse-skills"><i id='collapse-skills-icon' class="fas fa-compress-arrows-alt"></i></button>
+                        </h4>
                     </div>
                     <div id="edit-skills">
                       <table>

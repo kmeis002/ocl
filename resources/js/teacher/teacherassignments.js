@@ -2,8 +2,17 @@ $(document).on('click', '.edit-assignment', function(){
 	var id = $(this).data('id');
 	var type = $(this).data('prefix').toLowerCase();
 	makeForm(type, id);
-	$.get('/api/teacher/get/all/'+type, function(data){
-		populateForm(data, type, id);
+
+	$.ajax({
+		url: '/teacher/get/all/'+type,
+		type: 'get',
+		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		success: function(data){
+			populateForm(data, type, id);
+		},
+		error: function(data){
+			console.log(data);
+		}
 	});
 });
 
@@ -16,21 +25,64 @@ $(document).on('click', '#edit-assignment', function(){
 		var tmpVal = $(inputs[i]).val();
 		postData[tmpField] = tmpVal;
 	}
-	$.post('/api/teacher/update/assignment/'+id, postData, function(data){
-		
-	}).fail(function(data){
-		
-	})
+
+	$.ajax({
+		url: '/teacher/update/assignment/'+id,
+		type: 'post',
+		data: postData,
+		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		success: function(data){
+			
+		},
+		error: function(data){
+			console.log(data);
+		}
+	});
 })
 
 $(document).on('click', '#delete-assignment', function(){
 	var id = $(this).data('id');
 
-	$.post('/api/teacher/delete/assignment/'+id, function(data){
-		location.reload();
+	$.ajax({
+		url: '/teacher/delete/assignment/'+id,
+		type: 'post',
+		data: postData,
+		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		success: function(data){
+			location.reload();
+		},
+		error: function(data){
+			console.log(data);
+		}
 	});
 })
 
+$(document).on('change', '#student-select', function(){
+	var id = $(this).val();
+	$.ajax({
+		url: '/teacher/get/student/'+id+'/assignments/completed',
+		type: 'get',
+		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		success: function(data){
+			populateComplete(data);
+		},
+		error: function(data){
+			console.log(data);
+		}
+	});
+
+	$.ajax({
+		url: '/teacher/get/student/'+id+'/assignments/incomplete',
+		type: 'get',
+		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		success: function(data){
+			populateIncomplete(data);
+		},
+		error: function(data){
+			console.log(data);
+		}
+	});
+});
 
 function makeForm(type, id){
 	$('#edit-container').empty();
@@ -66,15 +118,80 @@ function populateForm(data, type, id){
 		$('#edit-model-select').append('<option value="'+data[i]+'">'+data[i]+'</option>');
 	}
 
-	$.get('/api/teacher/get/assignment/modelname/'+id, function(data){
-		$('#edit-model-select').val(data['name']);
-	});
+	$.ajax({
+		url: '/teacher/get/assignment/modelname/'+id,
+		type: 'get',
+		headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		success: function(data){
+			$('#edit-model-select').val(data['name']);
+		},
+		error: function(data){
+			console.log(data);
+		}
+	});	
+
 
 	if(type == "lab"){
-		$.get('/api/teacher/get/assignment/levels/'+id, function(data){
-			$('#start-flag').val(data['start']);
-			$('#end-flag').val(data['end']);
-		})
+		$.ajax({
+			url: '/teacher/get/assignment/levels/'+id,
+			type: 'get',
+			headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+			success: function(data){
+				$('#start-flag').val(data['start']);
+				$('#end-flag').val(data['end']);
+			},
+			error: function(data){
+				console.log(data);
+			}
+		});	
 	}
 }
 
+function populateComplete(assignments){
+	$('#completed-assignments').empty();
+	for(i=0; i < assignments.length; i++){
+		var type = assignments[i]['prefix'].toLowerCase();
+		var info = assignments[i][type];
+		if(type == 'lab'){
+			html='<p>'+assignments[i]['prefix']+': '+info[type+'_name'] + ' Levels:'+info['start_level']+'-'+info['end_level'] + '</p>';
+		}else if(type == 'b2r'){
+			flag=''
+			if(info['user'] == 1){
+				flag = flag+"|user"
+			}
+			if(info['root'] == 1){
+				flag = flag + " |root"
+			}
+			flag = flag + "|"
+			html='<p>'+assignments[i]['prefix']+': '+info[type+'_name'] + '\r\n Flag(s):' + flag + '</p>';
+		}else{
+			html='<p>'+assignments[i]['prefix']+': '+info[type+'_name'] + '</p>';
+		}
+
+		$('#completed-assignments').append(html);
+	}
+}
+
+function populateIncomplete(assignments){
+	$('#incomplete-assignments').empty();
+	for(i=0; i < assignments.length; i++){
+		var type = assignments[i]['prefix'].toLowerCase();
+		var info = assignments[i][type];
+		if(type == 'lab'){
+			html='<p>'+assignments[i]['prefix']+': '+info[type+'_name'] + ' Levels:'+info['start_level']+'-'+info['end_level'] + '</p>';
+		}else if(type == 'b2r'){
+			flag=''
+			if(info['user'] == 1){
+				flag = flag+"|user"
+			}
+			if(info['root'] == 1){
+				flag = flag + " |root"
+			}
+			flag = flag + "|"
+			html='<p>'+assignments[i]['prefix']+': '+info[type+'_name'] + '\r\n Flag(s):' + flag + '</p>';
+		}else{
+			html='<p>'+assignments[i]['prefix']+': '+info[type+'_name'] + '</p>';
+		}
+		$('#incomplete-assignments').append(html);
+	}
+}

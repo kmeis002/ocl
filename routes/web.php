@@ -13,16 +13,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('login');
-});
+//Auth Routes
+Route::get('/student/login', [
+  'as' => 'student.login',
+  'uses' => 'Auth\StudentLoginController@showLoginForm']
+);
 
+Route::get('/teacher/login', [
+  'as' => 'teacher.login',
+  'uses' => 'Auth\TeacherLoginController@showLoginForm']
+);
 
+Route::post('/teacher/login', 'Auth\TeacherLoginController@login');
+Route::post('/student/login', 'Auth\StudentLoginController@login');
+Route::get('/student/logout', [
+  'as' => 'student.logout',
+  'uses' => 'Auth\StudentLoginController@logout'
+]);
+
+Route::get('/teacher/logout', [
+  'as' => 'teacher.logout',
+  'uses' => 'Auth\TeacherLoginController@logout'
+]);
+  
 //Student Routes
-
 Route::group(['middleware' => 'auth:student', 'prefix'=>'/student'], function() {
 
-  Route::get('/','StudentController@show');
+  Route::get('/home','StudentController@show');
   Route::get('/list/resources/{type}', 'StudentController@listResources');
 
   Route::group(['prefix'=>'/get'], function() {
@@ -35,68 +52,118 @@ Route::group(['middleware' => 'auth:student', 'prefix'=>'/student'], function() 
   Route::group(['prefix' => '/submit'], function(){
     Route::post('/flag/{name}', 'FlagController@submitFlag');
   });
-
- 
 });
 
-  Route::get('/student/login', [
-    'as' => 'student.login',
-    'uses' => 'Auth\StudentLoginController@showLoginForm'
-  ]);
 
-  Route::post('/student/login', [
-    'as' => '',
-    'uses' => 'Auth\StudentLoginController@login'
-  ]);
-
-  //logout
-  Route::get('/student/logout', [
-    'as' => '/logout',
-    'uses' => 'Auth\StudentLoginController@logout'
-  ]);
 //Teacher Routes
-Route::group(['prefix'=>'/teacher'], function(){
-  Route::get('/home', 'PageTest@teacherHome');
-  Route::get('/accounts/students', 'TeacherController@students');
-  Route::get('/accounts/teachers', 'TeacherController@teachers');
+Route::group(['middleware' => 'auth:teacher', 'prefix'=>'/teacher'], function(){
+  Route::get('/home', 'TeacherController@home');
+  Route::group(['prefix' => '/accounts'], function(){
+    Route::get('/students', 'TeacherController@students');
+    Route::get('/teachers', 'TeacherController@teachers');
+    Route::get('/edit/student/{id}', 'TeacherController@editStudent');
+    Route::post('/edit/student/{id}', 'TeacherController@editStudent');
+    Route::post('/create/student', 'TeacherController@createStudent');
+    Route::post('/delete/student/{id}', 'TeacherController@deleteStudent');
+    Route::get('/edit/teacher/{id}', 'TeacherController@editTeacher');
+    Route::post('/edit/teacher/{id}', 'TeacherController@editTeacher');
+    Route::post('/create/teacher', 'TeacherController@createTeacher');
+    Route::post('/delete/teacher/{id}', 'TeacherController@deleteTeacher');
+    Route::post('/teacher/api_regen/{id}', 'TeacherController@regenerateApiToken');
+  });
+
+  Route::group(['prefix' => '/create'], function(){
+    Route::post('/b2r', 'B2RController@create');
+    Route::post('/lab', 'LabController@create');
+    Route::post('/ctf', 'CtfController@create');
+    Route::post('/skill', 'SkillController@create');
+    Route::post('/assignment', 'AssignmentController@create');
+    Route::post('/b2r/{name}/hints', 'B2RHintController@create');
+    Route::post('/lab/{name}/hints', 'LabHintController@create');
+    Route::post('/lab/{name}/level', 'FlagController@apiLevelCreate');
+    Route::post('/vmskill/{name}', 'VMSkillController@apiCreate');
+    Route::post('/course', 'CourseController@apiCreate');
+    Route::post('/class', 'ClassController@apiCreate');
+  });
+
+  Route::group(['prefix' => '/get'], function(){
+    Route::get('/vbox/vminfo/{name}', 'VboxController@apiGetInfo');
+    Route::get('/vbox/interfaces', 'VboxController@apiGetHostInterfaces');
+    Route::get('/vbox/adapter/{name}', 'VboxController@apiGetBridgeAdapter');
+    Route::get('/vbox/vminfo/{name}', 'VboxController@apiGetInfo');
+    Route::get('/vbox/interfaces', 'VboxController@apiGetHostInterfaces');
+    Route::get('/vbox/adapter/{name}', 'VboxController@apiGetBridgeAdapter');
+    Route::get('/skills', 'SkillController@get');
+    Route::get('/student/{id}/assignments/completed', 'TeacherController@completedAssignments');
+    Route::get('/student/{id}/assignments/incomplete', 'TeacherController@incompleteAssignments');
+    Route::get('/courses', 'CourseController@apiGet');
+    Route::get('/classes', 'ClassController@apiGetClasses');
+    Route::get('/enrolled/{id}', 'EnrollController@apiGetEnrolled');
+    Route::get('/b2r/{name}', 'B2RController@getEditInfo');
+    Route::get('/all/b2r', 'B2RController@getAll');
+    Route::get('/all/lab', 'LabController@getAll');
+    Route::get('/all/ctf', 'CtfController@apiGetAll');
+    Route::get('/lab/{name}', 'LabController@getEditInfo');
+    Route::get('/ctf/{name}', 'CtfController@getEditInfo');
+    Route::get('/b2r/hints/{name}', 'B2RController@getHints');
+    Route::get('/lab/hints/{name}', 'LabController@getHints');
+    Route::get('/teachers', 'TeacherController@getTeachers');
+    Route::get('/students', 'TeacherController@getStudents');
+    Route::get('/assignment/levels/{id}', 'AssignmentController@apiGetLevels');
+    Route::get('/assignment/modelname/{id}', 'AssignmentController@apiGetModelName');
+  });
+
+  Route::group(['prefix' => '/set/vbox'], function(){
+    Route::post('/network/{name}', 'VboxController@apiSetNetworkInterface');
+    Route::post('/bridged/{name}', 'VboxController@apiSetBridgedAdapter');
+    Route::post('/reset/{name}', 'VboxController@apiReset');
+    Route::post('/power/{name}', 'VboxController@apiPower');
+    Route::post('/unregister/{name}', 'VboxController@apiUnregister');
+    Route::post('/register/{name}', 'VboxController@apiRegister');
+    Route::post('/network/{name}', 'VboxController@apiSetNetworkInterface');
+    Route::post('/bridged/{name}', 'VboxController@apiSetBridgedAdapter');
+    Route::post('/reset/{name}', 'VboxController@apiReset');
+    Route::post('/power/{name}', 'VboxController@apiPower');
+    Route::post('/unregister/{name}', 'VboxController@apiUnregister');
+    Route::post('/register/{name}', 'VboxController@apiRegister');
+  });
+
+  Route::group(['prefix' => '/delete'], function(){
+    Route::post('/b2r/hints/{id}', 'B2RHintController@destroy');
+    Route::post('/b2r/{name}', 'B2RController@destroy');
+    Route::post('/lab/{name}', 'LabController@destroy');
+    Route::post('/skill/{id}', 'SkillController@delete');
+    Route::post('/ctf/zip/{filename}', 'CtfController@deleteZip');
+    Route::post('/lab/hints/{id}', 'LabHintController@destroy');
+    Route::post('/lab/{name}/level/{id}', 'FlagController@apiLevelDestroy');
+    Route::post('/vmskill/{name}', 'VMSkillController@apiDestroy');
+    Route::post('/course/{name}', 'CourseController@apiDestroy');
+    Route::post('/class/{id}', 'ClassController@apiDestroy');
+    Route::post('/assignment/{id}', 'AssignmentController@apiDestroy');
+    Route::post('/vm/file/{name}', 'VMController@apiDeleteOva');
+  });
+
+  Route::group(['prefix' => '/update'], function(){
+    Route::post('/b2r/{name}/hints', 'B2RHintController@update');
+    Route::post('/lab/{name}/hints', 'LabHintController@update');
+    Route::post('/assignment/{id}', 'AssignmentController@apiUpdate');
+  });
+
+  Route::group(['prefix' => '/edit'], function(){
+      Route::post('/b2r/{name}', 'B2RController@update');
+      Route::post('/b2r/hints/{name}', 'B2RHintController@test');
+      Route::post('/lab/{name}', 'LabController@update');
+      Route::post('/ctf/{name}', 'CtfController@update');
+  });
+  
+  Route::post('/enroll/{id}', 'EnrollController@apiEnroll');
+  Route::post('/unenroll/{id}', 'EnrollController@apiUnenroll');
+  Route::post('/upload/chunkupload', 'ChunkUploadController@chunkStore');
+  Route::post('/upload/zipupload', 'ChunkUploadController@zipStore');
+
   Route::get('/resources/list/{type}', 'TeacherController@resourcesList');
+  Route::get('/resources/skills', 'TeacherController@skills');
   Route::get('/classes/list/{type}', 'TeacherController@classesList');
   Route::get('/classwork/assignments', 'TeacherController@assignmentsList');
-  Route::post('/edit/b2r/{name}', 'B2RController@update');
-  Route::post('/edit/b2r/hints/{name}', 'B2RHintController@test');
-  Route::post('/create/b2r', 'B2RController@create');
-  Route::post('/create/lab', 'LabController@create');
-  Route::post('/create/assignment', 'AssignmentController@create');
-  Route::post('/edit/lab/{name}', 'LabController@update');
-  Route::get('/accounts/edit/student/{id}', 'TeacherController@editStudent');
-  Route::post('/accounts/edit/student/{id}', 'TeacherController@editStudent');
-  Route::post('/accounts/create/student', 'TeacherController@createStudent');
-  Route::post('/accounts/delete/student/{id}', 'TeacherController@deleteStudent');
-  Route::get('/accounts/edit/teacher/{id}', 'TeacherController@editTeacher');
-  Route::post('/accounts/edit/teacher/{id}', 'TeacherController@editTeacher');
-  Route::post('/accounts/create/teacher', 'TeacherController@createTeacher');
-  Route::post('/accounts/delete/teacher/{id}', 'TeacherController@deleteTeacher');
-  Route::post('/accounts/teacher/api_regen/{id}', 'TeacherController@regenerateApiToken');
 });
 
-
-
-
-
-
-
-Route::get('/test', function(){
-  return view('student.home');
-});
-
-
-Route::get('/test/lab', function(){
-  return view('student.lab');
-});
-
-Route::get('/presenter/lab/{name}', 'PageTest@labtest');
-Route::get('/presenter/b2r/{name}', 'PageTest@b2rtest');
-Route::get('/presenter/listmachines', 'PageTest@machineList');
-Route::get('/presenter/list/{type}', 'PageTest@list');
-Route::get('/presenter/shuffletest', 'PageTest@shuffletest');
-Route::get('/presenter/home', 'PageTest@home');

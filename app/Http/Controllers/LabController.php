@@ -16,7 +16,7 @@ use App\Models\Skills;
 
 class LabController extends Controller
 {
-    public function apiGetEditInfo($name){
+    public function getEditInfo($name){
         $lab = Labs::find($name);
         $lab->flags;
         $lab->skills;
@@ -25,7 +25,7 @@ class LabController extends Controller
     }
 
 
-    public function apiGetHints($name){
+    public function getHints($name){
         $lab = Labs::find($name);
         $hints = $lab->hints()->paginate(10);
 
@@ -85,15 +85,15 @@ class LabController extends Controller
 
         Labs::create($request->all());
 
-        return redirect('/teacher/list/lab');
+        return redirect('/teacher/resources/list/lab');
     }
 
-    public function apiDestroy($name){
+    public function destroy($name){
         $Lab = Labs::find($name);
         $Lab->delete();
     }
 
-    public function apiGetAll(){
+    public function getAll(){
         return Labs::all()->pluck('name');
     }
 

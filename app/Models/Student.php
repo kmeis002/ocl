@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -105,6 +106,78 @@ class Student extends Authenticatable
 
     public function ctfsAssigned(){
         return $this->allAssignments()->where('prefix', '=', 'CTF');
+    }
+
+    public function completedAssignments(){
+        $all = $this->allAssignments();
+
+        $out = collect([]);
+
+        foreach($all as $a){
+            if($this->checkAssignment($a)){
+                $out->push($a);
+            }
+        }
+
+        return $out;
+    }
+
+    public function incompleteAssignments(){
+        $all = $this->allAssignments();
+
+        $out = collect([]);
+
+        foreach($all as $a){
+            if(!$this->checkAssignment($a)){
+                $out->push($a);
+            }
+        }
+
+        return $out;
+    }
+
+    public function checkAssignment($assignment){
+        $type = $assignment->prefix;
+
+        if($type === 'Lab'){
+           return $this->checkLab($assignment);
+        }
+        else if($type === 'CTF'){
+           return $this->checkCTF($assignment);
+        }
+        else if($type === 'B2R'){
+           return $this->checkB2R($assignment);
+        }
+
+        return false;
+        
+    }
+
+    private function checkLab($lab){
+        $start_level = $lab->lab->start_level;
+        $end_level = $lab->lab->end_level;
+
+        $flags = $this->LabFlags()->where('lab_name', '=', $lab->lab->lab_name)->get();
+
+        for($i=$start_level; $i<=$end_level; $i++){
+            if($flags->where('level', '=', $i)->isEmpty()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    private function checkCTF($ctf){
+        return $this->CtfFlags()->where('ctf_name', '=', $ctf->ctf->ctf_name)->get()->isNotEmpty();
+    }
+
+    private function checkB2R($b2r){
+        $user = $b2r->b2r->user;
+        $root = $b2r->b2r->root;
+        $flags = $this->B2RFlags()->where('b2r_name', '=', $b2r->b2r->b2r_name)->get();
+
+        return ($flags->where('is_root', '=', '0')->isNotEmpty() == $user && $flags->where('is_root', '=', '1')->isNotEmpty() == $root);
     }
 
     //array of lab names assigned
