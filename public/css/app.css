@@ -18001,3 +18001,9 @@ hr {
   transform: translateX(300px);
 }
 
+.progress-chart {
+  background: #343a40;
+  width: 100%;
+  max-width: 100%;
+}
+

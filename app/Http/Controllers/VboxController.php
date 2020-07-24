@@ -18,7 +18,7 @@ use App\Models\VM;
 */
 
 
-class VBoxController extends Controller
+class VboxController extends Controller
 {
     public function apiGetInfo($name){
     	$isReg = Vbox::isRegistered($name);

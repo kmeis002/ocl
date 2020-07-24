@@ -75,6 +75,23 @@ class Student extends Authenticatable
         return $this->hasMany('App\Models\Score', 'student', 'name');
     }
 
+    public function labScore(){
+        $history = $this->score()->where('description', 'LIKE', '%Level%')->get();
+        return $history;
+    }
+
+    public function b2rScore(){
+        $userHistory = $this->score()->where('description', 'LIKE', '%User%')->get();
+        $rootHistory = $this->score()->where('description', 'LIKE', '%Root%')->get();
+        $history = $userHistory->merge($rootHistory);
+        return $history;
+    }
+
+    public function ctfScore(){
+        $history = $this->score()->where('description', 'LIKE', '%Captured%')->get();
+        return $history;
+    }
+
     public function enrolledCount(){
         return $this->enrolled()->get()->count();
     }
@@ -83,7 +100,6 @@ class Student extends Authenticatable
         return $this->enrolled()->get()[$i]->class->assignments;
         
     }
-
     public function allAssignments(){
         if($this->enrolledCount() > 0){
             $out = $this->classAssignments(0);

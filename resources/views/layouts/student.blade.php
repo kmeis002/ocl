@@ -9,7 +9,7 @@
 	    <title>{{ config('app.name', 'Laravel') }}</title>
 
 	    <!-- Scripts -->
-	    <script src="{{ asset('js/app.js') }}"></script>
+
 
 	    <!-- Fonts -->
 	    <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -22,7 +22,7 @@
 		<script src={{ asset('js/vanta.waves.min.js') }}></script>
 
 		@yield('modal-scripts')
-		@yield('scripts')
+
 
 	</head>
 
@@ -40,3 +40,6 @@
 	@yield('modals')
 	@include('vanta.background')
 </html>
+
+<script src="{{ asset('js/app.js') }}"></script>
+@yield('scripts')

@@ -52,6 +52,8 @@ Route::group(['middleware' => 'auth:student', 'prefix'=>'/student'], function() 
   Route::group(['prefix' => '/submit'], function(){
     Route::post('/flag/{name}', 'FlagController@submitFlag');
   });
+
+  Route::get('/dashboard', 'StudentController@dashboard');
 });
 
 

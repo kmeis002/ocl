@@ -12,6 +12,8 @@ use App\Models\B2R;
 use App\Models\Ctfs;
 use App\Models\CompletedCtfs;
 
+use App\Charts\ProgressChart;
+
 class StudentController extends Controller
 {
 
@@ -26,6 +28,16 @@ class StudentController extends Controller
 
     	return view('student.home');
 
+    }
+
+    public function dashboard(){
+        $user = Auth::user();
+        $completed = $user->completedAssignments();
+        $incomplete = $user->incompleteAssignments();
+        $progress = new ProgressChart;
+        $history = $user->score()->orderBy('id', 'desc')->take(5)->get();
+    
+        return view('student.dashboard.dashboard')->with(['completed' => $completed, 'incomplete' => $incomplete, 'progress' => $progress, 'history' => $history]);
     }
 
 
@@ -67,8 +79,6 @@ class StudentController extends Controller
 
         return $out;
     }
-
-
 
 
 }

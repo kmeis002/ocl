@@ -1,13 +1,3 @@
-@extends('layouts.teacher')
-
-
-@section('scripts')
-<script src="{{ asset('js/teacherassignments.js') }}"></script>
-@endsection
-
-
-@section('content')
-@include('teacher.errors.validationerrors')
 <div class="container justify-content-center my-5">
 <h1 class="text-center" id="type-header">Manage Assignments</h1>
 </div>

@@ -58,10 +58,12 @@
                 </div>
             </div>
             <div class="col my-3">
-                <div class="card bg-primary-trans">
-                    <i class="fas fa-sticky-note fa-7x card-img-top text-center my-5"></i>
-                    <div class="card-body"><p class="text-center">Assignments</p></div>
-                </div>
+                <a href="/student/dashboard">
+                    <div class="card bg-primary-trans">
+                        <i class="fas fa-tachometer-alt fa-7x card-img-top text-center my-5"></i>
+                        <div class="card-body"><p class="text-center">Dashboard</p></div>
+                    </div>
+                </a>
             </div>
             <div class="col my-3">
                 <div class="card bg-primary-trans">

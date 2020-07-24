@@ -1,7 +1,7 @@
 		<nav class="navbar navbar-dark bg-dark justify-content-between sticky-top">
 			<div>
 				<a href="{{url()->previous() }}"><button type="button" class="btn btn-primary-trans"><i class="fas fa-chevron-left"></i></button></a>
-				<a href="/student/"><button type="button" class="btn btn-primary-trans"><i class="fas fa-home"></i></button></a>
+				<a href="/student/home"><button type="button" class="btn btn-primary-trans"><i class="fas fa-home"></i></button></a>
 			</div>
 			<div> {{Auth::user()->name}}@ocl:~/{{Request::path()}}$  </div>
 			<div class="dropdown">
