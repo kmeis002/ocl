@@ -10,7 +10,7 @@
 						aria-expanded="false"><i class="fas fa-bars drop-btn"></i>
 				</button>
 					<div class="dropdown-menu" aria-labelledby="dropdownBars">
-						<a class="dropdown-item" href="#">Leaderboards</a>
+						<a class="dropdown-item" href="/student/leaderboards">Leaderboards</a>
 						<a class="dropdown-item" href="#">Settings</a>
 						<a class="dropdown-item" href="/student/logout">Logout</a>
 					</div>

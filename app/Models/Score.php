@@ -121,6 +121,13 @@ class Score extends Model
 		return config('score.ctf_weight')*$flag->basePoints();
 	}
 
+	public static function updateStudentScore(Student $s){
+		$raw = $s->raw_score;
+        $mod = $raw - Score::calculateModifier($s->name);
+        $s->mod_score = $mod;
+        $s->save();
+	}
+
     public static function boot() {
         parent::boot();
 

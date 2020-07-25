@@ -1,3 +1,19 @@
+
+@extends('layouts.teacher')
+
+@section('nav')
+@include('teacher.nav.nav')
+@endsection
+
+@section('sidebar')
+@include('teacher.nav.sidebar')
+@endsection
+
+@section('scripts')
+<script src="{{ asset('js/teacherassignments.js') }}"></script>
+@endsection
+
+@section('content')
 <div class="container justify-content-center my-5">
 <h1 class="text-center" id="type-header">Manage Assignments</h1>
 </div>

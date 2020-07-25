@@ -38,6 +38,7 @@ $(document).on('click', '.hint-modal', function(event){
 		    $('#hintModal').modal('hide');
 		},
 		error: function(data){
+			console.log(data);
 		}
 	});
 	}

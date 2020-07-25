@@ -54,6 +54,7 @@ Route::group(['middleware' => 'auth:student', 'prefix'=>'/student'], function() 
   });
 
   Route::get('/dashboard', 'StudentController@dashboard');
+  Route::get('/leaderboards', 'StudentController@leaderboards');
 });
 
 

@@ -12,6 +12,7 @@ $(document).on('click', '#hint-reveal', function(){
 		    $('#hint-'+id).attr('class', 'btn btn-warning my-2 hint-modal');
 		},
 		error: function(data){
+			console.log(data);
 		}
 	});
 });
@@ -93,6 +94,7 @@ $(document).on('click', '.hint-modal', function(event){
 		    $('#hintModal').modal('hide');
 		},
 		error: function(data){
+			console.log(data);
 		}
 	});
 	}
@@ -111,6 +113,7 @@ function getModel(name){
 			updateStudentInfo(data['flags'], data['hintsUsed']);
 		},
 		error: function(data){
+			console.log(data);
 		}
 	});
 }

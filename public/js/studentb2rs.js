@@ -110,7 +110,9 @@ $(document).on('click', '#hint-reveal', function () {
       $('#hintModal').modal('hide');
       $('#hint-' + id).attr('class', 'btn btn-warning my-2 hint-modal');
     },
-    error: function error(data) {}
+    error: function error(data) {
+      console.log(data);
+    }
   });
 });
 $(document).ready(function () {
@@ -188,7 +190,9 @@ $(document).on('click', '.hint-modal', function (event) {
         $('#ajax-alert').text('Hint!\n ' + data['hint']);
         $('#hintModal').modal('hide');
       },
-      error: function error(data) {}
+      error: function error(data) {
+        console.log(data);
+      }
     });
   }
 });
@@ -206,7 +210,9 @@ function getModel(name) {
       populateRootHints(data['rootHints']);
       updateStudentInfo(data['flags'], data['hintsUsed']);
     },
-    error: function error(data) {}
+    error: function error(data) {
+      console.log(data);
+    }
   });
 }
 

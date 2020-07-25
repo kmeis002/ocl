@@ -80,6 +80,10 @@ class Student extends Authenticatable
         return $history;
     }
 
+    public function totalScore(){
+        $scores = $this->score()->get();
+    }
+
     public function b2rScore(){
         $userHistory = $this->score()->where('description', 'LIKE', '%User%')->get();
         $rootHistory = $this->score()->where('description', 'LIKE', '%Root%')->get();

@@ -136,7 +136,9 @@ $(document).on('click', '.hint-modal', function (event) {
         $('#ajax-alert').text('Hint!\n ' + data['hint']);
         $('#hintModal').modal('hide');
       },
-      error: function error(data) {}
+      error: function error(data) {
+        console.log(data);
+      }
     });
   }
 });
