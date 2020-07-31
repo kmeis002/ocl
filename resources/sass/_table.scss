@@ -68,7 +68,7 @@
   }
 
   .id{
-    width: 1.5em;
+    width: 2em;
   }
 
   .add-del{
@@ -81,6 +81,24 @@
 
   .class{
     width: 20rem !important;
+  }
+
+  .name{
+   width: 12em;
+  }
+
+  .edit{
+    width: 8em;
+  }
+
+  .ref-section{
+   max-width: 1000px;
+   width: 1000px;
+  }
+
+  .btn-default{
+    background: #1ecf11;
+    
   }
 }
 

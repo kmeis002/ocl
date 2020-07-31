@@ -27,8 +27,8 @@
 
 	<ul class="list-group">
 		<li class="list-group-item"><a href="/teacher/classwork/assignments">Assignments</a></li>
-		<li class="list-group-item"><a href="#">Guides</a></li>
-		<li class="list-group-item"><a href="#">Lessons</a></li>
+		<li class="list-group-item"><a href="/teacher/classwork/guides">Guides</a></li>
+		<li class="list-group-item"><a href="/teacher/classwork/references">Quick References</a></li>
 		<li class="list-group-item"><a href="#">Calendar</a></li>
 	</ul>
 	</div>

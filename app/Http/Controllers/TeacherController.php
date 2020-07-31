@@ -18,6 +18,8 @@ use App\Models\Student;
 use App\Models\Enrolled;
 use App\Models\Assignments;
 use App\Models\Skills;
+use App\Models\References;
+
 
 class TeacherController extends Controller
 {
@@ -53,6 +55,12 @@ class TeacherController extends Controller
         }else if($type === 'ctf'){
             return view('teacher.resources.list')->with(['list'=>$list, 'type' => $type, 'categories' => $categories]);
         }
+    }
+
+    public function referencesList(){
+        $refs = References::all();
+        $skills = Skills::all();
+        return view('teacher.classwork.references')->with(['refs' => $refs, 'skills' => $skills]);
     }
 
     public function skills(){

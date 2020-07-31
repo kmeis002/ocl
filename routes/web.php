@@ -87,6 +87,9 @@ Route::group(['middleware' => 'auth:teacher', 'prefix'=>'/teacher'], function(){
     Route::post('/vmskill/{name}', 'VMSkillController@apiCreate');
     Route::post('/course', 'CourseController@apiCreate');
     Route::post('/class', 'ClassController@apiCreate');
+    Route::post('/reference', 'ReferenceController@create');
+    Route::post('/section/{id}', 'ReferenceController@createSection');
+    Route::post('/reference/skill/{id}', 'ReferenceController@addSkill');
   });
 
   Route::group(['prefix' => '/get'], function(){
@@ -114,6 +117,9 @@ Route::group(['middleware' => 'auth:teacher', 'prefix'=>'/teacher'], function(){
     Route::get('/students', 'TeacherController@getStudents');
     Route::get('/assignment/levels/{id}', 'AssignmentController@apiGetLevels');
     Route::get('/assignment/modelname/{id}', 'AssignmentController@apiGetModelName');
+    Route::get('/sections/name/{id}', 'ReferenceController@getSectionNames');
+    Route::get('/section/{id}', 'ReferenceController@getSection');
+    Route::get('/reference/skills/{id}', 'ReferenceController@getSkills');
   });
 
   Route::group(['prefix' => '/set/vbox'], function(){
@@ -144,12 +150,16 @@ Route::group(['middleware' => 'auth:teacher', 'prefix'=>'/teacher'], function(){
     Route::post('/class/{id}', 'ClassController@apiDestroy');
     Route::post('/assignment/{id}', 'AssignmentController@apiDestroy');
     Route::post('/vm/file/{name}', 'VMController@apiDeleteOva');
+    Route::post('/section/{id}', 'ReferenceController@deleteSection');
+    Route::post('/reference/{id}', 'ReferenceController@delete');
+    Route::post('/reference/skills/{id}', 'ReferenceController@deleteSkill');
   });
 
   Route::group(['prefix' => '/update'], function(){
     Route::post('/b2r/{name}/hints', 'B2RHintController@update');
     Route::post('/lab/{name}/hints', 'LabHintController@update');
     Route::post('/assignment/{id}', 'AssignmentController@apiUpdate');
+    Route::post('/section/{id}', 'ReferenceController@updateSection');
   });
 
   Route::group(['prefix' => '/edit'], function(){
@@ -163,10 +173,13 @@ Route::group(['middleware' => 'auth:teacher', 'prefix'=>'/teacher'], function(){
   Route::post('/unenroll/{id}', 'EnrollController@apiUnenroll');
   Route::post('/upload/chunkupload', 'ChunkUploadController@chunkStore');
   Route::post('/upload/zipupload', 'ChunkUploadController@zipStore');
+  Route::post('/classwork/upload/image', 'CkEditorController@upload');
 
   Route::get('/resources/list/{type}', 'TeacherController@resourcesList');
   Route::get('/resources/skills', 'TeacherController@skills');
   Route::get('/classes/list/{type}', 'TeacherController@classesList');
+
   Route::get('/classwork/assignments', 'TeacherController@assignmentsList');
+  Route::get('/classwork/references', 'TeacherController@referencesList');
 });
 

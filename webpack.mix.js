@@ -24,6 +24,7 @@ mix.js('resources/js/app.js', 'public/js').js('resources/js/teacher/teacherresou
 .js('resources/js/teacher/teacherctf.js', 'public/js/')
 .js('resources/js/teacher/teacherskills.js', 'public/js/')
 .js('resources/js/teacher/teacherassignments.js', 'public/js')
+.js('resources/js/teacher/teacherreferences.js', 'public/js')
 .js('resources/js/teacher/teacherenroll.js', 'public/js')
 .js('resources/js/teacher/teacheraccounts.js', 'public/js')
 .js('resources/js/student/studentlabs.js', 'public/js')

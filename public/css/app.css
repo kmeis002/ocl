@@ -17858,7 +17858,7 @@ hr {
 }
 
 .main-list .id {
-  width: 1.5em;
+  width: 2em;
 }
 
 .main-list .add-del {
@@ -17871,6 +17871,23 @@ hr {
 
 .main-list .class {
   width: 20rem !important;
+}
+
+.main-list .name {
+  width: 12em;
+}
+
+.main-list .edit {
+  width: 8em;
+}
+
+.main-list .ref-section {
+  max-width: 1000px;
+  width: 1000px;
+}
+
+.main-list .btn-default {
+  background: #1ecf11;
 }
 
 .double {
