@@ -43,7 +43,7 @@ class StudentLoginController extends Controller
     }
 
     public function showLoginForm(){
-        return view('auth.studentLogin');
+        return view('student.login');
 
     }
 

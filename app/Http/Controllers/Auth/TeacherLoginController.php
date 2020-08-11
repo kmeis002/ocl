@@ -44,7 +44,7 @@ class TeacherLoginController extends Controller
 
 
     public function showLoginForm(){
-        return view('auth.teacherLogin');
+        return view('teacher.login');
     }
 
 

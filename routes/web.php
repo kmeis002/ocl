@@ -41,6 +41,8 @@ Route::group(['middleware' => 'auth:student', 'prefix'=>'/student'], function() 
 
   Route::get('/home','StudentController@show');
   Route::get('/list/resources/{type}', 'StudentController@listResources');
+  Route::get('/list/references', 'StudentController@listReferences');
+  Route::get('/reference/{id}', 'StudentController@showReference');
 
   Route::group(['prefix'=>'/get'], function() {
     Route::get('/b2r/{name}', 'B2RController@studentGet');

@@ -12,6 +12,7 @@ use App\Models\B2R;
 use App\Models\Ctfs;
 use App\Models\CompletedCtfs;
 use App\Models\Score;
+use App\Models\References;
 
 use App\Charts\ProgressChart;
 
@@ -74,6 +75,22 @@ class StudentController extends Controller
         }
     }
 
+    public function listReferences(){
+        $ref = References::all();
+
+        foreach($ref as $r){
+            $r->skills;
+        }
+
+        return view('student.references.list')->with(['ref' => $ref]);
+    }
+
+    public function showReference($id){
+        $reference = References::find($id);
+        $reference->sections;
+
+        return view('student.references.show')->with(['reference' => $reference]);
+    }
 
 
     private function makeCompletedArray(){

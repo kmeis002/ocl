@@ -53,8 +53,8 @@
         <div class="row w-100">
             <div class="col my-3">
                 <div class="card bg-primary-trans">
-                    <i class="fas fa-calendar-alt fa-7x card-img-top text-center my-5"></i>
-                    <div class="card-body"><p class="text-center">Calendar</p></div>
+                    <i class="fas fa-map fa-7x card-img-top text-center my-5"></i>
+                    <div class="card-body"><p class="text-center">Guides</p></div>
                 </div>
             </div>
             <div class="col my-3">
@@ -66,10 +66,12 @@
                 </a>
             </div>
             <div class="col my-3">
-                <div class="card bg-primary-trans">
-                    <i class="fas fa-book fa-7x card-img-top text-center my-5"></i>
-                    <div class="card-body"><p class="text-center">Guides / Lessons</p></div>
-                </div>
+                <a href="/student/list/references">
+                    <div class="card bg-primary-trans">
+                        <i class="fas fa-book fa-7x card-img-top text-center my-5"></i>
+                        <div class="card-body"><p class="text-center">Quick References</p></div>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
