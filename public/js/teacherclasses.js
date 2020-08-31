@@ -243,7 +243,7 @@ function makeTeacherList(teachers) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacher/teacherclasses.js */"./resources/js/teacher/teacherclasses.js");
+module.exports = __webpack_require__(/*! /var/www/ocl/resources/js/teacher/teacherclasses.js */"./resources/js/teacher/teacherclasses.js");
 
 
 /***/ })

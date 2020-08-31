@@ -303,7 +303,7 @@ function updateStudentInfo(flags, hints) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/student/studentb2rs.js */"./resources/js/student/studentb2rs.js");
+module.exports = __webpack_require__(/*! /var/www/ocl/resources/js/student/studentb2rs.js */"./resources/js/student/studentb2rs.js");
 
 
 /***/ })

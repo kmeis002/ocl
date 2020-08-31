@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 //Auth Routes
+//
+Route::get('/', 'Auth\StudentLoginController@showLoginForm');
+
 Route::get('/student/login', [
   'as' => 'student.login',
   'uses' => 'Auth\StudentLoginController@showLoginForm']
@@ -175,7 +178,6 @@ Route::group(['middleware' => 'auth:teacher', 'prefix'=>'/teacher'], function(){
   Route::post('/unenroll/{id}', 'EnrollController@apiUnenroll');
   Route::post('/upload/chunkupload', 'ChunkUploadController@chunkStore');
   Route::post('/upload/zipupload', 'ChunkUploadController@zipStore');
-  Route::post('/classwork/upload/image', 'CkEditorController@upload');
 
   Route::get('/resources/list/{type}', 'TeacherController@resourcesList');
   Route::get('/resources/skills', 'TeacherController@skills');

@@ -58,7 +58,7 @@ $('#update-hints').click(function(event){
 $('#create-hint').click(function(){
 	var type = $('#edit-hints').data('type')
 	var name = $('#edit-hints').data('name');
-	var url='/api/teacher/create/'+type+'/'+name+'/hints';
+	var url='/teacher/create/'+type+'/'+name+'/hints';
 	var hintContent=$('#new-hint').val();
 	if($('#is-root').length){
 		var isRoot=$('#is-root').prop('checked');

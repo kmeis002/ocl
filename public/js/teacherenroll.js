@@ -230,7 +230,7 @@ function populateEnrolledList(classId) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacher/teacherenroll.js */"./resources/js/teacher/teacherenroll.js");
+module.exports = __webpack_require__(/*! /var/www/ocl/resources/js/teacher/teacherenroll.js */"./resources/js/teacher/teacherenroll.js");
 
 
 /***/ })

@@ -7,6 +7,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\LabHints;
+use App\Models\LabFlags;
 use App\Models\HintsUsed;
 
 /*

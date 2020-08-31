@@ -333,7 +333,7 @@ function updateSkillList(id) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacher/teacherreferences.js */"./resources/js/teacher/teacherreferences.js");
+module.exports = __webpack_require__(/*! /var/www/ocl/resources/js/teacher/teacherreferences.js */"./resources/js/teacher/teacherreferences.js");
 
 
 /***/ })

@@ -24,7 +24,7 @@ Route::get('/vbox/all', 'VboxController@showAllVMs');
 
 Route::get('/vbox/test', 'VboxController@test');
 
-Route::post('/mqtt/publish', 'VMVisorController@MqttTest');
+//Route::post('/mqtt/publish', 'VMVisorController@MqttTest');
 
 Route::post('/flag/rotate', 'FlagController@rotateFlag');
 

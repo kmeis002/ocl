@@ -303,7 +303,7 @@ $(document).ready(function () {
   $('#create-hint').click(function () {
     var type = $('#edit-hints').data('type');
     var name = $('#edit-hints').data('name');
-    var url = '/api/teacher/create/' + type + '/' + name + '/hints';
+    var url = '/teacher/create/' + type + '/' + name + '/hints';
     var hintContent = $('#new-hint').val();
 
     if ($('#is-root').length) {
@@ -975,7 +975,7 @@ function makeStatus(status) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacher/teacherresource.js */"./resources/js/teacher/teacherresource.js");
+module.exports = __webpack_require__(/*! /var/www/ocl/resources/js/teacher/teacherresource.js */"./resources/js/teacher/teacherresource.js");
 
 
 /***/ })

@@ -65,6 +65,8 @@ class FlagController extends Controller
 
         $student = Auth::user()['name'];
 
+            
+
         if( ($request->input('type') === 'ctf') || VM::find($name)->status || !config('flag.rotate')){
             //check flag
             if($request->input('type') === 'lab'){
@@ -77,6 +79,7 @@ class FlagController extends Controller
             }
 
             if($realFlag === $request->input('flag')){
+
 
                 if($request->input('type') === 'lab'){
                     CompletedLabFlags::create([
@@ -100,7 +103,7 @@ class FlagController extends Controller
                     return response()->json(['message' => 'Correct flag'], 200);
                 }
             }else{
-                    return response()->json(['message' => 'Incorrect flag'], 200);
+                    return response()->json(['message' => 'Incorrect flag'], 500);
             }
         }
     }

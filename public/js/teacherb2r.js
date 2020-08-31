@@ -123,7 +123,7 @@ $(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/teacher/teacherb2r.js */"./resources/js/teacher/teacherb2r.js");
+module.exports = __webpack_require__(/*! /var/www/ocl/resources/js/teacher/teacherb2r.js */"./resources/js/teacher/teacherb2r.js");
 
 
 /***/ })

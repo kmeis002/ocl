@@ -183,7 +183,7 @@ $(document).on('click', '#submit-flag', function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/devel/ocl/resources/js/student/studentctflist.js */"./resources/js/student/studentctflist.js");
+module.exports = __webpack_require__(/*! /var/www/ocl/resources/js/student/studentctflist.js */"./resources/js/student/studentctflist.js");
 
 
 /***/ })
