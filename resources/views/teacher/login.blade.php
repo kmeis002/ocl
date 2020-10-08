@@ -36,7 +36,6 @@
 		</form>
 	</div>
 
-@include('ascii.crashoverride')
 </body>
 	
 </html>
